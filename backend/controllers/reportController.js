@@ -166,7 +166,7 @@ const Purchase = require('../models/purchaseModel');
 const Product = require('../models/productModel');
 const mongoose = require('mongoose');
 const catchAsyncError = require('../middlewares/catchAsyncError'); 
-const ErrorHandler = require('../utils/errorHandler'); 
+const ErrorHandler = require('../utils/ErrorHandler'); 
 
 exports.getDashboardReports = catchAsyncError(async (req, res, next) => {
     // Safety check to prevent 500 error if user is not authenticated
