@@ -1,0 +1,260 @@
+.eb-rev-root-box,
+.eb-rev-root-box * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.eb-rev-main-container {
+    width: 100%;
+    max-width: 922px;
+    margin: 0 auto;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.eb-rev-inner-wrapper {
+    width: 100%;
+}
+
+.eb-rev-page-heading-block {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.eb-rev-page-heading-block h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.eb-rev-page-heading-block p {
+    font-size: 16px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Responsive Grid Layout */
+.eb-rev-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: stretch;
+}
+
+@media (max-width: 900px) {
+    .eb-rev-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SaaS Card Design */
+.eb-rev-custom-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.eb-rev-custom-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.eb-rev-custom-card h2 i {
+    color: #0056B3;
+}
+
+/* Form Styling */
+.eb-rev-form-control-group {
+    margin-bottom: 20px;
+}
+
+.eb-rev-form-control-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.eb-rev-form-control-group input,
+.eb-rev-form-control-group textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    color: #0f172a;
+    outline: none;
+    background-color: #f8fafc;
+    transition: all 0.25s ease;
+}
+
+.eb-rev-form-control-group input:focus,
+.eb-rev-form-control-group textarea:focus {
+    border-color: #0056B3;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Button Wrapper for Confetti Positioning */
+.eb-rev-btn-action-wrapper {
+    position: relative;
+    margin-top: 10px;
+}
+
+.eb-rev-submit-trigger-btn {
+    background: linear-gradient(135deg, #2563eb 0%, #0056B3 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    position: relative;
+    z-index: 2;
+}
+
+.eb-rev-submit-trigger-btn:hover {
+    background: linear-gradient(135deg, #0056B3 100%, #0056B3 100%);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    transform: translateY(-1px);
+}
+
+/* Colorful Confetti Paper Burst Animation */
+.eb-rev-confetti-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes ebRevBurstAnim {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--end-x), var(--end-y)) rotate(var(--end-rot)) scale(1);
+        opacity: 0;
+    }
+}
+
+.eb-rev-burst-active {
+    animation: ebRevBurstAnim 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+/* SaaS Testimonial Vertical Infinite Slider Container */
+.eb-rev-comments-viewport-pane {
+    height: 440px;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+.eb-rev-comments-scroll-track {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    will-change: transform;
+    user-select: none;
+    touch-action: pan-y;
+}
+
+@keyframes ebRevPaperSlideAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.eb-rev-comment-single-item {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    flex-shrink: 0;
+}
+
+.eb-rev-comment-single-item.eb-rev-new-paper-effect {
+    animation: ebRevPaperSlideAnim 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    border-color: #bfdbfe;
+}
+
+.eb-rev-comment-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.eb-rev-author-details-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.eb-rev-avatar-initial-circle {
+    width: 34px;
+    height: 34px;
+    background: #e0e7ff;
+    color: #0056B3;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eb-rev-author-name-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.eb-rev-comment-date-stamp {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.eb-rev-comment-body-text {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+    padding-left: 44px;
+}

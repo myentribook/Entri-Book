@@ -1,0 +1,257 @@
+body {
+        background: #f8fafc;
+        font-family: 'Segoe UI', sans-serif;
+        color: #1e293b;
+    }
+
+    .credit-page-container {
+        width: 100%;
+        max-width: 890px;
+        margin: auto;
+    }
+
+    /* ---------------- HEADER ---------------- */
+
+    .credit-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .credit-title-heading {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        white-space: nowrap;
+    }
+
+    .credit-search-bar {
+        width: 260px;
+        padding: 12px 16px;
+        border: 1px solid #dbe3ef;
+        border-radius: 8px;
+        outline: none;
+        font-size: 15px;
+        transition: .3s;
+    }
+
+    .credit-search-bar:focus {
+        border-color: #2563eb;
+    }
+
+    /* ---------------- CARD ---------------- */
+
+    .credit-main-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+        overflow-x: auto;
+    }
+
+    /* ---------------- TABLE ---------------- */
+
+    .credit-info-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 820px;
+        table-layout: fixed; /* அனைத்து காலம்களும் சமமான இடத்தை பிடிக்கும் */
+    }
+
+    .credit-info-table th {
+        text-align: left;
+        padding: 16px 12px;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .credit-info-table td {
+        padding: 18px 12px;
+        border-bottom: 1px solid #edf2f7;
+        font-size: 15px;
+        word-wrap: break-word; /* நீண்ட வார்த்தைகளை உடைக்க */
+    }
+
+    .credit-info-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* ---------------- BUTTON ---------------- */
+
+    .credit-pay-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 12px;
+        border-radius: 8px;
+        border: 1px solid #dbeafe;
+        background: #eff6ff;
+        color: #2563eb;
+        cursor: pointer;
+        font-weight: 800;
+        transition: .25s;
+    }
+
+    .credit-pay-button:hover {
+        background: #2563eb;
+        color: #fff;
+    }
+
+    /* ---------------- MODAL ---------------- */
+
+    .credit-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, .4);
+        backdrop-filter: blur(5px);
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        z-index: 999;
+    }
+
+    .credit-modal-window {
+        width: 100%;
+        max-width: 360px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 28px;
+    }
+
+    .credit-modal-window input {
+        width: 70%;
+        padding: 12px;
+        margin: 18px 0;
+        border: 1px solid #dbe3ef;
+        border-radius: 8px;
+    }
+
+    .credit-modal-footer {
+        display: flex;
+        gap: 12px;
+    }
+
+    .credit-modal-action-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    /* ---------------- MEDIA QUERIES ---------------- */
+
+    @media (max-width:992px) {
+        body {
+            padding: 24px 16px;
+            margin-top: 60px;
+        }
+
+        .credit-title-heading {
+            font-size: 26px;
+        }
+
+        .credit-search-bar {
+            width: 220px;
+        }
+
+        .credit-main-card {
+            padding: 18px;
+        }
+    }
+
+    @media (max-width:768px) {
+        .credit-header-row {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .credit-search-bar {
+            width: 40%;
+        }
+
+        .credit-title-heading {
+            font-size: 20px;
+        }
+
+        .credit-info-table {
+            min-width: 100%;
+            table-layout: auto; /* மொபைலில் ஆட்டோமேட்டிக்காக மாற */
+        }
+
+        .credit-info-table thead {
+            display: none;
+        }
+
+        .credit-info-table,
+        .credit-info-table tbody {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .credit-info-table tr {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 16px;
+            width: 100%;
+        }
+
+        .credit-info-table td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 2px 0;
+            border: none;
+        }
+
+        .credit-info-table td::before {
+            content: attr(data-label);
+            font-weight: 800;
+            color: #5d5757;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .credit-info-table td:last-child {
+            padding-top: 16px;
+            justify-content: flex-end;
+        }
+
+        .credit-pay-button {
+            width: auto;
+        }
+    }
+
+    @media (max-width:480px) {
+        body {
+            padding: 16px 12px;
+            margin-top: 60px;
+        }
+
+        .credit-title-heading {
+            font-size: 16px;
+        }
+
+        .credit-search-bar {
+            width: 50%;
+        }
+
+        .credit-modal-window {
+            padding: 20px;
+        }
+    }

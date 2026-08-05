@@ -1,0 +1,257 @@
+:root {
+    --primary: #0056B3;
+    --bg: #F4F7FD;
+    --card-bg: #FFFFFF;
+    --text-main: #2D3748;
+    --text-sub: #718096;
+    --border: #E2E8F0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Wrapper for spacing */
+.wrapper {
+    max-width: 920px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 25px 0 15px;
+    color: #1A202C;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid #EDF2F7;
+    margin-bottom: 20px;
+}
+
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* UPDATED: Exactly two inputs per row everywhere */
+.entry-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    align-items: end;
+    background: #F8FAFC;
+    padding: 15px;
+    border-radius: var(--radius);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-sub);
+    text-transform: uppercase;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Modal / Popup CSS */
+.modal-checkbox {
+    display: none;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-checkbox:checked+.modal-overlay {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+/* Buttons and Tables */
+.btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-view {
+    background: #EBF8FF;
+    color: var(--primary);
+    cursor: pointer;
+    display: inline-flex;
+}
+
+/* Save Button Styles */
+.dificultly-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.dificultly-btn {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Table Containers */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.history-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Scrollbar hiding */
+.table-wrapper::-webkit-scrollbar,
+.history-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.table-wrapper,
+.history-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Fixed Header Styles */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    /* Idhu dhaan main, ellaa column-um equal space edukum */
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background: var(--card-bg);
+    z-index: 1;
+    font-size: 10px;
+    color: var(--text-sub);
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F7FAFC;
+    word-wrap: break-word;
+    /* Oruvela text perusa irundha break aagum */
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0 15px;
+}
+
+/* Responsive adjustments - removed entry-box constraint to maintain 2 columns */
+@media (max-width: 600px) {
+    .grid-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================              ---- new
+   MOBILE RESPONSIVE: PURCHASE HISTORY ONLY
+   ========================================== */
+
+@media (max-width: 768px) {
+    /* Ensure the history wrapper enables smooth touch scrolling */
+    .history-scroll {
+        max-height: 450px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Set a minimum width on the history table so columns don't crush */
+    .history-scroll table {
+        min-width: 160px;      /*----- actual code given 500px */
+    }
+
+    /* Adjust padding for table cells on smaller viewports */
+    .history-scroll td, 
+    .history-scroll thead th {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,352 @@
+:root {
+    --site-bg: #f8f9fe;
+    --box-bg: #ffffff;
+    --brand-primary: #0055d4;
+    --brand-hover: #4338ca;
+    --text-heading: #1e1b4b;
+    --text-sub: #6b7280;
+    --line-divider: #f3f4f6;
+    --main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.pricing-root {
+    font-family: var(--main-font);
+    background-color: var(--site-bg);
+    color: var(--text-heading);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 60px 20px;
+    overflow-x: auto;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.pricing-root *, .pricing-root *::before, .pricing-root *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Section Heading --- */
+.intro-block {
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 600px;
+}
+
+.intro-block h1 {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--text-heading);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.intro-block p {
+    font-size: 14px;
+    color: var(--text-sub);
+    line-height: 1.5;
+}
+
+/* --- Mobile Navigation Switcher --- */
+.switcher-wrapper {
+    display: none;
+    background: #eef2f6;
+    padding: 4px;
+    border-radius: 99px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.switcher-pill {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sub);
+    border-radius: 99px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.switcher-pill.active-pill {
+    background: var(--box-bg);
+    color: var(--brand-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Pricing Flex Wrapper --- */
+.pricing-deck {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1024px;
+    padding: 20px 10px;
+}
+
+/* --- Individual Plan Card --- */
+.tier-box {
+    background-color: var(--box-bg);
+    border-radius: 20px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 280px;
+    flex: 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+/* --- Featured Tier Override (Growth) --- */
+.tier-box.tier-featured {
+    background-color: var(--brand-primary);
+    color: var(--box-bg);
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.25);
+    transform: scale(1.03);
+    z-index: 2;
+}
+
+.tier-box.tier-featured .tier-title,
+.tier-box.tier-featured .cost-display,
+.tier-box.tier-featured .tier-summary {
+    color: var(--box-bg);
+}
+
+.tier-box.tier-featured .tier-summary {
+    opacity: 0.9;
+}
+
+.tier-box.tier-featured .tier-separator {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tier-box.tier-featured .perk-text {
+    color: var(--box-bg);
+}
+
+.tier-box.tier-featured .perk-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--box-bg);
+}
+
+.tier-box.tier-featured .action-cta {
+    background-color: var(--box-bg);
+    color: var(--brand-primary);
+}
+
+.tier-box.tier-featured .action-cta:hover {
+    background-color: #f3f4f6;
+}
+
+.tier-box.tier-featured .footnote-hint {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- Card Header Elements --- */
+.tier-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.tier-emblem {
+    width: 44px;
+    height: 44px;
+    background-color: #e0e7ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-primary);
+}
+
+.tier-box.tier-featured .tier-emblem {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--box-bg);
+}
+
+.tier-emblem svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.tier-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+/* --- Cost Display --- */
+.cost-section {
+    margin-bottom: 16px;
+}
+
+.cost-display {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-heading);
+    line-height: 1;
+}
+
+.cost-display span {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-sub);
+    margin-left: 2px;
+}
+
+.tier-box.tier-featured .cost-display span {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tier-summary {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.5;
+    min-height: 40px;
+    margin-bottom: 24px;
+}
+
+/* --- Separator Line --- */
+.tier-separator {
+    border: none;
+    border-top: 1px solid var(--line-divider);
+    margin-bottom: 24px;
+}
+
+/* --- Perks List --- */
+.perks-checklist {
+    list-style: none;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.perk-row {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-heading);
+    font-weight: 500;
+}
+
+.perk-badge {
+    width: 18px;
+    height: 18px;
+    background-color: var(--brand-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+    font-size: 10px;
+}
+
+/* --- Action Button & Footnote --- */
+.action-cta {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--brand-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+    margin-bottom: 12px;
+}
+
+.action-cta:hover {
+    background-color: var(--brand-hover);
+}
+
+.footnote-hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-sub);
+}
+
+/* --- Bottom Anchor Link --- */
+.external-link-wrap {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.external-link-wrap a {
+    color: var(--brand-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.external-link-wrap a:hover {
+    text-decoration: underline;
+}
+
+/* --- Mobile Breakpoint Styles --- */
+@keyframes popupFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .pricing-root {
+        overflow-x: hidden;
+        padding: 40px 16px;
+    }
+
+    .switcher-wrapper {
+        display: flex;
+    }
+
+    .pricing-deck {
+        width: 100%;
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+    }
+
+    .tier-box {
+        display: none; 
+        width: 100%;
+        max-width: 360px;
+        transform: none !important;
+        animation: popupFade 0.3s ease-in-out;
+    }
+
+    .pricing-deck.display-trial .tier-box.trial-tier,
+    .pricing-deck.display-monthly .tier-box.monthly-tier,
+    .pricing-deck.display-annual .tier-box.annual-tier {
+        display: flex;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* ------------------------- */
+
