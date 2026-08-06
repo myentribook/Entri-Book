@@ -91,7 +91,7 @@ import {
 } from '../slices/paymentSlice';
 
 const API = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://16.171.148.56:8000',
     withCredentials: true
 });
 
