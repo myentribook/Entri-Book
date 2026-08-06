@@ -7,7 +7,7 @@ import { updateUserLiveStatus } from '../../slices/statusSlice';
 import Loader from '../layouts/loader'; 
 import io from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:8000'; 
+const SOCKET_URL = 'http://16.171.148.56:8000'; 
 
 export default function AdminPannel({ userList }) {
     const dispatch = useDispatch();
