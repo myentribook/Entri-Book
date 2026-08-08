@@ -45,23 +45,34 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler(`Product not found with ID: ${item.product}`, 404));
         }
 
-        if (!item.quantity || item.quantity <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
-        if (!item.purchasePrice || item.purchasePrice <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
+        const qty = Number(item.quantity);
+        const price = Number(item.purchasePrice);
+        
+        // Conversion factor blank-ah or 0-ah vanthaal, old irukkura value-aye vechukolla or new value-ku update panna
+        const cf = item.conversionFactor !== undefined && item.conversionFactor !== null && item.conversionFactor !== "" 
+                   ? Number(item.conversionFactor) 
+                   : product.conversionFactor;
 
-        const totalAmount = item.quantity * item.purchasePrice;
+        if (!qty || qty <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
+        if (!price || price <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
+
+        const totalAmount = qty * price;
         grandTotal += totalAmount;
 
         purchaseItems.push({
             product: product._id,
-            quantity: item.quantity,
-            conversionFactor: item.conversionFactor,
-            purchasePrice: item.purchasePrice,
+            quantity: qty,
+            conversionFactor: cf,
+            purchasePrice: price,
             totalAmount
         });
 
-        // Direct document fetch and save method to guarantee stock addition
-        product.stock = Number(product.stock || 0) + Number(item.quantity);
-        product.conversionFactor = item.conversionFactor;
+        // Stock-ah add pannrom, conversion factor-ah condition-oda update panrom
+        product.stock = Number(product.stock || 0) + qty;
+        if (cf) {
+            product.conversionFactor = cf;
+        }
+        
         await product.save();
     }
 
