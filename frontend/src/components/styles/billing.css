@@ -14,6 +14,7 @@
     max-width: 920px;
     margin: 2rem auto;
     padding: 0 1rem;
+    box-sizing: border-box;
 }
 
 .bill-mgr-title {
@@ -32,6 +33,7 @@
     border-radius: var(--radius);
     border: 1px solid var(--border);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
 }
 
 .bill-mgr-grid-form {
@@ -73,6 +75,8 @@
     font-size: 0.95rem;
     font-family: 'Roboto', sans-serif;
     transition: var(--transition);
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .bill-mgr-input:focus {
@@ -174,16 +178,10 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.0rem;
 }
 
-/* @media (max-width: 600px) {
-    .bill-mgr-table, .bill-mgr-table thead, .bill-mgr-table tbody, .bill-mgr-table th, .bill-mgr-table td, .bill-mgr-table tr { display: block; }
-    .bill-mgr-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-    .bill-mgr-table tr { border: 1px solid var(--border); margin-bottom: 1rem; border-radius: var(--radius); padding: 0.5rem; background: #fff; }
-    .bill-mgr-table td { border: none; position: relative; padding-left: 50%; text-align: right; }
-    .bill-mgr-table td::before { content: attr(data-label); position: absolute; left: 1rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; font-size: 0.7rem; }
-} */
+/* Optimized Responsive Mobile View */
 @media (max-width: 600px) {
     .bill-mgr-wrapper {
         padding: 0.5rem !important;
@@ -194,7 +192,7 @@
         margin-bottom: 1rem !important;
     }
 
-    /* Table layout-ah completely card structure-ku maathrom */
+    /* Table layout completely converted to clean card rows */
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -206,35 +204,34 @@
         box-sizing: border-box !important;
     }
 
-    /* Table headers-ah mobile view-la hide panrom */
+    /* Hide standard table headers on mobile */
     .bill-mgr-table thead tr {
         position: absolute !important;
         top: -9999px !important;
         left: -9999px !important;
     }
 
-    /* Ovvoru row-um oru separate clean card-ah varum */
+    /* Each row forms a separate styled card box */
     .bill-mgr-table tr {
         background: #ffffff !important;
         border: 1px solid var(--border) !important;
         border-radius: 10px !important;
         margin-bottom: 0.75rem !important;
         padding: 0.75rem !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
-    /* Table cells-ah proper spacing-oda align panrom (Flex thevai illa) */
+    /* Table cells alignment with proper spacing avoiding text overflow */
     .bill-mgr-table td {
         border: none !important;
         position: relative !important;
-        padding: 8px 0 8px 35% !important; /* Label-ku space kudukkurom */
+        padding: 8px 0 8px 38% !important; 
         text-align: right !important;
         font-size: 0.9rem !important;
-        display: block !important;
         word-break: break-word;
     }
 
-    /* Left side labels (CUSTOMER, DATE, etc.) rombha clean-ah kaatum */
+    /* Labels positioned cleanly on the left side */
     .bill-mgr-table td::before {
         content: attr(data-label);
         position: absolute;
@@ -246,13 +243,13 @@
         text-transform: uppercase;
         font-size: 0.75rem;
         text-align: left;
+        max-width: 35%;
     }
 
-    /* "No bills found" row-ku proper styling */
+    /* Proper handling for "No bills found" rows */
     .bill-mgr-table td[colspan] {
         padding: 1rem !important;
         text-align: center !important;
-        display: block !important;
     }
     
     .bill-mgr-table td[colspan]::before {
