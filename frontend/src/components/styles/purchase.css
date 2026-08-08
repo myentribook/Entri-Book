@@ -13,7 +13,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Wrapper for spacing */
 .wrapper {
     max-width: 920px;
     margin: 40px auto;
@@ -39,6 +38,7 @@ h2 {
     box-shadow: var(--shadow);
     border: 1px solid #EDF2F7;
     margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .grid-form {
@@ -48,7 +48,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* UPDATED: Exactly two inputs per row everywhere */
 .entry-box {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -113,7 +112,6 @@ select {
     box-sizing: border-box;
 }
 
-/* Buttons and Tables */
 .btn {
     padding: 10px 16px;
     border-radius: 8px;
@@ -141,7 +139,6 @@ select {
     display: inline-flex;
 }
 
-/* Save Button Styles */
 .dificultly-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -162,7 +159,6 @@ select {
     gap: 8px;
 }
 
-/* Table Containers */
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -175,7 +171,6 @@ select {
     position: relative;
 }
 
-/* Scrollbar hiding */
 .table-wrapper::-webkit-scrollbar,
 .history-scroll::-webkit-scrollbar {
     display: none;
@@ -187,13 +182,10 @@ select {
     scrollbar-width: none;
 }
 
-/* Fixed Header Styles */
 table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    table-layout: fixed;
-    /* Idhu dhaan main, ellaa column-um equal space edukum */
 }
 
 thead th {
@@ -213,8 +205,7 @@ td {
     padding: 12px;
     font-size: 13px;
     border-bottom: 1px solid #F7FAFC;
-    word-wrap: break-word;
-    /* Oruvela text perusa irundha break aagum */
+    word-break: break-word;
 }
 
 .section-header {
@@ -224,34 +215,108 @@ td {
     margin: 25px 0 15px;
 }
 
-/* Responsive adjustments - removed entry-box constraint to maintain 2 columns */
 @media (max-width: 600px) {
     .grid-form {
         grid-template-columns: 1fr;
     }
 }
 
-/* ==========================================              ---- new
-   MOBILE RESPONSIVE: PURCHASE HISTORY ONLY
+/* ==========================================
+   MOBILE RESPONSIVE CARD VIEW (PURE CSS FIX)
    ========================================== */
-
 @media (max-width: 768px) {
-    /* Ensure the history wrapper enables smooth touch scrolling */
+    .wrapper {
+        padding: 0.5rem !important;
+    }
+
+    .card {
+        padding: 0.75rem !important;
+        margin-bottom: 1rem !important;
+        box-sizing: border-box !important;
+    }
+
     .history-scroll {
-        max-height: 450px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        max-height: none;
+        overflow-x: visible;
     }
 
-    /* Set a minimum width on the history table so columns don't crush */
-    .history-scroll table {
-        min-width: 160px;      /*----- actual code given 500px */
+    /* Convert tables into cards on mobile */
+    .table-wrapper table,
+    .table-wrapper thead,
+    .table-wrapper tbody,
+    .table-wrapper th,
+    .table-wrapper td,
+    .table-wrapper tr {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
     }
 
-    /* Adjust padding for table cells on smaller viewports */
-    .history-scroll td, 
-    .history-scroll thead th {
-        padding: 10px 8px;
-        font-size: 12px;
+    /* Hide standard headers */
+    .table-wrapper thead tr {
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    /* Clean Card Row Styling */
+    .table-wrapper tr {
+        background: #ffffff !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        margin-bottom: 0.85rem !important;
+        padding: 0.75rem !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        box-sizing: border-box !important;
+    }
+
+    /* Cell layout using Flexbox */
+    .table-wrapper td {
+        border: none !important;
+        position: relative !important;
+        padding: 8px 0 !important; 
+        text-align: right !important;
+        font-size: 0.9rem !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Automatically extract labels based on index position without modifying JSX */
+    .table-wrapper td:nth-child(1)::before { content: "Supplier / Product:"; }
+    .table-wrapper td:nth-child(2)::before { content: "Bill No / Qty:"; }
+    .table-wrapper td:nth-child(3)::before { content: "Items / Conv. F:"; }
+    .table-wrapper td:nth-child(4)::before { content: "Actions / Price:"; }
+    .table-wrapper td:nth-child(5)::before { content: "Amount:"; }
+
+    .table-wrapper td::before {
+        font-weight: 700;
+        color: var(--text-sub);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+        text-align: left;
+    }
+
+    /* View button formatting */
+    .table-wrapper td .btn-view {
+        display: inline-flex !important;
+        margin-left: auto;
+    }
+
+    /* Full-width alignment for empty rows */
+    .table-wrapper td[colspan] {
+        padding: 1rem !important;
+        text-align: center !important;
+        display: block !important;
+    }
+    
+    .table-wrapper td[colspan]::before {
+        content: none !important;
     }
 }
