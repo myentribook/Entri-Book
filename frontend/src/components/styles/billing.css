@@ -184,7 +184,6 @@
     .bill-mgr-table td { border: none; position: relative; padding-left: 50%; text-align: right; }
     .bill-mgr-table td::before { content: attr(data-label); position: absolute; left: 1rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; font-size: 0.7rem; }
 } */
-
 @media (max-width: 600px) {
     .bill-mgr-wrapper {
         padding: 0.5rem;
@@ -193,6 +192,18 @@
     .bill-mgr-card {
         padding: 0.75rem;
         margin-bottom: 1rem;
+        overflow-x: auto;
+    }
+
+    .bill-mgr-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .bill-mgr-table {
+        width: 100%;
+        min-width: 320px;
     }
 
     .bill-mgr-table,
@@ -201,39 +212,34 @@
     .bill-mgr-table th,
     .bill-mgr-table td,
     .bill-mgr-table tr {
-        display: block;
+        display: table !important;
     }
 
     .bill-mgr-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
     }
 
     .bill-mgr-table tr {
-        border: 1px solid var(--border);
-        margin-bottom: 0.75rem;
-        border-radius: var(--radius);
-        padding: 0.4rem;
-        background: #fff;
+        border: none;
+        margin-bottom: 0;
+        border-radius: 0;
+        padding: 0;
+        background: transparent;
     }
 
+    .bill-mgr-table th, 
     .bill-mgr-table td {
-        border: none;
-        position: relative;
-        padding-left: 45%;
-        text-align: right;
-        padding-top: 0.3rem;
-        padding-bottom: 0.3rem;
+        border-bottom: 1px solid var(--border);
+        position: static;
+        padding: 0.5rem !important;
+        text-align: left !important;
+        font-size: 0.85rem !important;
+        white-space: nowrap;
     }
 
     .bill-mgr-table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0.5rem;
-        font-weight: 700;
-        color: var(--text-sub);
-        text-transform: uppercase;
-        font-size: 0.65rem;
+        content: none !important;
     }
 }
