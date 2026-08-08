@@ -45,34 +45,27 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler(`Product not found with ID: ${item.product}`, 404));
         }
 
-        const qty = Number(item.quantity);
-        const price = Number(item.purchasePrice);
-        
-        // Conversion factor blank-ah or 0-ah vanthaal, old irukkura value-aye vechukolla or new value-ku update panna
-        const cf = item.conversionFactor !== undefined && item.conversionFactor !== null && item.conversionFactor !== "" 
-                   ? Number(item.conversionFactor) 
-                   : product.conversionFactor;
+        if (!item.quantity || item.quantity <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
+        if (!item.purchasePrice || item.purchasePrice <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
+        if (!item.conversionFactor || item.conversionFactor <= 0) return next(new ErrorHandler(`Invalid conversion factor for ${product.name}`, 400));
 
-        if (!qty || qty <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
-        if (!price || price <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
-
-        const totalAmount = qty * price;
+        const totalAmount = item.quantity * item.purchasePrice;
         grandTotal += totalAmount;
 
         purchaseItems.push({
             product: product._id,
-            quantity: qty,
-            conversionFactor: cf,
-            purchasePrice: price,
+            quantity: item.quantity,
+            conversionFactor: item.conversionFactor,
+            purchasePrice: item.purchasePrice,
             totalAmount
         });
 
-        // Stock-ah add pannrom, conversion factor-ah condition-oda update panrom
-        product.stock = Number(product.stock || 0) + qty;
-        if (cf) {
-            product.conversionFactor = cf;
-        }
-        
+        // 1. Stock ஐ பழைய ஸ்டாக்குடன் கூட்ட வேண்டும் (Addition)
+        product.stock = Number(product.stock || 0) + Number(item.quantity);
+
+        // 2. Conversion Factor ஐ புதியது கொண்டு மாற்ற வேண்டும் (Replacement)
+        product.conversionFactor = Number(item.conversionFactor);
+
         await product.save();
     }
 
@@ -91,7 +84,6 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         purchase
     });
 });
-
 
 // GET SINGLE PURCHASE (Restricted to logged-in user)
 exports.getSinglePurchase = catchAsyncError(async (req, res, next) => {
