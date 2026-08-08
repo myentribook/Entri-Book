@@ -39,9 +39,11 @@
         gap: 15px;
     }
     .dashboard-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 15px !important;
+       grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
         width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 15px !important; /* Inga padding kuduthinga na right side cut aagave aagathu */
         margin: 0 auto !important;
     }
 }
@@ -69,10 +71,12 @@
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
+    gap: 20px; /* Gap-ah konjam 20px-ah kurachukonga mobile-ku nalla irukkum */
     width: 100%;
     max-width: 900px;
     margin: 20px auto;
+    box-sizing: border-box; /* Mukkiyam: padding width-kulla include aaga */
+    padding: 0 15px;
 }
 
 .card-wrapper {
