@@ -182,17 +182,17 @@
 }
 
 /* --- ULTIMATE RESPONSIVE MOBILE FIX --- */
-@media (max-width: 400px) {
+@media (max-width: 600px) {
     .bill-mgr-wrapper {
-        padding: 0.25rem !important;
+        padding: 0.5rem !important;
     }
 
     .bill-mgr-card {
-        padding: 0.5rem !important;
+        padding: 0.75rem !important;
         margin-bottom: 1rem !important;
     }
 
-    /* Force block rendering for layout transformation */
+    /* Force block rendering for table structure transformation */
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -215,25 +215,25 @@
     .bill-mgr-table tr {
         background: #ffffff !important;
         border: 1px solid var(--border) !important;
-        border-radius: 10px !important;
-        margin-bottom: 0.75rem !important;
-        padding: 0.5rem 0.75rem !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        border-radius: 12px !important;
+        margin-bottom: 0.85rem !important;
+        padding: 0.75rem !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     }
 
-    /* Cell layout with dedicated spacing to prevent text clipping */
+    /* Cell layout: Label left side irukkum, values right side-la cut aagama wrap aagum */
     .bill-mgr-table td {
         border: none !important;
         position: relative !important;
-        /* Left padding space-ah mari kuduthirukkom for labels */
         padding: 8px 0 8px 42% !important; 
         text-align: right !important;
-        font-size: 0.85rem !important;
+        font-size: 0.9rem !important;
         word-break: break-word !important;
         overflow-wrap: break-word !important;
+        display: block !important;
     }
 
-    /* Pseudo-element label styling with strict width limit */
+    /* Left side labels (CUSTOMER, DATE, ITEMS, TOTAL, ACTIONS) */
     .bill-mgr-table td::before {
         content: attr(data-label);
         position: absolute;
@@ -246,12 +246,15 @@
         font-size: 0.7rem;
         text-align: left;
         width: 38%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
-    /* Full width row handling for empty states */
+    /* Actions whatsapp button right side neat-ah align aagum */
+    .bill-mgr-table td .bill-mgr-btn-view {
+        display: inline-flex !important;
+        margin-left: auto;
+    }
+
+    /* Empty state "No bills found" styling */
     .bill-mgr-table td[colspan] {
         padding: 1rem !important;
         text-align: center !important;
