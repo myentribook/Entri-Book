@@ -6,7 +6,7 @@
 
 /* body nu irundhadha .home-wrapper nu maathiyachu */
 .home-wrapper {
-    padding: 40px 15px;
+    padding: 40px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,6 +41,8 @@
     .dashboard-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 15px !important;
+        width: 100% !important;
+        margin: 0 auto !important;
     }
 }
 
@@ -70,6 +72,7 @@
     gap: 30px;
     width: 100%;
     max-width: 900px;
+    margin: 20px auto;
 }
 
 .card-wrapper {
