@@ -202,7 +202,7 @@
     .bill-mgr-table td,
     .bill-mgr-table tr {
         display: block !important;
-        width: 70% !important;
+        width: 100% !important;
     }
 
     /* Table headers-ah mobile view-la hide panrom */
