@@ -22,7 +22,6 @@ exports.getPurchase = catchAsyncError(async (req, res, next) => {
     });
 });
 
-// CREATE PURCHASE (Linked strictly to logged-in user)
 exports.createPurchase = catchAsyncError(async (req, res, next) => {
     const { supplierName, supplierBillNo, items } = req.body;
 
@@ -64,8 +63,10 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         await productModel.findOneAndUpdate(
             { _id: product._id, user: req.user.id },
             {
+                $inc: { 
+                    stock: item.quantity 
+                },
                 $set: {
-                    stock: item.quantity,
                     conversionFactor: item.conversionFactor
                 }
             }
@@ -87,7 +88,6 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         purchase
     });
 });
-
 // GET SINGLE PURCHASE (Restricted to logged-in user)
 exports.getSinglePurchase = catchAsyncError(async (req, res, next) => {
     const purchase = await purchaseModel.findOne({ _id: req.params.id, user: req.user.id });
