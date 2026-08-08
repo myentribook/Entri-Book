@@ -43,12 +43,14 @@ export default function Purchase() {
         };
     }, [dispatch]);
 
-    const handleAddTemp = () => {
+  const handleAddTemp = () => {
         if (!selectedProductId || !quantity || !purchasePrice) return toast.error("Please fill all product fields");
         const selectedProduct = products.find(p => p._id === selectedProductId);
         const q = Number(quantity);
         const p = Number(purchasePrice);
-        const cf = Number(conversionFactor || 0);
+        
+        // இங்கதான் மாற்றம்: ஒருவேளை Conv.F. கொடுக்காவிட்டால் ஏற்கனவே இருக்கிற product-ன் conversionFactor-ஐ எடுத்துக்கொள்ளும்
+        const cf = Number(conversionFactor || selectedProduct?.conversionFactor || 0);
 
         const newItem = {
             product: selectedProductId,
