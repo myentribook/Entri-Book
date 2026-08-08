@@ -47,7 +47,6 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
 
         if (!item.quantity || item.quantity <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
         if (!item.purchasePrice || item.purchasePrice <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
-        if (!item.conversionFactor || item.conversionFactor <= 0) return next(new ErrorHandler(`Invalid conversion factor for ${product.name}`, 400));
 
         const totalAmount = item.quantity * item.purchasePrice;
         grandTotal += totalAmount;
@@ -55,16 +54,18 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         purchaseItems.push({
             product: product._id,
             quantity: item.quantity,
-            conversionFactor: item.conversionFactor,
+            conversionFactor: item.conversionFactor || product.conversionFactor,
             purchasePrice: item.purchasePrice,
             totalAmount
         });
 
-        // 1. Stock ஐ பழைய ஸ்டாக்குடன் கூட்ட வேண்டும் (Addition)
+        // 1. Stock ஐ பழைய ஸ்டாக்குடன் கூட்டுவது (Old Stock + New Stock)
         product.stock = Number(product.stock || 0) + Number(item.quantity);
 
-        // 2. Conversion Factor ஐ புதியது கொண்டு மாற்ற வேண்டும் (Replacement)
-        product.conversionFactor = Number(item.conversionFactor);
+        // 2. Conversion Factor: புதியது கொடுத்தால் மாறும், கொடுக்கவில்லை என்றால் பழையதே தொடரும்
+        if (item.conversionFactor && Number(item.conversionFactor) > 0) {
+            product.conversionFactor = Number(item.conversionFactor);
+        }
 
         await product.save();
     }
