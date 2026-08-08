@@ -181,18 +181,18 @@
     margin-bottom: 1.0rem;
 }
 
-/* Optimized Responsive Mobile View */
-@media (max-width: 600px) {
+/* --- ULTIMATE RESPONSIVE MOBILE FIX --- */
+@media (max-width: 400px) {
     .bill-mgr-wrapper {
-        padding: 0.5rem !important;
+        padding: 0.25rem !important;
     }
 
     .bill-mgr-card {
-        padding: 0.75rem !important;
+        padding: 0.5rem !important;
         margin-bottom: 1rem !important;
     }
 
-    /* Table layout completely converted to clean card rows */
+    /* Force block rendering for layout transformation */
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -204,34 +204,36 @@
         box-sizing: border-box !important;
     }
 
-    /* Hide standard table headers on mobile */
+    /* Hide standard headers */
     .bill-mgr-table thead tr {
         position: absolute !important;
         top: -9999px !important;
         left: -9999px !important;
     }
 
-    /* Each row forms a separate styled card box */
+    /* Clean Card Row Style */
     .bill-mgr-table tr {
         background: #ffffff !important;
         border: 1px solid var(--border) !important;
         border-radius: 10px !important;
         margin-bottom: 0.75rem !important;
-        padding: 0.75rem !important;
+        padding: 0.5rem 0.75rem !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
-    /* Table cells alignment with proper spacing avoiding text overflow */
+    /* Cell layout with dedicated spacing to prevent text clipping */
     .bill-mgr-table td {
         border: none !important;
         position: relative !important;
-        padding: 8px 0 8px 38% !important; 
+        /* Left padding space-ah mari kuduthirukkom for labels */
+        padding: 8px 0 8px 42% !important; 
         text-align: right !important;
-        font-size: 0.9rem !important;
-        word-break: break-word;
+        font-size: 0.85rem !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
     }
 
-    /* Labels positioned cleanly on the left side */
+    /* Pseudo-element label styling with strict width limit */
     .bill-mgr-table td::before {
         content: attr(data-label);
         position: absolute;
@@ -241,12 +243,15 @@
         font-weight: 700;
         color: var(--text-sub);
         text-transform: uppercase;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         text-align: left;
-        max-width: 35%;
+        width: 38%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    /* Proper handling for "No bills found" rows */
+    /* Full width row handling for empty states */
     .bill-mgr-table td[colspan] {
         padding: 1rem !important;
         text-align: center !important;
