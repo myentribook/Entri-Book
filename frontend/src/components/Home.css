@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
+/* Mukkiyam: padding add aanaalum screen-ah vittu veliya pogaama irukka idhu thevai */
+* {
+    box-sizing: border-box;
+}
+
 .upi-title, .upi-btn, .dashboard-grid, .card-wrapper, .refer-section {
     font-family: 'Inter', sans-serif;
 }
@@ -11,6 +16,8 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    width: 100%; /* Right side cut aagama irukka add panni irukken */
+    overflow-x: hidden; /* Screen-ku veliya ethuvum pogaama lock panna */
 }
 
 .section-wrapper {
@@ -38,13 +45,22 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 15px;
     }
+    
     .dashboard-grid {
-       grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
         width: 100% !important;
-        box-sizing: border-box !important;
-        padding: 0 15px !important; /* Inga padding kuduthinga na right side cut aagave aagathu */
-        margin: 0 auto !important;
+        padding: 0 !important; /* Parent (home-wrapper) laye gap irukrathala inga 0 aakiyachu */
+        margin: 0 !important; 
+    }
+
+    /* Mobile view-la card size-ah konjam adjust panna thaan 2 columns cut aagama ukkarum */
+    .card-wrapper {
+        padding: 16px !important;
+    }
+    
+    .card-content {
+        padding: 12px !important;
     }
 }
 
@@ -71,22 +87,23 @@
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px; /* Gap-ah konjam 20px-ah kurachukonga mobile-ku nalla irukkum */
+    gap: 20px;
     width: 100%;
     max-width: 900px;
     margin: 20px auto;
-    box-sizing: border-box; /* Mukkiyam: padding width-kulla include aaga */
-    padding: 0 15px;
+    padding: 0; /* Inga iruntha extra padding-ah thookiyachu */
 }
 
 .card-wrapper {
     background: #ffffff; padding: 24px; border-radius: 24px;
     border: 1px solid #f0f0f0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    min-width: 0; /* Card text naala grid perusa viriyakudathu */
 }
 
 .card-content {
     background-color: #fcfcfc; padding: 20px; border-radius: 16px;
     margin-bottom: 20px; border: 1px solid #f9f9f9;
+    word-wrap: break-word;
 }
 
 .refer-section {
