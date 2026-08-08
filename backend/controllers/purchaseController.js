@@ -59,18 +59,10 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             totalAmount
         });
 
-        // Update product ensuring it matches both product ID and logged-in user ID
-        await productModel.findOneAndUpdate(
-            { _id: product._id, user: req.user.id },
-            {
-                $inc: { 
-                    stock: item.quantity 
-                },
-                $set: {
-                    conversionFactor: item.conversionFactor
-                }
-            }
-        );
+        // Direct document fetch and save method to guarantee stock addition
+        product.stock = Number(product.stock || 0) + Number(item.quantity);
+        product.conversionFactor = item.conversionFactor;
+        await product.save();
     }
 
     // CREATE PURCHASE RECORD with logged-in user reference
@@ -88,6 +80,8 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         purchase
     });
 });
+
+
 // GET SINGLE PURCHASE (Restricted to logged-in user)
 exports.getSinglePurchase = catchAsyncError(async (req, res, next) => {
     const purchase = await purchaseModel.findOne({ _id: req.params.id, user: req.user.id });
