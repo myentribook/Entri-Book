@@ -186,15 +186,15 @@
 } */
 @media (max-width: 600px) {
     .bill-mgr-wrapper {
-        padding: 0.5rem;
+        padding: 0.5rem !important;
     }
 
     .bill-mgr-card {
-        padding: 1rem;
-        margin-bottom: 1rem;
+        padding: 0.75rem !important;
+        margin-bottom: 1rem !important;
     }
 
-    /* Table-ah mobile-la card view-ku proper ah mathrom */
+    /* Table layout-ah completely card structure-ku maathrom */
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -205,52 +205,55 @@
         width: 100% !important;
     }
 
-    /* Table headers-ah mobile-la hide panrom */
+    /* Table headers-ah mobile view-la hide panrom */
     .bill-mgr-table thead tr {
         position: absolute !important;
         top: -9999px !important;
         left: -9999px !important;
     }
 
-    /* Ovvoru row-um oru separate card maathiri varum */
+    /* Ovvoru row-um oru separate clean card-ah varum */
     .bill-mgr-table tr {
+        background: #ffffff !important;
         border: 1px solid var(--border) !important;
+        border-radius: 10px !important;
         margin-bottom: 0.75rem !important;
-        border-radius: 8px !important;
-        padding: 0.75rem !important;
-        background: #fdfdfd !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        padding: 0.5rem 0.75rem !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
+    /* Table cells-ah proper spacing-oda align panrom */
     .bill-mgr-table td {
         border: none !important;
         position: relative !important;
-        padding: 0.4rem 0.4rem 0.4rem 50% !important;
+        padding: 6px 0 6px 45% !important;
         text-align: right !important;
         font-size: 0.9rem !important;
         display: flex !important;
         justify-content: flex-end !important;
         align-items: center !important;
+        word-break: break-word;
     }
 
-    /* Mobile-la labels-ah side-la correct-ah align panra trick */
+    /* Left side labels (CUSTOMER, DATE, etc.) rombha clean-ah kaatum */
     .bill-mgr-table td::before {
         content: attr(data-label);
         position: absolute;
-        left: 0.5rem;
+        left: 0;
         font-weight: 700;
         color: var(--text-sub);
         text-transform: uppercase;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         text-align: left;
     }
 
-    /* "No bills found" row-ku special handling */
+    /* "No bills found" row-ku proper styling */
     .bill-mgr-table td[colspan] {
         padding: 1rem !important;
         text-align: center !important;
         display: block !important;
     }
+    
     .bill-mgr-table td[colspan]::before {
         content: none !important;
     }
