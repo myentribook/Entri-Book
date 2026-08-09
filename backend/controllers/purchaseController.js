@@ -63,19 +63,20 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             totalAmount
         });
 
-        // 1. Safe Stock Addition using $inc (பழைய ஸ்டாக்குடன் புதிய Qty-ஐ சரியாகக் கூட்டும்)
+        // Safe Update: $inc stock and optional $set conversionFactor together
+        const updateQuery = {
+            $inc: { stock: qty }
+        };
+
+        if (item.conversionFactor && Number(item.conversionFactor) > 0) {
+            updateQuery.$set = { conversionFactor: Number(item.conversionFactor) };
+        }
+
         await productModel.findOneAndUpdate(
             { _id: product._id, user: req.user.id },
-            { $inc: { stock: qty } }
+            updateQuery,
+            { new: true, runValidators: true }
         );
-
-        // 2. Separate update for Conversion Factor if provided
-        if (item.conversionFactor && Number(item.conversionFactor) > 0) {
-            await productModel.findOneAndUpdate(
-                { _id: product._id, user: req.user.id },
-                { $set: { conversionFactor: Number(item.conversionFactor) } }
-            );
-        }
     }
 
     // CREATE PURCHASE RECORD with logged-in user reference
@@ -86,6 +87,13 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         grandTotal,
         user: req.user.id
     });
+
+    res.status(201).json({
+        success: true,
+        message: "Purchase created successfully",
+        purchase
+    });
+});
 
 // GET SINGLE PURCHASE (Restricted to logged-in user)
 exports.getSinglePurchase = catchAsyncError(async (req, res, next) => {
