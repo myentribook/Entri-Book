@@ -10,42 +10,45 @@ const purchaseSlice = createSlice({
     },
 
     reducers: {
-
         purchaseRequest(state) {
-            state.loading = true
+            state.loading = true;
         },
         purchaseSuccess(state, action) {
-            state.loading = false
-            state.purchase = action.payload.purchase
+            state.loading = false;
+            state.purchase = action.payload.purchase;
         },
         purchaseFailure(state, action) {
-            state.loading = false
-            state.error = action.payload
+            state.loading = false;
+            state.error = action.payload;
         },
-        purchaseActionRequest(state, action) {
-            state.loading = true
+        purchaseActionRequest(state) {
+            state.loading = true;
         },
         purchaseActionSuccess(state, action) {
-            state.loading = false
-            state.message = action.payload.message
+            state.loading = false;
+            state.message = action.payload.message || "Success";
         },
         purchaseActionFailure(state, action) {
-            state.loading = false
-            state.error = action.payload
+            state.loading = false;
+            state.error = action.payload;
         },
-        clearPurchaseState(state, action) {
-            state.error = null
-            state.message = null
+        clearPurchaseState(state) {
+            state.error = null;
+            state.message = null;
         },
-        resetPurchase(state, action) {
-            state.purchase = []
-            state.loading = false
-            state.error = null
-            state.message = null
+        resetPurchase(state) {
+            state.purchase = [];
+            state.loading = false;
+            state.error = null;
+            state.message = null;
         }
     }
-})
+});
 
-export const { purchaseRequest, purchaseSuccess, purchaseFailure, purchaseActionFailure, purchaseActionSuccess, purchaseActionRequest, clearPurchaseState, resetPurchase } = purchaseSlice.actions
+export const { 
+    purchaseRequest, purchaseSuccess, purchaseFailure, 
+    purchaseActionFailure, purchaseActionSuccess, purchaseActionRequest, 
+    clearPurchaseState, resetPurchase 
+} = purchaseSlice.actions;
 
 export default purchaseSlice.reducer;
