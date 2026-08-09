@@ -45,29 +45,38 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler(`Product not found with ID: ${item.product}`, 404));
         }
 
-        if (!item.quantity || item.quantity <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
-        if (!item.purchasePrice || item.purchasePrice <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
+        const qty = Number(item.quantity);
+        const price = Number(item.purchasePrice);
+        const cf = Number(item.conversionFactor || product.conversionFactor || 1);
 
-        const totalAmount = item.quantity * item.purchasePrice;
+        if (!qty || qty <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
+        if (!price || price <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
+
+        const totalAmount = qty * price;
         grandTotal += totalAmount;
 
         purchaseItems.push({
             product: product._id,
-            quantity: item.quantity,
-            conversionFactor: item.conversionFactor || product.conversionFactor,
-            purchasePrice: item.purchasePrice,
+            quantity: qty,
+            conversionFactor: cf,
+            purchasePrice: price,
             totalAmount
         });
 
-        // 1. Stock ஐ பழைய ஸ்டாக்குடன் கூட்டுவது (Old Stock + New Stock)
-        product.stock = Number(product.stock || 0) + Number(item.quantity);
+        // FIX: Using MongoDB $inc operator to safely add stock instead of replacing it
+        const updateFields = {
+            $inc: { stock: qty } // இது பழைய ஸ்டாக்குடன் புதிய Qty-ஐ ஆட்டோமேட்டிக்காக கூட்டும்
+        };
 
-        // 2. Conversion Factor: புதியது கொடுத்தால் மாறும், கொடுக்கவில்லை என்றால் பழையதே தொடரும்
         if (item.conversionFactor && Number(item.conversionFactor) > 0) {
-            product.conversionFactor = Number(item.conversionFactor);
+            updateFields.$set = { conversionFactor: Number(item.conversionFactor) };
         }
 
-        await product.save();
+        await productModel.findOneAndUpdate(
+            { _id: product._id, user: req.user.id },
+            updateFields,
+            { new: true, runValidators: true }
+        );
     }
 
     // CREATE PURCHASE RECORD with logged-in user reference
