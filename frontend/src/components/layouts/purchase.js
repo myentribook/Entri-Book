@@ -65,13 +65,28 @@ export default function Purchase() {
         setQuantity(''); setConversionFactor(''); setPurchasePrice(''); setSelectedProductId('');
     };
 
-    const handleSavePurchase = () => {
+   const handleSavePurchase = () => {
         if (!supplierName || !supplierBillNo || tempItems.length === 0) return toast.error("Fill all fields and add items");
+
+        // FIX: ஒரே பொருளை (Product ID) இரண்டு முறை சேர்த்திருந்தால், அவற்றின் குவாண்டிட்டியை ஒன்றாகக் கூட்டுதல் (Merge Duplicate Products)
+        const mergedItemsMap = {};
+
+        tempItems.forEach(item => {
+            if (mergedItemsMap[item.product]) {
+                mergedItemsMap[item.product].quantity += Number(item.quantity);
+                // தேவையானால் மொத்த அமௌன்ட்டையும் கூட்டிக் கொள்ளலாம்
+                mergedItemsMap[item.product].amount += item.amount;
+            } else {
+                mergedItemsMap[item.product] = { ...item };
+            }
+        });
+
+        const finalItems = Object.values(mergedItemsMap);
 
         const purchaseData = {
             supplierName,
             supplierBillNo,
-            items: tempItems.map(item => ({
+            items: finalItems.map(item => ({
                 product: item.product,
                 quantity: item.quantity,
                 conversionFactor: item.conversionFactor,
@@ -81,6 +96,7 @@ export default function Purchase() {
 
         dispatch(createPurchase(purchaseData)).then(() => {
             dispatch(getPurchase());
+            dispatch(getProducts()); // புதுப்பிக்கப்பட்ட stock-ஐ உடனே டேபிளில் காட்ட இதையும் சேர்த்துக்கொள்ளுங்கள்
         });
 
         setTempItems([]);
