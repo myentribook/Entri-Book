@@ -25,34 +25,149 @@ exports.getPurchase = catchAsyncError(async (req, res, next) => {
 exports.createPurchase = catchAsyncError(async (req, res, next) => {
     const { supplierName, supplierBillNo, items } = req.body;
 
+    console.log("\n");
+    console.log("==================================================");
+    console.log("🟢 CREATE PURCHASE API STARTED");
+    console.log("==================================================");
+    console.log("Supplier Name:", supplierName);
+    console.log("Supplier Bill No:", supplierBillNo);
+    console.log("Number of Items:", items?.length);
+    console.log("Request Items:", JSON.stringify(items, null, 2));
+    console.log("==================================================");
+
+    // --------------------------------------------------
+    // VALIDATE ITEMS
+    // --------------------------------------------------
     if (!items || items.length === 0) {
-        return next(new ErrorHandler("No items provided for purchase", 400));
+        console.log("❌ ERROR: No items provided");
+        return next(
+            new ErrorHandler("No items provided for purchase", 400)
+        );
     }
 
     let grandTotal = 0;
     const purchaseItems = [];
     const bulkOps = [];
 
+    // --------------------------------------------------
+    // PROCESS EACH PURCHASE ITEM
+    // --------------------------------------------------
     for (const item of items) {
+
+        console.log("\n");
+        console.log("--------------------------------------------------");
+        console.log("📦 PROCESSING PURCHASE ITEM");
+        console.log("--------------------------------------------------");
+        console.log("Product ID:", item.product);
+        console.log("Incoming Quantity:", item.quantity);
+        console.log("Incoming Purchase Price:", item.purchasePrice);
+        console.log("Incoming Conversion Factor:", item.conversionFactor);
+
+        // --------------------------------------------------
+        // CHECK PRODUCT ID
+        // --------------------------------------------------
         if (!mongoose.Types.ObjectId.isValid(item.product)) {
-            return next(new ErrorHandler(`Invalid Product ID format`, 400));
+
+            console.log("❌ INVALID PRODUCT ID:", item.product);
+
+            return next(
+                new ErrorHandler(`Invalid Product ID format`, 400)
+            );
         }
 
-        const product = await productModel.findOne({ _id: item.product, user: req.user.id });
+        // --------------------------------------------------
+        // FIND PRODUCT
+        // --------------------------------------------------
+        const product = await productModel.findOne({
+            _id: item.product,
+            user: req.user.id
+        });
+
         if (!product) {
-            return next(new ErrorHandler(`Product not found with ID: ${item.product}`, 404));
+
+            console.log("❌ PRODUCT NOT FOUND:", item.product);
+
+            return next(
+                new ErrorHandler(
+                    `Product not found with ID: ${item.product}`,
+                    404
+                )
+            );
         }
 
+        // --------------------------------------------------
+        // GET VALUES
+        // --------------------------------------------------
         const qty = Number(item.quantity);
         const price = Number(item.purchasePrice);
-        const cf = Number(item.conversionFactor || product.conversionFactor || 1);
 
-        if (!qty || qty <= 0) return next(new ErrorHandler(`Invalid quantity for ${product.name}`, 400));
-        if (!price || price <= 0) return next(new ErrorHandler(`Invalid price for ${product.name}`, 400));
+        const cf = Number(
+            item.conversionFactor ||
+            product.conversionFactor ||
+            1
+        );
 
+        // --------------------------------------------------
+        // 🔥 STOCK DEBUG - BEFORE UPDATE
+        // --------------------------------------------------
+        console.log("\n");
+        console.log("🔍 STOCK DEBUG - BEFORE UPDATE");
+        console.log("--------------------------------------------------");
+        console.log("Product Name:", product.name);
+        console.log("Product ID:", product._id.toString());
+        console.log("OLD STOCK:", product.stock);
+        console.log("PURCHASE QTY:", qty);
+        console.log("CONVERSION FACTOR:", cf);
+        console.log("PURCHASE PRICE:", price);
+
+        const expectedStock = Number(product.stock) + qty;
+
+        console.log("EXPECTED NEW STOCK:", expectedStock);
+        console.log("--------------------------------------------------");
+
+        // --------------------------------------------------
+        // VALIDATE QUANTITY
+        // --------------------------------------------------
+        if (!qty || qty <= 0) {
+
+            console.log("❌ INVALID QUANTITY:", qty);
+
+            return next(
+                new ErrorHandler(
+                    `Invalid quantity for ${product.name}`,
+                    400
+                )
+            );
+        }
+
+        // --------------------------------------------------
+        // VALIDATE PRICE
+        // --------------------------------------------------
+        if (!price || price <= 0) {
+
+            console.log("❌ INVALID PURCHASE PRICE:", price);
+
+            return next(
+                new ErrorHandler(
+                    `Invalid price for ${product.name}`,
+                    400
+                )
+            );
+        }
+
+        // --------------------------------------------------
+        // CALCULATE TOTAL
+        // --------------------------------------------------
         const totalAmount = qty * price;
+
         grandTotal += totalAmount;
 
+        console.log("TOTAL AMOUNT:", totalAmount);
+        console.log("CURRENT GRAND TOTAL:", grandTotal);
+
+        // --------------------------------------------------
+        // CREATE PURCHASE ITEM
+        // --------------------------------------------------
         purchaseItems.push({
             product: product._id,
             quantity: qty,
@@ -61,24 +176,110 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             totalAmount
         });
 
-        // Bulk operations மல்டிபிள் ரிக்வெஸ்ட் மோதிக்கொள்ளாமல் இருக்க உதவும்
+        // --------------------------------------------------
+        // PREPARE STOCK UPDATE
+        // --------------------------------------------------
         bulkOps.push({
             updateOne: {
-                filter: { _id: product._id, user: req.user.id },
+                filter: {
+                    _id: product._id,
+                    user: req.user.id
+                },
                 update: {
-                    $inc: { stock: qty }, // பழைய ஸ்டாக்குடன் புதிய Qty கண்டிப்பாகக் கூடும்
-                    $set: { conversionFactor: cf }
+                    // 🔥 THIS ADDS PURCHASE QTY TO EXISTING STOCK
+                    $inc: {
+                        stock: qty
+                    },
+
+                    $set: {
+                        conversionFactor: cf
+                    }
                 }
             }
         });
+
+        console.log("\n");
+        console.log("🛠️ BULK OPERATION CREATED");
+        console.log("Product:", product.name);
+        console.log("Operation: stock += qty");
+        console.log("Old Stock:", product.stock);
+        console.log("Quantity Added:", qty);
+        console.log("Expected Stock After Update:", expectedStock);
+        console.log("--------------------------------------------------");
     }
 
-    // ஒரே நேரத்தில் ஸ்டாக் அப்டேட் செய்யும் bulkWrite
+    // --------------------------------------------------
+    // BULK STOCK UPDATE
+    // --------------------------------------------------
+    console.log("\n");
+    console.log("==================================================");
+    console.log("🚀 STARTING BULK STOCK UPDATE");
+    console.log("==================================================");
+    console.log("Total Bulk Operations:", bulkOps.length);
+
     if (bulkOps.length > 0) {
-        await productModel.bulkWrite(bulkOps);
+
+        const bulkResult = await productModel.bulkWrite(bulkOps);
+
+        console.log("\n");
+        console.log("✅ BULK WRITE COMPLETED");
+        console.log("--------------------------------------------------");
+        console.log("Matched Count:", bulkResult.matchedCount);
+        console.log("Modified Count:", bulkResult.modifiedCount);
+        console.log("--------------------------------------------------");
+
+    } else {
+
+        console.log("⚠️ NO BULK OPERATIONS FOUND");
+
     }
 
+    // --------------------------------------------------
+    // 🔥 VERIFY STOCK AFTER BULK WRITE
+    // --------------------------------------------------
+    console.log("\n");
+    console.log("==================================================");
+    console.log("🔍 VERIFYING STOCK AFTER BULK WRITE");
+    console.log("==================================================");
+
+    for (const item of items) {
+
+        const verifyProduct = await productModel.findOne({
+            _id: item.product,
+            user: req.user.id
+        });
+
+        if (verifyProduct) {
+
+            console.log("\n");
+            console.log("📊 STOCK VERIFICATION");
+            console.log("--------------------------------------------------");
+            console.log("Product:", verifyProduct.name);
+            console.log("Product ID:", verifyProduct._id.toString());
+            console.log("CURRENT DATABASE STOCK:", verifyProduct.stock);
+            console.log("Purchase Quantity:", Number(item.quantity));
+            console.log("--------------------------------------------------");
+
+        } else {
+
+            console.log(
+                "❌ Could not find product while verifying:",
+                item.product
+            );
+
+        }
+    }
+
+    // --------------------------------------------------
     // CREATE PURCHASE RECORD
+    // --------------------------------------------------
+    console.log("\n");
+    console.log("==================================================");
+    console.log("💾 CREATING PURCHASE RECORD");
+    console.log("==================================================");
+    console.log("Grand Total:", grandTotal);
+    console.log("Purchase Items:", JSON.stringify(purchaseItems, null, 2));
+
     const purchase = await purchaseModel.create({
         supplierName,
         supplierBillNo,
@@ -86,6 +287,18 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
         grandTotal,
         user: req.user.id
     });
+
+    console.log("✅ PURCHASE RECORD CREATED");
+    console.log("Purchase ID:", purchase._id.toString());
+
+    // --------------------------------------------------
+    // FINAL RESPONSE
+    // --------------------------------------------------
+    console.log("\n");
+    console.log("==================================================");
+    console.log("🟢 CREATE PURCHASE API COMPLETED SUCCESSFULLY");
+    console.log("==================================================");
+    console.log("\n");
 
     res.status(201).json({
         success: true,
