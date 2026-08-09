@@ -25,21 +25,19 @@ exports.getPurchase = catchAsyncError(async (req, res, next) => {
 exports.createPurchase = catchAsyncError(async (req, res, next) => {
     const { supplierName, supplierBillNo, items } = req.body;
 
-    // Validation
     if (!items || items.length === 0) {
         return next(new ErrorHandler("No items provided for purchase", 400));
     }
 
     let grandTotal = 0;
     const purchaseItems = [];
+    const bulkOps = [];
 
     for (const item of items) {
-        // Validate ID
         if (!mongoose.Types.ObjectId.isValid(item.product)) {
             return next(new ErrorHandler(`Invalid Product ID format`, 400));
         }
 
-        // Fetch product ensuring it belongs to the logged-in user
         const product = await productModel.findOne({ _id: item.product, user: req.user.id });
         if (!product) {
             return next(new ErrorHandler(`Product not found with ID: ${item.product}`, 404));
@@ -63,23 +61,24 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             totalAmount
         });
 
-        // Safe Update: $inc stock and optional $set conversionFactor together
-        const updateQuery = {
-            $inc: { stock: qty }
-        };
-
-        if (item.conversionFactor && Number(item.conversionFactor) > 0) {
-            updateQuery.$set = { conversionFactor: Number(item.conversionFactor) };
-        }
-
-        await productModel.findOneAndUpdate(
-            { _id: product._id, user: req.user.id },
-            updateQuery,
-            { new: true, runValidators: true }
-        );
+        // Bulk operations மல்டிபிள் ரிக்வெஸ்ட் மோதிக்கொள்ளாமல் இருக்க உதவும்
+        bulkOps.push({
+            updateOne: {
+                filter: { _id: product._id, user: req.user.id },
+                update: {
+                    $inc: { stock: qty }, // பழைய ஸ்டாக்குடன் புதிய Qty கண்டிப்பாகக் கூடும்
+                    $set: { conversionFactor: cf }
+                }
+            }
+        });
     }
 
-    // CREATE PURCHASE RECORD with logged-in user reference
+    // ஒரே நேரத்தில் ஸ்டாக் அப்டேட் செய்யும் bulkWrite
+    if (bulkOps.length > 0) {
+        await productModel.bulkWrite(bulkOps);
+    }
+
+    // CREATE PURCHASE RECORD
     const purchase = await purchaseModel.create({
         supplierName,
         supplierBillNo,
