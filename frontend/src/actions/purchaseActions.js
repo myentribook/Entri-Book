@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { 
-    purchaseRequest, purchaseSuccess, purchaseFailure, // Get exports
-    purchaseActionRequest, purchaseActionSuccess, purchaseActionFailure // Create exports
+    purchaseRequest, purchaseSuccess, purchaseFailure, 
+    purchaseActionRequest, purchaseActionSuccess, purchaseActionFailure 
 } from '../slices/purchaseSlices'; 
 
 export const getPurchase = () => async (dispatch) => {
@@ -10,7 +10,7 @@ export const getPurchase = () => async (dispatch) => {
         const { data } = await axios.get('/api/v1/purchase');
         dispatch(purchaseSuccess(data));
     } catch (error) {
-        dispatch(purchaseFailure(error.response.data.message));
+        dispatch(purchaseFailure(error.response?.data?.message || "Error fetching purchases"));
     }
 };
 
@@ -18,12 +18,11 @@ export const createPurchase = (purchaseData) => async (dispatch) => {
     try {
         dispatch(purchaseActionRequest());
         const { data } = await axios.post('/api/v1/create/purchase', purchaseData);
-        dispatch(purchaseActionSuccess(data.purchase));
+        dispatch(purchaseActionSuccess(data)); // முழு response data-வையும் அனுப்புங்கள்
         
-        // Refresh the list
+        // Refresh both lists immediately
         dispatch(getPurchase()); 
     } catch (error) {
-        dispatch(purchaseActionFailure(error.response.data.message));
-        alert(error.response.data.message);
+        dispatch(purchaseActionFailure(error.response?.data?.message || "Error creating purchase"));
     }
 };
