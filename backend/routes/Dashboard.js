@@ -14,6 +14,6 @@ if (!getDashboardData || !isAuthenticatedUser || !isSubscribed) {
     console.error("Critical Error: One of the middleware/controller functions is undefined!");
 }
 
-router.route('/getDashboard').get(getDashboardData);
+router.route('/getDashboard').get( isAuthenticatedUser , isSubscribed ,  getDashboardData);
 
 module.exports = router;
