@@ -31,26 +31,31 @@
 const { Resend } = require('resend');
 
 const sendEmail = async (options) => {
-    // Initialize Resend with the API key from your config.env
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    try {
+        console.log("API Key loaded:", process.env.RESEND_API_KEY ? "Yes (Hidden)" : "No!");
+        
+        const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const message = {
-        from: `${process.env.SMTP_FROM_NAME} <onboarding@resend.dev>`, // Testing-ku ithu irukkatum
-        to: options.email,
-        subject: options.subject,
-        html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
-                <p>${options.message}</p>
-               </div>`
-    };
+        const message = {
+            from: `MyApp <onboarding@resend.dev>`, // Direct-aa testing-kku name podalam
+            to: options.email,
+            subject: options.subject,
+            html: `<p>${options.message}</p>`
+        };
 
-    const { data, error } = await resend.emails.send(message);
+        const response = await resend.emails.send(message);
+        console.log("Resend Response:", response);
 
-    if (error) {
-        console.error('Resend Error:', error);
-        throw new Error('Email could not be sent');
+        if (response.error) {
+            console.error('Resend Error Details:', response.error);
+            throw new Error(response.error.message);
+        }
+
+        return response.data;
+    } catch (err) {
+        console.error('Catch Error Details:', err);
+        throw err;
     }
-
-    return data;
 };
 
 module.exports = sendEmail;
