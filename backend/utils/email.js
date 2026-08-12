@@ -28,6 +28,7 @@
 // module.exports = sendEmail
 
 
+
 const { Resend } = require('resend');
 
 const sendEmail = async (options) => {
@@ -40,7 +41,7 @@ const sendEmail = async (options) => {
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         const message = {
-            from: 'myentribook <support@myentribook.in>', // Make sure this domain is verified in Resend
+            from: 'myentribook <support@myentribook.in>',
             to: options.email,
             subject: options.subject,
             html: `
