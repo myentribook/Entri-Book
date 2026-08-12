@@ -119,7 +119,7 @@ import Review from './components/layouts/review';
 import Admin from './components/admin/adminComponent';
 import io from 'socket.io-client'; // Socket.io import panniyachu
 
-const SOCKET_URL = 'http://13.53.187.167:8000'; // Ungaloda backend port
+const SOCKET_URL = 'http://www.myentribook.in'; // Ungaloda backend port
 
 // === Local Socket Connector Component ===
 function SocketManager() {
