@@ -31,12 +31,14 @@ const { Resend } = require('resend');
 
 const sendEmail = async (options) => {
     try {
+        console.log("-----------------------------------------");
+        console.log("Attempting to send email to:", options.email);
         console.log("API Key loaded:", process.env.RESEND_API_KEY ? "Yes (Hidden)" : "No!");
         
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         const message = {
-            from: `myentribook <support@myentribook.in>`, // Unga verified domain ippo anga irukku
+            from: `myentribook <support@myentribook.in>`,
             to: options.email,
             subject: options.subject,
             html: `
@@ -59,16 +61,20 @@ const sendEmail = async (options) => {
         };
 
         const response = await resend.emails.send(message);
-        console.log("Resend Response:", response);
+        console.log("Resend Full API Response:", JSON.stringify(response, null, 2));
 
         if (response.error) {
-            console.error('Resend Error Details:', response.error);
+            console.error('❌ Resend API Error Returned:', response.error);
             throw new Error(response.error.message);
         }
 
+        console.log("✅ Email sent successfully!");
+        console.log("-----------------------------------------");
         return response.data;
-    }codes catch (err) {
-        console.error('Catch Error Details:', err);
+
+    } catch (err) {
+        console.error('❌ Catch Block Error Details:', err);
+        console.log("-----------------------------------------");
         throw err;
     }
 };
