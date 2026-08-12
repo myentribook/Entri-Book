@@ -7,7 +7,7 @@ import { updateUserLiveStatus } from '../../slices/statusSlice';
 import Loader from '../layouts/loader'; 
 import io from 'socket.io-client';
 
-const SOCKET_URL = 'http://16.171.148.56:8000'; 
+const SOCKET_URL = 'http://www.myentribook.in'; 
 
 export default function AdminPannel({ userList }) {
     const dispatch = useDispatch();
