@@ -152,6 +152,37 @@ exports.Logout = catchAsyncError(async (req, res, next) => {
 });
 
 // ================= PASSWORD MANAGEMENT =================
+// exports.forgotPassword = catchAsyncError(async (req, res, next) => {
+//     const user = await userModel.findOne({ email: req.body.email });
+//     if (!user) return next(new ErrorHandler('user not found with this EMAIL', 404));
+
+//     const resetToken = user.getResetToken();
+//     await user.save({ validateBeforeSave: false });
+
+//      let BASE_URL=process.env.FRONTEND_URL
+
+//     if (process.env.NODE_ENV === 'PRODUCTION') {
+//         BASE_URL=`${req.protocol}://${req.get('host')}`
+//     }
+
+//     const resetUrl = `${BASE_URL}/password/reset/${resetToken}`;
+//     const message = `Your password reset token URL is as follow \n\n ${resetUrl} \n\n If you have not request this email then ignore it.`;
+
+//     try {
+//         await sendEmail({
+//             email: user.email,
+//             subject: 'Password Reset Request for Your Myentribook Account',
+//             message
+//         });
+//         res.status(200).json({ success: true, message: `Email sent to ${user.email}` });
+//     } catch (error) {
+//         user.resetPasswordToken = undefined;
+//         user.resetPasswordTokenExpires = undefined;
+//         await user.save({ validateBeforeSave: false });
+//         return next(new ErrorHandler(error.message, 500));
+//     }
+// });
+
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     const user = await userModel.findOne({ email: req.body.email });
     if (!user) return next(new ErrorHandler('user not found with this EMAIL', 404));
@@ -159,20 +190,19 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     const resetToken = user.getResetToken();
     await user.save({ validateBeforeSave: false });
 
-     let BASE_URL=process.env.FRONTEND_URL
+    let BASE_URL = process.env.FRONTEND_URL;
 
     if (process.env.NODE_ENV === 'PRODUCTION') {
-        BASE_URL=`${req.protocol}://${req.get('host')}`
+        BASE_URL = `${req.protocol}://${req.get('host')}`;
     }
 
     const resetUrl = `${BASE_URL}/password/reset/${resetToken}`;
-    const message = `Your password reset token URL is as follow \n\n ${resetUrl} \n\n If you have not request this email then ignore it.`;
 
     try {
         await sendEmail({
             email: user.email,
             subject: 'Password Reset Request for Your Myentribook Account',
-            message
+            message: resetUrl // Direct-aa link mattum anupprom
         });
         res.status(200).json({ success: true, message: `Email sent to ${user.email}` });
     } catch (error) {
