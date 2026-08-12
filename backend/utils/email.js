@@ -27,7 +27,6 @@
 
 // module.exports = sendEmail
 
-
 const { Resend } = require('resend');
 
 const sendEmail = async (options) => {
@@ -39,15 +38,6 @@ const sendEmail = async (options) => {
         
         const resend = new Resend(process.env.RESEND_API_KEY);
 
-        // Inga options.message-la irukkura full text-la irunthu http link-ah mattum regex vatchu thaniya edukkirom
-        const fullMessage = options.message;
-        const urlMatch = fullMessage.match(/(https?:\/\/[^\s]+)/);
-        const resetUrl = urlMatch ? urlMatch[0] : '#';
-
-        // Link-kku munnaadi pinnadi irukkura text-ah separate panrom
-        const textBeforeLink = "Your password reset token URL is as follow";
-        const textAfterLink = "If you have not request this email then ignore it.";
-
         const message = {
             from: 'myentribook <support@myentribook.in>',
             to: options.email,
@@ -57,22 +47,15 @@ const sendEmail = async (options) => {
                     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                         <h2 style="color: #333333; margin-bottom: 20px;">Password Reset Request</h2>
                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">Hello,</p>
-                        <p style="color: #555555; font-size: 16px; line-height: 1.5;">You requested to reset your password for your <strong>myentribook</strong> account. Click the link below to proceed:</p>
+                        <p style="color: #555555; font-size: 16px; line-height: 1.5;">Your password reset token URL is as follow:</p>
                         
-                        <!-- Controller-la kudutha text apdiye irukum, link mattum thaniya click aagum -->
-                        <p style="color: #555555; font-size: 15px; line-height: 1.6;">
-                            ${textBeforeLink}
-                        </p>
-                        
-                        <div style="margin: 15px 0; word-break: break-all;">
-                            <a href="${resetUrl}" target="_blank" style="color: #007bff; font-size: 15px; text-decoration: underline;">
-                                ${resetUrl}
+                        <div style="margin: 20px 0; word-break: break-all;">
+                            <a href="${options.message}" target="_blank" style="color: #007bff; font-size: 15px; text-decoration: underline;">
+                                ${options.message}
                             </a>
                         </div>
-
-                        <p style="color: #555555; font-size: 15px; line-height: 1.6; margin-top: 15px;">
-                            ${textAfterLink}
-                        </p>
+                        
+                        <p style="color: #555555; font-size: 15px; line-height: 1.6; margin-top: 15px;">If you have not request this email then ignore it.</p>
                         
                         <p style="color: #777777; font-size: 14px; line-height: 1.4; margin-top: 25px;">If you didn't request this, you can safely ignore this email.</p>
                         <hr style="border: none; border-top: 1px solid #eeeeee; margin: 20px 0;">
