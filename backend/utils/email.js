@@ -28,7 +28,6 @@
 // module.exports = sendEmail
 
 
-
 const { Resend } = require('resend');
 
 const sendEmail = async (options) => {
@@ -39,6 +38,15 @@ const sendEmail = async (options) => {
         console.log("API Key loaded:", process.env.RESEND_API_KEY ? "Yes (Hidden)" : "No!");
         
         const resend = new Resend(process.env.RESEND_API_KEY);
+
+        // Inga options.message-la irukkura full text-la irunthu http link-ah mattum regex vatchu thaniya edukkirom
+        const fullMessage = options.message;
+        const urlMatch = fullMessage.match(/(https?:\/\/[^\s]+)/);
+        const resetUrl = urlMatch ? urlMatch[0] : '#';
+
+        // Link-kku munnaadi pinnadi irukkura text-ah separate panrom
+        const textBeforeLink = "Your password reset token URL is as follow";
+        const textAfterLink = "If you have not request this email then ignore it.";
 
         const message = {
             from: 'myentribook <support@myentribook.in>',
@@ -51,11 +59,22 @@ const sendEmail = async (options) => {
                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">Hello,</p>
                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">You requested to reset your password for your <strong>myentribook</strong> account. Click the link below to proceed:</p>
                         
-                        <div style="margin: 30px 0;">
-                            <a href="${options.message}" target="_blank" style="color: #007bff; font-size: 16px; text-decoration: underline; word-break: break-all;">${options.message}</a>
-                        </div>
+                        <!-- Controller-la kudutha text apdiye irukum, link mattum thaniya click aagum -->
+                        <p style="color: #555555; font-size: 15px; line-height: 1.6;">
+                            ${textBeforeLink}
+                        </p>
                         
-                        <p style="color: #777777; font-size: 14px; line-height: 1.4;">If you didn't request this, you can safely ignore this email.</p>
+                        <div style="margin: 15px 0; word-break: break-all;">
+                            <a href="${resetUrl}" target="_blank" style="color: #007bff; font-size: 15px; text-decoration: underline;">
+                                ${resetUrl}
+                            </a>
+                        </div>
+
+                        <p style="color: #555555; font-size: 15px; line-height: 1.6; margin-top: 15px;">
+                            ${textAfterLink}
+                        </p>
+                        
+                        <p style="color: #777777; font-size: 14px; line-height: 1.4; margin-top: 25px;">If you didn't request this, you can safely ignore this email.</p>
                         <hr style="border: none; border-top: 1px solid #eeeeee; margin: 20px 0;">
                         <p style="color: #999999; font-size: 12px; text-align: center;">&copy; 2026 myentribook. All rights reserved.</p>
                     </div>
