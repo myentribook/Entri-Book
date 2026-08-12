@@ -27,18 +27,20 @@
 
 // module.exports = sendEmail
 
+
 const { Resend } = require('resend');
 
 const sendEmail = async (options) => {
     try {
         console.log("-----------------------------------------");
         console.log("Attempting to send email to:", options.email);
+        console.log("Reset Link/URL being used:", options.message);
         console.log("API Key loaded:", process.env.RESEND_API_KEY ? "Yes (Hidden)" : "No!");
         
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         const message = {
-            from: `myentribook <support@myentribook.in>`,
+            from: 'myentribook <support@myentribook.in>', // Make sure this domain is verified in Resend
             to: options.email,
             subject: options.subject,
             html: `
@@ -46,10 +48,10 @@ const sendEmail = async (options) => {
                     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                         <h2 style="color: #333333; margin-bottom: 20px;">Password Reset Request</h2>
                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">Hello,</p>
-                        <p style="color: #555555; font-size: 16px; line-height: 1.5;">You requested to reset your password for your <strong>myentribook</strong> account. Click the button below to proceed:</p>
+                        <p style="color: #555555; font-size: 16px; line-height: 1.5;">You requested to reset your password for your <strong>myentribook</strong> account. Click the link below to proceed:</p>
                         
-                        <div style="text-align: center; margin: 30px 0;">
-                            <a href="${options.message}" style="background-color: #007bff; color: #ffffff; padding: 12px 24px; text-decoration: none; font-size: 16px; border-radius: 5px; display: inline-block; font-weight: bold;">Reset Password</a>
+                        <div style="margin: 30px 0;">
+                            <a href="${options.message}" target="_blank" style="color: #007bff; font-size: 16px; text-decoration: underline; word-break: break-all;">${options.message}</a>
                         </div>
                         
                         <p style="color: #777777; font-size: 14px; line-height: 1.4;">If you didn't request this, you can safely ignore this email.</p>
