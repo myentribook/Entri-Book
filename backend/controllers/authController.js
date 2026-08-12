@@ -166,12 +166,12 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     }
 
     const resetUrl = `${BASE_URL}/password/reset/${resetToken}`;
-    const message = `Dottn.\n\n Your password reset token URL is as follow \n\n ${resetUrl} \n\n If you have not request this email then ignore it.`;
+    const message = `Your password reset token URL is as follow \n\n ${resetUrl} \n\n If you have not request this email then ignore it.`;
 
     try {
         await sendEmail({
             email: user.email,
-            subject: 'DOTTN password recovery',
+            subject: 'Password Reset Request for Your Myentribook Account',
             message
         });
         res.status(200).json({ success: true, message: `Email sent to ${user.email}` });
