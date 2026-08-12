@@ -81,7 +81,7 @@ export default function Billing() {
     if (!selectedBill) return;
     try {
       setSharing(true);
-      const backendUrl = "http://16.171.148.56:8000";
+      const backendUrl = "http://www.myentribook.in";
       const config = { withCredentials: true }; 
       
       const requestData = {
