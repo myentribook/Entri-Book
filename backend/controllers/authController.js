@@ -244,7 +244,7 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
 
 exports.getUserProfile = catchAsyncError(async (req, res, next) => {
     // req.user is already populated by your auth middleware
-    console.log("Middleware-la irunthu vantha req.user:", req.user);
+    // console.log("Middleware-la irunthu vantha req.user:", req.user);
     const user = req.user;
 
     res.status(200).json({
