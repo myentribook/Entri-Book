@@ -11,11 +11,15 @@ const path = require('path')
 // const 
 
 
+// app.use(cors({
+//     origin: "http://localhost:3000",
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://www.myentribook.in", "https://www.myentribook.in" , "http://16.171.148.56:8000/"],
     credentials: true
 }));
-
 
 
 const error = require('./middlewares/error')
