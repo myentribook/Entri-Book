@@ -90,8 +90,15 @@ import {
     subscriptionFail 
 } from '../slices/paymentSlice';
 
+// const API = axios.create({
+//     baseURL: 'http://16.171.148.56:8000/',
+//     withCredentials: true
+// });
+
 const API = axios.create({
-    baseURL: 'http://16.171.148.56:8000/',
+    baseURL: process.env.NODE_ENV === 'production' 
+        ? 'http://www.myentribook.in'  // Domain name (HTTPS irukanum)
+        : 'http://localhost:8000',
     withCredentials: true
 });
 
