@@ -91,7 +91,7 @@ import {
 } from '../slices/paymentSlice';
 
 const API = axios.create({
-    baseURL: 'http://www.myentribook.in',
+    baseURL: 'http://16.171.148.56:8000/',
     withCredentials: true
 });
 
