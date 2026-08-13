@@ -17,7 +17,7 @@ const path = require('path')
 // }));
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://www.myentribook.in", "https://www.myentribook.in" , "http://16.171.148.56:8000/"],
+    origin: ["http://localhost:3000", "http://www.myentribook.in", "https://www.myentribook.in" , "http://16.171.148.56:8000"],
     credentials: true
 }));
 
