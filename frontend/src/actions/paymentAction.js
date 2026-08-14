@@ -95,9 +95,16 @@ import {
 //     withCredentials: true
 // });
 
+// const API = axios.create({
+//     baseURL: process.env.NODE_ENV === 'production' 
+//         ? 'http://16.171.148.56:8000'  // Domain name (HTTPS irukanum)
+//         : 'http://localhost:8000',
+//     withCredentials: true
+// });
+
 const API = axios.create({
     baseURL: process.env.NODE_ENV === 'production' 
-        ? 'http://16.171.148.56:8000'  // Domain name (HTTPS irukanum)
+        ? '' // Relative path: Same domain / IP-ku request pogum
         : 'http://localhost:8000',
     withCredentials: true
 });
