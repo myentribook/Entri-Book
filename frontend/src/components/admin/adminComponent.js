@@ -74,8 +74,18 @@ export default function AdminPannel({ userList }) {
                                         const liveStatus = userStatus[userData._id];
                                         const isOnline = liveStatus ? liveStatus.isOnline : userData.isOnline;
                                         const lastSeen = liveStatus ? liveStatus.lastSeen : userData.lastSeen;
-                                        const timeDisplay = isOnline ? 'Active Now' : (lastSeen ? new Date(lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Unknown');
+                                        // const timeDisplay = isOnline ? 'Active Now' : (lastSeen ? new Date(lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Unknown');
+                                        const timeDisplay = isOnline ? 'Active Now' 
+                                        : (lastSeen 
+                                            ? new Date(lastSeen).toLocaleString([], { 
+                                                month: 'short', 
+                                                day: 'numeric', 
+                                                hour: '2-digit', 
+                                                minute: '2-digit' 
+                                              }) 
+                                            : 'Unknown');
 
+                                        
                                         return (
                                             <div className="entri-list-item" key={userData._id}>
                                                 <div className="entri-item-icon">👤</div>
