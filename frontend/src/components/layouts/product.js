@@ -71,6 +71,13 @@ export default function Product() {
                         </div>
                     </div>
 
+                     <div className="prod-mgr-header-row">
+                        <div className="prod-mgr-header">
+                            <i class="fa-solid fa-scroll" style={{ color: "#0056B3" }}></i> Stock List
+                        </div>
+                        {/* <Link to="/" className="prod-mgr-home-link"><i className="fa-solid fa-house"></i></Link> */}
+                    </div>
+
                     {loading ? <Loader /> : (
                         <div className="prod-mgr-card prod-mgr-table-view">
                             <div className="prod-mgr-table-container">
