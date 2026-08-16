@@ -66,7 +66,7 @@ export default function Product() {
                             <Search keyword={keyword} setKeyword={setKeyword} />
                             <div className="prod-mgr-add-container">
                                 <input value={newProductName} onChange={(e) => setNewProductName(e.target.value)} placeholder="New product name..." />
-                                <button className="prod-mgr-btn-add" onClick={handleAdd}>Add</button>
+                                <button className="prod-mgr-btn-add" onClick={handleAdd}>Save</button>
                             </div>
                         </div>
                     </div>
