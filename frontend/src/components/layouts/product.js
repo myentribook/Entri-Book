@@ -104,7 +104,7 @@ export default function Product() {
                                                 <td>
                                                     <div className="prod-mgr-action-btns">
                                                         <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
-                                                        // <button className="prod-mgr-btn-icon prod-mgr-btn-delete" onClick={() => { setDeleteId(p._id); setShowDelete(true); }}><i className="fa-solid fa-trash"></i></button>
+
                                                     </div>
                                                 </td>
                                             </tr>
