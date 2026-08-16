@@ -240,18 +240,18 @@ body {
     @media (max-width:480px) {
         body {
             padding: 16px 12px;
-            margin-top: 60px;
+            margin-top: 90px;
         }
 
         .credit-title-heading {
-            font-size: 16px;
+            font-size: 24px;
         }
 
         .credit-search-bar {
-            width: 50%;
+            width: 40%;
         }
 
         .credit-modal-window {
-            padding: 20px;
+            padding: 30px;
         }
     }
