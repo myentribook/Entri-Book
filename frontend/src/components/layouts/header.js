@@ -410,7 +410,7 @@ export default function Header() {
 
                             <Dropdown.Divider />
 
-                            {user?.role === 'admin' && <Dropdown.Item as={Link} onClick={() => { navigate('/admin') }} className='text-dark' to="/admin">Admin</Dropdown.Item>}
+                            {user?.role === 'admin' && <Dropdown.Item as={Link} onClick={() => { navigate('/admin') }} className='text-dark' to="/admin">admin</Dropdown.Item>}
 
                             <Dropdown.Item as={Link} onClick={() => { navigate('/myprofile') }} className='text-dark' to="/myprofile">Profile</Dropdown.Item>
 
