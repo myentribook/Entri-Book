@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --primary: #0056B3;
     --primary-hover: #0056B3;
     --bg: #f8fafc;
@@ -181,7 +181,6 @@
     margin-bottom: 1.0rem;
 }
 
-/* --- ULTIMATE RESPONSIVE MOBILE FIX --- */
 @media (max-width: 600px) {
     .bill-mgr-wrapper {
         padding: 0.5rem !important;
@@ -196,7 +195,6 @@
         box-sizing: border-box !important;
     }
 
-    /* Force block rendering and reset min-width issue */
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -205,7 +203,299 @@
     .bill-mgr-table tr {
         display: block !important;
         width: 100% !important;
-        min-width: 0 !important; /* <--- THIS FIXES THE HIDDEN BUG */
+        min-width: 0 !important; 
+        box-sizing: border-box !important;
+    }
+
+    .bill-mgr-table thead tr {
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+
+    .bill-mgr-table tr {
+        background: #ffffff !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        margin-bottom: 0.85rem !important;
+        padding: 0.75rem !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        box-sizing: border-box !important;
+    }
+
+    .bill-mgr-table td {
+        border: none !important;
+        position: relative !important;
+        padding: 8px 0 !important; 
+        text-align: right !important;
+        font-size: 0.9rem !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .bill-mgr-table td::before {
+        content: attr(data-label);
+        position: static !important;
+        transform: none !important;
+        font-weight: 700;
+        color: var(--text-sub);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+        text-align: left;
+    }
+
+    .bill-mgr-table td .bill-mgr-btn-view {
+        display: inline-flex !important;
+        margin-left: auto;
+    }
+
+    .bill-mgr-table td[colspan] {
+        padding: 1rem !important;
+        text-align: center !important;
+        display: block !important;
+    }
+    
+    .bill-mgr-table td[colspan]::before {
+        content: none !important;
+    }
+} */
+:root {
+    --primary: #0056B3;
+    --primary-hover: #0056B3;
+    --bg: #F4F7FD;
+    --card-bg: #FFFFFF;
+    --text-main: #2D3748;
+    --text-sub: #718096;
+    --border: #E2E8F0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bill-mgr-wrapper {
+    max-width: 920px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bill-mgr-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 25px 0 15px;
+    color: #1A202C;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bill-mgr-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid #EDF2F7;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.bill-mgr-grid-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.bill-mgr-entry-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    align-items: end;
+    background: #F8FAFC;
+    padding: 15px;
+    border-radius: var(--radius);
+}
+
+.bill-mgr-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.bill-mgr-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-sub);
+    text-transform: uppercase;
+}
+
+.bill-mgr-input,
+.bill-mgr-select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.bill-mgr-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+.bill-mgr-btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.bill-mgr-btn:active {
+    transform: scale(0.95);
+}
+
+.bill-mgr-btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.bill-mgr-btn-view {
+    background: #EBF8FF;
+    color: var(--primary);
+    cursor: pointer;
+    display: inline-flex;
+}
+
+.bill-mgr-save-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+}
+
+.bill-mgr-save-btn {
+    background: var(--primary);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 13px;
+}
+
+.bill-mgr-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.bill-mgr-history-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.bill-mgr-table-wrapper::-webkit-scrollbar,
+.bill-mgr-history-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.bill-mgr-table-wrapper,
+.bill-mgr-history-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.bill-mgr-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.bill-mgr-th {
+    position: sticky;
+    top: 0;
+    background: var(--card-bg);
+    z-index: 1;
+    font-size: 10px;
+    color: var(--text-sub);
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+}
+
+.bill-mgr-td {
+    padding: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F7FAFC;
+    color: var(--text-main);
+    word-break: break-word;
+}
+
+.bill-mgr-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0 15px;
+}
+
+@media (max-width: 600px) {
+    .bill-mgr-grid-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE CARD VIEW FIX
+   ========================================== */
+@media (max-width: 768px) {
+    .bill-mgr-wrapper {
+        padding: 0.5rem !important;
+    }
+
+    .bill-mgr-card {
+        padding: 0.75rem !important;
+        margin-bottom: 1rem !important;
+        box-sizing: border-box !important;
+    }
+
+    .bill-mgr-history-scroll {
+        max-height: none;
+        overflow-x: visible;
+    }
+
+    /* Convert tables into cards on mobile */
+    .bill-mgr-table,
+    .bill-mgr-table thead,
+    .bill-mgr-table tbody,
+    .bill-mgr-table th,
+    .bill-mgr-table td,
+    .bill-mgr-table tr {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
         box-sizing: border-box !important;
     }
 
@@ -216,11 +506,11 @@
         left: -9999px !important;
     }
 
-    /* Clean Card Row Style */
+    /* Clean Card Row Styling */
     .bill-mgr-table tr {
         background: #ffffff !important;
         border: 1px solid var(--border) !important;
-        border-radius: 12px !important;
+        border-radius: var(--radius) !important;
         margin-bottom: 0.85rem !important;
         padding: 0.75rem !important;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
@@ -243,11 +533,14 @@
         box-sizing: border-box !important;
     }
 
-    /* Left side labels (CUSTOMER, DATE, etc.) */
+    /* Automatically extract labels based on column position */
+    .bill-mgr-table td:nth-child(1)::before { content: "Supplier / Product:"; }
+    .bill-mgr-table td:nth-child(2)::before { content: "Bill No / Qty:"; }
+    .bill-mgr-table td:nth-child(3)::before { content: "Items / Conv. F:"; }
+    .bill-mgr-table td:nth-child(4)::before { content: "Actions / Price:"; }
+    .bill-mgr-table td:nth-child(5)::before { content: "Amount:"; }
+
     .bill-mgr-table td::before {
-        content: attr(data-label);
-        position: static !important;
-        transform: none !important;
         font-weight: 700;
         color: var(--text-sub);
         text-transform: uppercase;
@@ -256,13 +549,13 @@
         text-align: left;
     }
 
-    /* Actions whatsapp button right side neat-ah align aagum */
+    /* View button formatting */
     .bill-mgr-table td .bill-mgr-btn-view {
         display: inline-flex !important;
         margin-left: auto;
     }
 
-    /* Empty state "No bills found" styling */
+    /* Full-width alignment for empty rows */
     .bill-mgr-table td[colspan] {
         padding: 1rem !important;
         text-align: center !important;
