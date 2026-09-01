@@ -410,9 +410,9 @@ export default function Header() {
 
                             <Dropdown.Divider />
 
-                            {user?.role === 'admin' && <Dropdown.Item as={Link} onClick={() => { navigate('/admin') }} className='text-dark' to="/admin" style={{ fontWeight: 'bold', paddingRight: "7px" }} > <i class="fa-solid fa-user-tie"></i> admin</Dropdown.Item>}
+                            {user?.role === 'admin' && <Dropdown.Item as={Link} onClick={() => { navigate('/admin') }} className='text-dark' to="/admin" style={{ fontWeight: 'bold' }} > <i class="fa-solid fa-user-tie" style={{ paddingRight: "7px" }}></i> admin</Dropdown.Item>}
 
-                            <Dropdown.Item as={Link} onClick={() => { navigate('/myprofile') }} className='text-dark' to="/myprofile" style={{ fontWeight: 'bold', paddingRight: "7px" }} > <i class="fa-solid fa-address-card"></i> Profile</Dropdown.Item>
+                            <Dropdown.Item as={Link} onClick={() => { navigate('/myprofile') }} className='text-dark' to="/myprofile" style={{ fontWeight: 'bold' }} > <i class="fa-solid fa-address-card" style={{ paddingRight: "7px" }}></i> Profile</Dropdown.Item>
 
 
 
@@ -426,7 +426,7 @@ export default function Header() {
 
                             >
 
-                                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                <i class="fa-solid fa-right-from-bracket" style={{ paddingRight: "7px" }}></i> Logout
 
                             </Dropdown.Item>
 
