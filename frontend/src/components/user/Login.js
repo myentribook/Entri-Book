@@ -69,7 +69,7 @@ export default function Login() {
                         {loading ? "Logging in..." : "Login"}
                     </button>
                     <Link to='/register' style={{ textDecoration: "none", padding:"15px" , fontWeight:"bold" }} className="register-link">New User ?</Link>
-                    <Link to='/password/forgot' style={{ textDecoration: "none" , color: "#DC2626" }} className="forgot-password">forgot password</Link>
+                    <Link to='/password/forgot' style={{ textDecoration: "none" , color: "#DC2626" , fontWeight:"bold" }} className="forgot-password">forgot password</Link>
                 </form>
             </div>
         </Fragment>
