@@ -69,7 +69,7 @@ cloudinary.config({
 
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
-    const { name, email, password, city, phone } = req.body;
+    const { name, email, password, city, phone , gstin } = req.body;
 
     // 1. Check if email already exists
     const userExists = await userModel.findOne({ email });
@@ -112,7 +112,8 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         password,
         avatar: avatarUrl, // URL string is saved to MongoDB
         city,
-        phone
+        phone,
+        gstin
     });
 
     // 4. Send Response

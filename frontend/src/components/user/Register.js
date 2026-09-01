@@ -250,7 +250,7 @@
 //     const [avatar, setAvatar] = useState("");
 //     const [avatarPreview, setAvatarPreview] = useState("/images/default_avatar.jpg");
 //     const navigate = useNavigate()
-    
+
 //     // isAuthenticated-க்கு பதிலாக isRegistered-ஐauthState-ல் இருந்து destructure செய்கிறோம்
 //     const { loading, error, isRegistered } = useSelector(state => state.authState);
 //     const dispatch = useDispatch();
@@ -365,12 +365,12 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [userData, setUserData] = useState({
-        name: "", email: "", password: "", city: "", phone: ""
+        name: "", email: "", password: "", city: "", phone: "", gstin: "" //--new
     });
     const [avatar, setAvatar] = useState("");
     const [avatarPreview, setAvatarPreview] = useState("/images/default_avatar.jpg");
     const navigate = useNavigate();
-    
+
     const { loading, error, isRegistered } = useSelector(state => state.authState);
     const dispatch = useDispatch();
 
@@ -398,6 +398,7 @@ export default function Register() {
         formData.append('city', userData.city);
         formData.append('phone', userData.phone);
         formData.append('avatar', avatar);
+        formData.append('gstin', userData.gstin)        //--new
 
         dispatch(register(formData));
     };
@@ -461,6 +462,24 @@ export default function Register() {
                         <div className="form-group">
                             <input name='phone' value={userData.phone} onChange={onChange} type="text" id="phone_field" className="form-control" placeholder="Phone number" />
                         </div>
+
+                    
+                            {/* new  */}
+
+
+                        <div className="form-group">
+                            <input
+                                name='gstin'
+                                value={userData.gstin}
+                                onChange={onChange}
+                                type="text"
+                                id="GSTIN_field"
+                                className="form-control"
+                                placeholder="GSTIN number"
+                            />
+                        </div>            
+
+
 
                         <button type="submit" className="submit-btn" disabled={loading}>
                             {loading ? "Registering..." : "Register"}

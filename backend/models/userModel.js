@@ -38,15 +38,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    gstin: {                              // ---new
+        type: String,
+        default: ""
+    },
+
     role: {
         type: String,
         default: 'user'
     },
-    isOnline: {                          /**new added */
+    isOnline: {
         type: Boolean,
         default: false
     },
-    lastSeen: {                          /**new added */
+    lastSeen: {
         type: Date,
         default: Date.now
     },
