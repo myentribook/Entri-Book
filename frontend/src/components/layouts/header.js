@@ -422,7 +422,7 @@ export default function Header() {
 
                                 className='text-danger'
 
-                                style={{ fontWeight: 'bold', paddingRight: "7px" }}
+                                style={{ fontWeight: 'bold'}}
 
                             >
 
