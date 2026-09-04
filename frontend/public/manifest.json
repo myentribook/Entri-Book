@@ -3,17 +3,17 @@
   "name": "Entri Book",
   "icons": [
     {
-      "src": "/EntriBook.jpeg",
+      "src": "/EntriBooks.jpeg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/png"
     },
     {
-      "src": "/EntriBook.jpeg",
+      "src": "/EntriBooks.jpeg",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/EntriBook.jpeg",
+      "src": "/EntriBooks.jpeg",
       "type": "image/png",
       "sizes": "512x512"
     }
