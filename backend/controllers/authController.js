@@ -69,7 +69,15 @@ cloudinary.config({
 
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
-    const { name, email, password, city, phone , gstin } = req.body;
+    const { name, email, password, city, phone, gstin } = req.body;
+
+
+    console.log("GSTIN FROM REQUEST:", gstin);
+
+    console.log(
+        "GSTIN EXISTS IN ACTIVE SCHEMA:",
+        !!userModel.schema.path("gstin")
+    );
 
     // 1. Check if email already exists
     const userExists = await userModel.findOne({ email });
@@ -271,7 +279,7 @@ exports.changePassword = catchAsyncError(async (req, res, next) => {
 
     // 4. Verify old password
     const isMatch = await user.isValidPassword(oldPassword);
-    
+
     if (!isMatch) {
         return next(new ErrorHandler('Old password is incorrect', 401));
     }
@@ -349,9 +357,9 @@ exports.changePassword = catchAsyncError(async (req, res, next) => {
 
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
     // 1. Prepare base user data from body
-    let newUserData = { 
-        name: req.body.name, 
-        email: req.body.email 
+    let newUserData = {
+        name: req.body.name,
+        email: req.body.email
     };
 
     // 2. Handle Avatar upload if it exists
@@ -381,7 +389,7 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
 
     // 3. Update the user using the ID from the authenticated session
     const user = await userModel.findByIdAndUpdate(req.user.id, newUserData, {
-        returnDocument: 'after', 
+        returnDocument: 'after',
         runValidators: true
     });
 
@@ -389,10 +397,10 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
     }
 
-    res.status(200).json({ 
-        success: true, 
-        message: "Update profile successfully!", 
-        user 
+    res.status(200).json({
+        success: true,
+        message: "Update profile successfully!",
+        user
     });
 });
 

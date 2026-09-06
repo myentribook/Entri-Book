@@ -61,6 +61,18 @@ export default function Profile() {
                         </div>
                     </div>
 
+                    <div className="profile-page-input-box" style={{ gridColumn: 'span 2' }}>
+                        <label>GSTIN NUMBER</label>
+                        <div className="profile-page-input-field-wrapper">
+                            <i className="fa-regular fa-envelope"></i>
+                            <input
+                                type="email"
+                                defaultValue={user.gstin || ''}
+                                disabled
+                            />
+                        </div>
+                    </div>
+
 
                     <div className="profile-page-input-box" style={{ gridColumn: 'span 2' }}>
                         <label>JOINED</label>
