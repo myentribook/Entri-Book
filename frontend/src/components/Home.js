@@ -117,7 +117,7 @@ export default function Home() {
           </div>
 
           <div className="section-wrapper">
-            <h2 className="upi-title"><i class="fa-solid fa-chart-column"></i> Business Overview</h2>
+            <h2 className="upi-title"><i class="fa-solid fa-chart-column" style={{color:'#0056b3', marginRight:"10px" , fontWeight:'bold'}}></i> Business Overview</h2>
             <div className="dashboard-grid">
               {dashboardData.map((card, index) => (
                 <div key={index} className="card-wrapper">
