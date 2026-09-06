@@ -318,6 +318,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../styles/header.css';
 
+import headingLogo from '../public/headingLogo.png'
 
 
 export default function Header() {
@@ -358,7 +359,7 @@ export default function Header() {
 
                 <div className="logo">
 
-                    <i className="fa-solid fa-cloud"></i> Entri Book
+                    <img src="/headingLogo.png" alt="Entri Book Logo" /> Entri Book
 
                 </div>
 
