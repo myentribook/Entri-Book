@@ -318,7 +318,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../styles/header.css';
 
-import headingLogo from '../public/headingLogo.png'
+// import headingLogo from '../../public/headingLogo.png'
 
 
 export default function Header() {
