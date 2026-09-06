@@ -133,7 +133,7 @@ export default function Billing() {
           </div>
           <div className="bill-mgr-section-header">
             <h2 className="bill-mgr-title"><i className="fa-solid fa-history" style={{ color: "var(--primary)" }}></i>Bill History</h2>
-            <input className="bill-mgr-input" type="text" placeholder="Search..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "180px", padding: "0.5rem 1rem" }} />
+            <input className="bill-mgr-input" type="text" placeholder="Search . . ." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "180px", padding: "0.5rem 1rem" }} />
           </div>
           <div className="bill-mgr-card">
             <div className="bill-mgr-table-wrapper">
