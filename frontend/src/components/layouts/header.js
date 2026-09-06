@@ -359,7 +359,7 @@ export default function Header() {
 
                 <div className="logo">
 
-                    <img src="/headingLogo.png" alt="Entri Book Logo" /> Entri Book
+                    <img src="/headingLogo.png" alt="Entri Book Logo" className="heading-logo" />  <span>Entri Book</span>
 
                 </div>
 
@@ -423,7 +423,7 @@ export default function Header() {
 
                                 className='text-danger'
 
-                                style={{ fontWeight: 'bold'}}
+                                style={{ fontWeight: 'bold' }}
 
                             >
 
