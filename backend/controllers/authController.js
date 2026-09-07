@@ -356,11 +356,15 @@ exports.changePassword = catchAsyncError(async (req, res, next) => {
 // });
 
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
+
+    console.log("UPDATE PROFILE REQ.BODY:", req.body);
+    console.log("GSTIN VALUE:", req.body.gstin);
+
     // 1. Prepare base user data from body
     let newUserData = {
         name: req.body.name,
         email: req.body.email,
-        gstin: req.body.gstin
+        gstin: req.body.gstin !== undefined ? req.body.gstin : ""
     };
 
     // 2. Handle Avatar upload if it exists
