@@ -102,7 +102,7 @@ export default function Product() {
                                                     {p.createdAt ? p.createdAt.split('T')[0] : "N/A"}
                                                 </td> */}
                                                 <td><div className="prod-mgr-info-card">{p.name}</div></td>
-                                                <td>{p.hsnCode || 'N/A'}</td>
+                                                <td>{p.hsnCode || '-'}</td>
                                                 <td>{p.stock || 0}</td>
                                                 <td>{p.conversionFactor || 0}</td>
 
@@ -125,8 +125,8 @@ export default function Product() {
                     <div className="prod-mgr-modal-overlay">
                         <div className="prod-mgr-modal">
                             <h3 className='pro-input-pop'>Update Product</h3>
-                            <input className='pro-input-pop' value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-                            <input className='pro-input-pop' value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
+                            <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} /> 
+                            <input  value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
                             <div className="prod-mgr-modal-btns">
                                 <button className="prod-mgr-btn-cancel" onClick={() => setShowEdit(false)}>Cancel</button>
                                 <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>
