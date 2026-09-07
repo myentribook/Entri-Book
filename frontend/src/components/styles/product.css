@@ -51,6 +51,7 @@
 .prod-mgr-btn-confirm { background: var(--prod-mgr-primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; flex: 1; font-weight: 600; }
 .prod-mgr-btn-danger { background: var(--prod-mgr-danger); color: white; }
 
+.pro-input-pop{padding: 20px;}
 
 /* --- Responsive Breakpoints --- */
 

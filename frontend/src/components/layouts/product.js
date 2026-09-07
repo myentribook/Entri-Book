@@ -124,9 +124,9 @@ export default function Product() {
                 {showEdit && (
                     <div className="prod-mgr-modal-overlay">
                         <div className="prod-mgr-modal">
-                            <h3>Update Product</h3>
-                            <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-                            <input style={{ padding: "20px" }} value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
+                            <h3 className='pro-input-pop'>Update Product</h3>
+                            <input className='pro-input-pop' value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+                            <input className='pro-input-pop' value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
                             <div className="prod-mgr-modal-btns">
                                 <button className="prod-mgr-btn-cancel" onClick={() => setShowEdit(false)}>Cancel</button>
                                 <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>
