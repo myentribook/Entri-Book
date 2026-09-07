@@ -121,7 +121,7 @@ export default function Product() {
                     )}
                 </div>
 
-                {showEdit && (
+                {/* {showEdit && (
                     <div className="prod-mgr-modal-overlay">
                         <div className="prod-mgr-modal">
                             <h3 className='pro-input-pop'>Update Product</h3>
@@ -133,7 +133,25 @@ export default function Product() {
                             </div>
                         </div>
                     </div>
+                )} */}
+
+                {showEdit && (
+                    <div className="prod-mgr-modal-overlay">
+                        <div className="prod-mgr-modal">
+                            <h3 className='pro-input-pop'>Update Product</h3>
+                            <div className="prod-mgr-modal-inputs">
+                                <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+                                <input value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
+                            </div>
+                            <div className="prod-mgr-modal-btns">
+                                <button className="prod-mgr-btn-cancel" onClick={() => setShowEdit(false)}>Cancel</button>
+                                <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>
+                            </div>
+                        </div>
+                    </div>
                 )}
+
+
                 {showDelete && (
                     <div className="prod-mgr-modal-overlay">
                         <div className="prod-mgr-modal">
