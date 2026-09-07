@@ -52,8 +52,7 @@
 .prod-mgr-btn-danger { background: var(--prod-mgr-danger); color: white; }
 
 .pro-input-pop{padding: 20px; font-weight: bold;}
-
-.prod-mgr-modal input {padding-bottom: 20px;}
+.prod-mgr-modal-overlay input {padding-bottom: 20px;}
 
 /* --- Responsive Breakpoints --- */
 
