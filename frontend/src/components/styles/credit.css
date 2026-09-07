@@ -7,7 +7,7 @@ body {
 .credit-page-container {
     width: 100%;
     max-width: 890px;
-    margin-top: 30px;
+    margin-top: 25px;
 
 }
 
@@ -18,7 +18,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 .credit-title-heading {
