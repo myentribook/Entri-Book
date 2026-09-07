@@ -535,11 +535,11 @@
     }
 
     /* Automatically extract labels based on column position */
-    .bill-mgr-table td:nth-child(1)::before { content: "Supplier / Product:"; }
-    .bill-mgr-table td:nth-child(2)::before { content: "Bill No / Qty:"; }
-    .bill-mgr-table td:nth-child(3)::before { content: "Items / Conv. F:"; }
-    .bill-mgr-table td:nth-child(4)::before { content: "Actions / Price:"; }
-    .bill-mgr-table td:nth-child(5)::before { content: "Amount:"; }
+    .bill-mgr-table td:nth-child(1)::before { content: "Product"; }
+    .bill-mgr-table td:nth-child(2)::before { content: "Type"; }
+    .bill-mgr-table td:nth-child(3)::before { content: "Quantity"; }
+    .bill-mgr-table td:nth-child(4)::before { content: "Price"; }
+    .bill-mgr-table td:nth-child(5)::before { content: "Total"; }
 
     .bill-mgr-table td::before {
         font-weight: 700;
