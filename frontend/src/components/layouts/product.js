@@ -34,13 +34,13 @@ export default function Product() {
 
     const handleAdd = () => {
         if (!newProductName.trim()) return;
-        dispatch(createProduct({ name: newProductName , hsnCode : newHsnCode }));
+        dispatch(createProduct({ name: newProductName, hsnCode: newHsnCode }));
         setNewProductName('');
         setNewHsnCode('');
     };
 
     const handleUpdate = () => {
-        dispatch(updateProduct(editData.id, { name: editData.name , hsnCode : editData.hsnCode}));
+        dispatch(updateProduct(editData.id, { name: editData.name, hsnCode: editData.hsnCode }));
         setShowEdit(false);
     };
 
@@ -108,7 +108,7 @@ export default function Product() {
 
                                                 <td>
                                                     <div className="prod-mgr-action-btns">
-                                                        <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name , hsnCode : p.hsnCode||'' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
+                                                        <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name, hsnCode: p.hsnCode || '' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
 
                                                     </div>
                                                 </td>
@@ -126,7 +126,7 @@ export default function Product() {
                         <div className="prod-mgr-modal">
                             <h3>Update Product</h3>
                             <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-                            <input value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
+                            <input style={{ padding: "20px" }} value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
                             <div className="prod-mgr-modal-btns">
                                 <button className="prod-mgr-btn-cancel" onClick={() => setShowEdit(false)}>Cancel</button>
                                 <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>
