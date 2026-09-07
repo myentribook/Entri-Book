@@ -177,7 +177,7 @@ export default function Purchase() {
                     </div>
 
                     <div className="section-header">
-                        <h2 style={{ paddingBottom: '30px', fontWeight: "bolder" }}><i className="fa-solid fa-clock-rotate-left" style={{ color: '#0056B3' }}></i> Purchase History</h2>
+                        <h2 style={{ paddingBottom: '30px', fontWeight: "bolder" }}><i className="fa-solid fa-clock-rotate-left" style={{ color: '#0056B3' }}></i> History</h2>
                         <input type="text" placeholder="Search purchase..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ padding: '10px 15px', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '13px', width: '200px' }} />
                     </div>
 

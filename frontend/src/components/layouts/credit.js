@@ -51,7 +51,7 @@ export default function Credit() {
                         <input 
                             type="text" 
                             className="credit-search-bar" 
-                            placeholder="Search..." 
+                            placeholder="Search Credits ..." 
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />

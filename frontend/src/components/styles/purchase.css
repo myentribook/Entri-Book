@@ -15,8 +15,8 @@ body {
 
 .wrapper {
     max-width: 920px;
-    margin: 40px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding-top: 20px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -275,7 +275,7 @@ td {
     .table-wrapper td {
         border: none !important;
         position: relative !important;
-        padding: 8px 0 !important; 
+        padding: 8px 0 !important;
         text-align: right !important;
         font-size: 0.9rem !important;
         word-break: break-word !important;
@@ -288,11 +288,25 @@ td {
     }
 
     /* Automatically extract labels based on index position without modifying JSX */
-    .table-wrapper td:nth-child(1)::before { content: "Supplier / Product:"; }
-    .table-wrapper td:nth-child(2)::before { content: "Bill No / Qty:"; }
-    .table-wrapper td:nth-child(3)::before { content: "Items / Conv. F:"; }
-    .table-wrapper td:nth-child(4)::before { content: "Actions / Price:"; }
-    .table-wrapper td:nth-child(5)::before { content: "Amount:"; }
+    .table-wrapper td:nth-child(1)::before {
+        content: "Supplier / Product:";
+    }
+
+    .table-wrapper td:nth-child(2)::before {
+        content: "Bill No / Qty:";
+    }
+
+    .table-wrapper td:nth-child(3)::before {
+        content: "Items / Conv. F:";
+    }
+
+    .table-wrapper td:nth-child(4)::before {
+        content: "Actions / Price:";
+    }
+
+    .table-wrapper td:nth-child(5)::before {
+        content: "Amount:";
+    }
 
     .table-wrapper td::before {
         font-weight: 700;
@@ -315,7 +329,7 @@ td {
         text-align: center !important;
         display: block !important;
     }
-    
+
     .table-wrapper td[colspan]::before {
         content: none !important;
     }
