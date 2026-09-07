@@ -46,7 +46,7 @@ export default function Credit() {
                 <div className="credit-page-container">
                     <div className="credit-header-row">
                         <h2 className="credit-title-heading">
-                            <i className="fa-solid fa-book" style={{ color: '#0056B3' }}></i> Credit Overview
+                            <i className="fa-solid fa-book" style={{ color: '#0056B3' }}></i> Credits
                         </h2>
                         <input 
                             type="text" 
