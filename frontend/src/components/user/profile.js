@@ -64,7 +64,7 @@ export default function Profile() {
                     <div className="profile-page-input-box" style={{ gridColumn: 'span 2' }}>
                         <label>GSTIN NUMBER</label>
                         <div className="profile-page-input-field-wrapper">
-                            <i className="fa-regular fa-envelope"></i>
+                            <i class="fa-solid fa-percent"></i>
                             <input
                                 type="email"
                                 defaultValue={user.gstin || ''}

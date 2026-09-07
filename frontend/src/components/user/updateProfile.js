@@ -10,8 +10,10 @@ export default function UpdateProfile() {
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [gstin, setGstin] = useState("");
     const [avatar, setAvatar] = useState("");
     const [avatarPreview, setAvatarPreview] = useState("/images/default_avatar.jpg");
+
     const dispatch = useDispatch();
 
     // 1. Guard Clause: Prevents crash while user data is being fetched
@@ -19,6 +21,7 @@ export default function UpdateProfile() {
         if (user) {
             setName(user.name || "");
             setEmail(user.email || "");
+            setGstin(user.gstin || "");
             if (user.avatar) {
                 setAvatarPreview(user.avatar);
             }
@@ -37,7 +40,7 @@ export default function UpdateProfile() {
                 position: 'bottom-right'
             });
             dispatch(clearAuthError());
-            return 
+            return
         }
     }, [isUpdated, error, dispatch]);
 
@@ -59,6 +62,7 @@ export default function UpdateProfile() {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('email', email);
+        formData.append('gstin', gstin)
         if (avatar) {
             formData.append('avatar', avatar);
         }
@@ -121,6 +125,17 @@ export default function UpdateProfile() {
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 className="pc-input"
+                            />
+                        </div>
+
+                        <div className="pc-form-group">
+                            <label>GSTIN NUMBER</label>
+                            <input
+                                type="text"
+                                value={gstin}
+                                onChange={e => setGstin(e.target.value)}
+                                className="pc-input"
+                                // placeholder="Enter your GSTIN"
                             />
                         </div>
 

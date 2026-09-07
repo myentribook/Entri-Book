@@ -359,7 +359,8 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     // 1. Prepare base user data from body
     let newUserData = {
         name: req.body.name,
-        email: req.body.email
+        email: req.body.email,
+        gstin: req.body.gstin
     };
 
     // 2. Handle Avatar upload if it exists
