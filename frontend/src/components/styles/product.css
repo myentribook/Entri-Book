@@ -263,11 +263,11 @@
     }
 
     .prod-mgr-table-view th {
-        padding: 35px;
+        padding-right: 35px;
     }
 
     .prod-mgr-table-view td {
-        padding: 35px;
+        padding-right: 35px;
     }
 }
 
