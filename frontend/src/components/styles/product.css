@@ -133,6 +133,7 @@
 .prod-mgr-table-view td {
     padding: 16px;
     border-top: 1px solid var(--prod-mgr-border);
+    white-space: nowrap;
 }
 
 /* Card-like inner table cell styles */
@@ -141,6 +142,7 @@
     border: 1px solid var(--prod-mgr-border);
     border-radius: 12px;
     padding: 10px;
+    white-space: nowrap;
 }
 
 .prod-mgr-action-btns {
