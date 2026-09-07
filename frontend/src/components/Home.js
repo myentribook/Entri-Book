@@ -30,7 +30,7 @@ export default function Home() {
       bg: "#ebe4ff",
       title: "Sales",
       icon: "fa-cash-register",
-      text: `Today Sales: ₹${report?.todaySales ?? 0}\nMonthly Sales: ₹${report?.monthSales ?? 0}`
+      text: `Today Sales ₹${report?.todaySales ?? 0}\nMonthly Sales ₹${report?.monthSales ?? 0}`
     },
     {
       bg: "#e0f2fe",
