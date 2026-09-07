@@ -30,43 +30,43 @@ export default function Home() {
       bg: "#ebe4ff",
       title: "Sales",
       icon: "fa-cash-register",
-      text: `Today's Sales: ₹${report?.todaySales ?? 0}\nMonthly Sales: ₹${report?.monthSales ?? 0}`
+      text: `Today Sales: ₹${report?.todaySales ?? 0}\nMonthly Sales: ₹${report?.monthSales ?? 0}`
     },
     {
       bg: "#e0f2fe",
       title: "Purchase",
       icon: "fa-cart-flatbed",
-      text: `Total inventory purchase value is ₹${report?.totalPurchase ?? 0}.`
+      text: `Total purchase value ₹${report?.totalPurchase ?? 0}`
     },
     {
       bg: "#dcfce7",
       title: "Inventory",
       icon: "fa-box",
-      text: `Manage your stock. Current products: ${report?.totalProducts ?? 0}.`
+      text: `Active products ${report?.totalProducts ?? 0}`
     },
     {
       bg: "#ffecd9",
       title: "Finance",
       icon: "fa-book-open",
-      text: `Total monthly dues: ₹${report?.monthDueAmount ?? 0}.`
+      text: `Total monthly Dues ₹${report?.monthDueAmount ?? 0}`
     },
     {
       bg: "#FCE7F3",
       title: "previous month",
       icon: "fa-calendar-days",
-      text: `Revenue generated last month: ${report?.previousMonthSales ?? 0}.`
+      text: `Revenue generated last month ${report?.previousMonthSales ?? 0}`
     },
     {
       bg: "#FEF3C7",
       title: "Growth %",
       icon: "fa-chart-line",
-      text: `Growth over previous month:: ${report?.growthPercentage ?? 0}.`
+      text: `Growth over previous month ${report?.growthPercentage ?? 0}`
     },
     {
       bg: "#CFFAFE",
       title: "Today Bill Count",
       icon: "fa-file-invoice-dollar",
-      text: `Bills created today: ${report?.todayBillCount ?? 0}.`
+      text: `Bills created today ${report?.todayBillCount ?? 0}`
     },
   ];
 
