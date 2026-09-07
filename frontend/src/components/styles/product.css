@@ -50,6 +50,7 @@
 .prod-mgr-btn-cancel { background: var(--prod-mgr-border); border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; flex: 1; color: var(--prod-mgr-text-main); font-weight: 600; }
 .prod-mgr-btn-confirm { background: var(--prod-mgr-primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; flex: 1; font-weight: 600; }
 .prod-mgr-btn-danger { background: var(--prod-mgr-danger); color: white; }
+.prod-mgr-modal input {padding: 15px;}
 
 /* --- Responsive Breakpoints --- */
 
