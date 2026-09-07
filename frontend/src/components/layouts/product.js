@@ -15,7 +15,8 @@ export default function Product() {
 
     const [keyword, setKeyword] = useState('');
     const [newProductName, setNewProductName] = useState('');
-    const [editData, setEditData] = useState({ id: '', name: '' });
+    const [newHsnCode, setNewHsnCode] = useState('');
+    const [editData, setEditData] = useState({ id: '', name: '', hsnCode: '' });
     const [deleteId, setDeleteId] = useState(null);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -33,12 +34,13 @@ export default function Product() {
 
     const handleAdd = () => {
         if (!newProductName.trim()) return;
-        dispatch(createProduct({ name: newProductName }));
+        dispatch(createProduct({ name: newProductName , hsnCode : newHsnCode }));
         setNewProductName('');
+        setNewHsnCode('');
     };
 
     const handleUpdate = () => {
-        dispatch(updateProduct(editData.id, { name: editData.name }));
+        dispatch(updateProduct(editData.id, { name: editData.name , hsnCode : editData.hsnCode}));
         setShowEdit(false);
     };
 
@@ -66,12 +68,13 @@ export default function Product() {
                             <Search keyword={keyword} setKeyword={setKeyword} />
                             <div className="prod-mgr-add-container">
                                 <input value={newProductName} onChange={(e) => setNewProductName(e.target.value)} placeholder="New product name..." />
+                                <input value={newHsnCode} onChange={(e) => setNewHsnCode(e.target.value)} placeholder="HSN Code..." />
                                 <button className="prod-mgr-btn-add" onClick={handleAdd}>Save</button>
                             </div>
                         </div>
                     </div>
 
-                     <div className="prod-mgr-header-row">
+                    <div className="prod-mgr-header-row">
                         <div className="prod-mgr-header">
                             <i class="fa-solid fa-scroll" style={{ color: "#0056B3" }}></i> Stock List
                         </div>
@@ -86,6 +89,7 @@ export default function Product() {
                                         <tr>
                                             {/* <th>Date</th> */}
                                             <th>Product</th>
+                                            <th>HSN Code</th>
                                             <th>Stock</th>
                                             <th>Conv. Factor</th>
                                             <th>Actions</th>
@@ -98,12 +102,13 @@ export default function Product() {
                                                     {p.createdAt ? p.createdAt.split('T')[0] : "N/A"}
                                                 </td> */}
                                                 <td><div className="prod-mgr-info-card">{p.name}</div></td>
+                                                <td>{p.hsnCode || 'N/A'}</td>
                                                 <td>{p.stock || 0}</td>
                                                 <td>{p.conversionFactor || 0}</td>
 
                                                 <td>
                                                     <div className="prod-mgr-action-btns">
-                                                        <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
+                                                        <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name , hsnCode : p.hsnCode||'' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
 
                                                     </div>
                                                 </td>
@@ -121,6 +126,7 @@ export default function Product() {
                         <div className="prod-mgr-modal">
                             <h3>Update Product</h3>
                             <input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+                            <input value={editData.hsnCode} onChange={(e) => setEditData({ ...editData, hsnCode: e.target.value })} />
                             <div className="prod-mgr-modal-btns">
                                 <button className="prod-mgr-btn-cancel" onClick={() => setShowEdit(false)}>Cancel</button>
                                 <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>

@@ -7,6 +7,12 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
 
+    hsnCode: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+
     // 1 Bag = ? Kg
     conversionFactor: {
         type: Number
