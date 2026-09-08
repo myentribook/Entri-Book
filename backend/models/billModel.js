@@ -10,7 +10,7 @@ const billItemSchema = new mongoose.Schema({
 
     saleType: {
         type: String,
-        enum: ["bag", "kg"],
+        enum: ["Bag", "Kg", "Litre" , 'Milliliter','Gram'],
         required: true
     },
 
@@ -24,6 +24,10 @@ const billItemSchema = new mongoose.Schema({
         required: true
     },
 
+    hsnCode: {
+        type: String
+    },
+
     total: {
         type: Number,
         required: true
@@ -33,6 +37,12 @@ const billItemSchema = new mongoose.Schema({
 
 const billSchema = new mongoose.Schema({
 
+    invoiceNo: {
+        type: String,
+        required: true,
+        unique: true
+    },
+
     customerName: String,
 
     items: [billItemSchema],
@@ -40,6 +50,24 @@ const billSchema = new mongoose.Schema({
     customerMobile: {
         type: String,
         required: true
+    },
+
+    subTotal: {
+        type: Number,
+        default: 0
+    },
+    cgst: {
+        type: Number,
+        default: 0
+    },
+    sgst: {
+        type: Number,
+        default: 0
+    },
+
+    totalTax: {
+        type: Number,
+        default: 0
     },
 
     grandTotal: {
@@ -75,11 +103,11 @@ const billSchema = new mongoose.Schema({
         enum: ["PAID", "PARTIAL", "PENDING"],
         default: "PAID"
     },
-    deleteAfter: {
-        type: Date,
-        default: null,
-        expires: 0
-    }
+    paymentHistory: [
+        {
+            amount: Number, date: { type: Date, default: Date.now }
+        }
+    ]
 
 }, {
     timestamps: true
