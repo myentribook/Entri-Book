@@ -59,7 +59,7 @@ body {
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 24px;
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 /* ---------------- TABLE ---------------- */
@@ -67,7 +67,7 @@ body {
 .credit-info-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 820px;
+    min-width: 100%;
     table-layout: fixed;
     /* அனைத்து காலம்களும் சமமான இடத்தை பிடிக்கும் */
 }
