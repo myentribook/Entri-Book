@@ -230,7 +230,6 @@ export default function Billing() {
   const [paymentType, setPaymentType] = useState('CASH');
   const [cgstPercent, setCgstPercent] = useState(0); // Added for controller compatibility
   const [sgstPercent, setSgstPercent] = useState(0); // Added for controller compatibility
-  const [paidAmount, setPaidAmount] = useState(''); // Added for partial/credit payments
   const [selectedProductId, setSelectedProductId] = useState('');
   const [quantity, setQuantity] = useState('');
   const [saleType, setSaleType] = useState('bag');
@@ -266,7 +265,6 @@ export default function Billing() {
       customerName,
       customerMobile: `91${cleanMobile}`,
       paymentType,
-      paidAmount: paymentType === "CASH" ? 0 : Number(paidAmount || 0),
       cgstPercent: Number(cgstPercent || 0),
       sgstPercent: Number(sgstPercent || 0),
       items: tempItems.map(item => ({ product: item.product, saleType: item.saleType, quantity: item.quantity, price: item.price }))
@@ -275,7 +273,6 @@ export default function Billing() {
     setTempItems([]);
     setCustomerName('');
     setMobileNumber('');
-    setPaidAmount('');
   };
 
   // Handler to open modal with specific bill
@@ -324,9 +321,6 @@ export default function Billing() {
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Payment</label><select className="bill-mgr-input" value={paymentType} onChange={(e) => setPaymentType(e.target.value)}><option value="CASH">Cash</option><option value="CREDIT">Credit</option></select></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">CGST %</label><input className="bill-mgr-input" type="number" value={cgstPercent} onChange={(e) => setCgstPercent(e.target.value)} placeholder="0" /></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">SGST %</label><input className="bill-mgr-input" type="number" value={sgstPercent} onChange={(e) => setSgstPercent(e.target.value)} placeholder="0" /></div>
-              {paymentType === "CREDIT" && (
-                <div className="bill-mgr-input-group"><label className="bill-mgr-label">Paid Amount</label><input className="bill-mgr-input" type="number" value={paidAmount} onChange={(e) => setPaidAmount(e.target.value)} placeholder="0.00" /></div>
-              )}
             </div>
             <div className="bill-mgr-entry-box">
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Product</label><select className="bill-mgr-input" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}><option value="">Select Item</option>{products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}</select></div>

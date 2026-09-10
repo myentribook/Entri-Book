@@ -336,6 +336,118 @@ exports.getBill = catchAsyncError(async (req, res, next) => {
 // });
 
 
+// exports.createBill = catchAsyncError(async (req, res, next) => {
+//     const {
+//         customerName,
+//         customerMobile,
+//         items,
+//         paymentType = "CASH",
+//         paidAmount = 0,
+//         cgstPercent = 0, // Passed from frontend (e.g., 2.5)
+//         sgstPercent = 0  // Passed from frontend (e.g., 2.5)
+//     } = req.body;
+
+//     if (!["CASH", "CREDIT"].includes(paymentType)) return next(new ErrorHandler("Invalid payment type", 400));
+//     if (!customerName?.trim()) return next(new ErrorHandler("Customer name is required", 400));
+//     if (!items?.length) return next(new ErrorHandler("Please add at least one product", 400));
+
+//     // Mobile number cleaning & validation (10 digits or 12 digits with 91 both allowed)
+//     const cleanMobile = String(customerMobile || "").replace(/\D/g, '');
+//     const mobileRegex = /^(91)?[6-9]\d{9}$/;
+
+//     if (!mobileRegex.test(cleanMobile)) {
+//         return next(new ErrorHandler("Invalid mobile number", 400));
+//     }
+
+//     const formattedMobile = cleanMobile.length === 10 ? `91${cleanMobile}` : cleanMobile;
+
+//     let subTotal = 0;
+//     const billItems = [];
+
+//     const allowedSaleTypes = ["bag", "kg"];
+
+//     for (const item of items) {
+//         const quantity = Number(item.quantity);
+//         const price = Number(item.price);
+
+//         if (quantity <= 0 || price <= 0) throw new ErrorHandler("Invalid quantity or price", 400);
+
+//         // Normalize saleType to lowercase for validation and checking
+//         const saleTypeLower = String(item.saleType || "").toLowerCase();
+//         if (!allowedSaleTypes.includes(saleTypeLower)) throw new ErrorHandler("Invalid sale type", 400);
+
+//         const product = await productModel.findOne({ _id: item.product, user: req.user.id });
+//         if (!product) throw new ErrorHandler("Product not found", 404);
+
+//         // Stock reduction logic restricted to "bag" and "kg" only
+//         let stockToReduce = saleTypeLower === "bag" ? quantity : quantity / Number(product.conversionFactor || 1);
+
+//         if (product.stock < stockToReduce) {
+//             throw new ErrorHandler(`${product.name} has insufficient stock`, 400);
+//         }
+
+//         product.stock = Number((product.stock - stockToReduce).toFixed(4));
+//         await product.save();
+
+//         const itemTotal = quantity * price;
+//         subTotal += itemTotal;
+
+//         billItems.push({
+//             product: product._id,
+//             saleType: item.saleType,
+//             quantity,
+//             price,
+//             hsnCode: product.hsnCode || "", // Auto-fetched from product database
+//             total: Number(itemTotal.toFixed(2))
+//         });
+//     }
+
+//     subTotal = Number(subTotal.toFixed(2));
+
+//     // Tax Calculations based on Frontend Percentage input
+//     const cgst = Number((subTotal * (Number(cgstPercent) / 100)).toFixed(2));
+//     const sgst = Number((subTotal * (Number(sgstPercent) / 100)).toFixed(2));
+//     const totalTax = Number((cgst + sgst).toFixed(2));
+//     const grandTotal = Number((subTotal + totalTax).toFixed(2));
+
+//     const finalPaidAmount = paymentType === "CASH" ? grandTotal : Math.min(Number(paidAmount), grandTotal);
+//     const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
+
+//     // Fetch user details for GSTIN
+//     const currentUser = await userModel.findById(req.user.id);
+//     const gstin = currentUser?.gstin || "";
+
+//     // Invoice Number Generation (Starts with "INV" and unique per user)
+//     const count = await billModel.countDocuments({ user: req.user.id });
+//     const currentYear = new Date().getFullYear();
+//     const invoiceNo = `INV-${currentYear}-${String(count + 1).padStart(4, "0")}`;
+
+//     const bill = await billModel.create({
+//         invoiceNo,
+//         gstin,
+//         customerName,
+//         customerMobile: formattedMobile,
+//         items: billItems,
+//         subTotal,
+//         cgst,
+//         sgst,
+//         totalTax,
+//         grandTotal,
+//         paymentType,
+//         paidAmount: finalPaidAmount,
+//         balanceAmount,
+//         status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"),
+//         user: req.user.id,
+//         paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
+//     });
+
+//     res.status(201).json({
+//         success: true,
+//         message: "Invoice created successfully",
+//         bill
+//     });
+// });
+
 exports.createBill = catchAsyncError(async (req, res, next) => {
     const {
         customerName,
@@ -410,7 +522,8 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
     const totalTax = Number((cgst + sgst).toFixed(2));
     const grandTotal = Number((subTotal + totalTax).toFixed(2));
 
-    const finalPaidAmount = paymentType === "CASH" ? grandTotal : Math.min(Number(paidAmount), grandTotal);
+    // Modified: If paymentType is CREDIT, paidAmount is completely cleared (set to 0)
+    const finalPaidAmount = paymentType === "CASH" ? grandTotal : 0;
     const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
 
     // Fetch user details for GSTIN
@@ -436,7 +549,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         paymentType,
         paidAmount: finalPaidAmount,
         balanceAmount,
-        status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"),
+        status: balanceAmount <= 0 ? "PAID" : (finalPaidStatus > 0 ? "PARTIAL" : "PENDING"), // status will be "PENDING" for credit
         user: req.user.id,
         paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
     });
