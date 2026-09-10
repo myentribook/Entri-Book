@@ -454,16 +454,15 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         customerMobile,
         items,
         paymentType = "CASH",
-        paidAmount = 0,
-        cgstPercent = 0, // Passed from frontend (e.g., 2.5)
-        sgstPercent = 0  // Passed from frontend (e.g., 2.5)
+        cgstPercent = 0, // Frontend irunthu varum percentage
+        sgstPercent = 0  // Frontend irunthu varum percentage
     } = req.body;
 
     if (!["CASH", "CREDIT"].includes(paymentType)) return next(new ErrorHandler("Invalid payment type", 400));
     if (!customerName?.trim()) return next(new ErrorHandler("Customer name is required", 400));
     if (!items?.length) return next(new ErrorHandler("Please add at least one product", 400));
 
-    // Mobile number cleaning & validation (10 digits or 12 digits with 91 both allowed)
+    // Mobile number cleaning & validation
     const cleanMobile = String(customerMobile || "").replace(/\D/g, '');
     const mobileRegex = /^(91)?[6-9]\d{9}$/;
 
@@ -475,8 +474,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
     let subTotal = 0;
     const billItems = [];
-
-    const allowedSaleTypes = ["bag", "kg"];
+    const allowedSaleTypes = ["bag", "kg", "litre", "milliliter", "gram"];
 
     for (const item of items) {
         const quantity = Number(item.quantity);
@@ -484,14 +482,12 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
         if (quantity <= 0 || price <= 0) throw new ErrorHandler("Invalid quantity or price", 400);
 
-        // Normalize saleType to lowercase for validation and checking
         const saleTypeLower = String(item.saleType || "").toLowerCase();
         if (!allowedSaleTypes.includes(saleTypeLower)) throw new ErrorHandler("Invalid sale type", 400);
 
         const product = await productModel.findOne({ _id: item.product, user: req.user.id });
         if (!product) throw new ErrorHandler("Product not found", 404);
 
-        // Stock reduction logic restricted to "bag" and "kg" only
         let stockToReduce = saleTypeLower === "bag" ? quantity : quantity / Number(product.conversionFactor || 1);
 
         if (product.stock < stockToReduce) {
@@ -509,7 +505,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
             saleType: item.saleType,
             quantity,
             price,
-            hsnCode: product.hsnCode || "", // Auto-fetched from product database
+            hsnCode: product.hsnCode || "",
             total: Number(itemTotal.toFixed(2))
         });
     }
@@ -522,7 +518,6 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
     const totalTax = Number((cgst + sgst).toFixed(2));
     const grandTotal = Number((subTotal + totalTax).toFixed(2));
 
-    // Modified: If paymentType is CREDIT, paidAmount is completely cleared (set to 0)
     const finalPaidAmount = paymentType === "CASH" ? grandTotal : 0;
     const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
 
@@ -530,7 +525,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
     const currentUser = await userModel.findById(req.user.id);
     const gstin = currentUser?.gstin || "";
 
-    // Invoice Number Generation (Starts with "INV" and unique per user)
+    // Invoice Number Generation
     const count = await billModel.countDocuments({ user: req.user.id });
     const currentYear = new Date().getFullYear();
     const invoiceNo = `INV-${currentYear}-${String(count + 1).padStart(4, "0")}`;
@@ -549,7 +544,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         paymentType,
         paidAmount: finalPaidAmount,
         balanceAmount,
-        status: balanceAmount <= 0 ? "PAID" : (finalPaidStatus > 0 ? "PARTIAL" : "PENDING"), // status will be "PENDING" for credit
+        status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"), // FIXED typo (finalPaidStatus -> finalPaidAmount)
         user: req.user.id,
         paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
     });
