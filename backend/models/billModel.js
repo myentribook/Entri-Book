@@ -43,6 +43,10 @@ const billSchema = new mongoose.Schema({
         unique: true
     },
 
+    gstin:{
+        type:String
+    },
+
     customerName: String,
 
     items: [billItemSchema],
