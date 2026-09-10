@@ -77,8 +77,8 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         const itemTotal = quantity * price;
         subTotal += itemTotal;
 
-        // Fallback check for HSN code field variations in Product model
-        const extractedHsn = product.hsnCode || product.HSNCode || "";
+        // 🔥 Robust HSN Code extraction from Product model variations
+        const extractedHsn = product.hsnCode || product.HSNCode || product.hsn || "";
 
         billItems.push({
             product: product._id,
@@ -92,9 +92,9 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
     subTotal = Number(subTotal.toFixed(2));
 
-    // Tax Calculations (Ensured explicit number parsing)
-    const parsedCgstRate = Number(cgstPercent) || 0;
-    const parsedSgstRate = Number(sgstPercent) || 0;
+    // 🔥 Explicit safe float parsing for tax rates
+    const parsedCgstRate = parseFloat(cgstPercent) || 0;
+    const parsedSgstRate = parseFloat(sgstPercent) || 0;
 
     const cgst = Number((subTotal * (parsedCgstRate / 100)).toFixed(2));
     const sgst = Number((subTotal * (parsedSgstRate / 100)).toFixed(2));
@@ -104,9 +104,9 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
     const finalPaidAmount = paymentType === "CASH" ? grandTotal : 0;
     const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
 
-    // Automatic GSTIN Fetching from User Model (Supporting lowercase/uppercase checks)
+    // 🔥 Robust GSTIN extraction from User model variations
     const currentUser = await userModel.findById(req.user.id);
-    const gstin = currentUser?.gstin || currentUser?.GSTIN || "";
+    const gstin = currentUser?.gstin || currentUser?.GSTIN || currentUser?.gstNumber || "";
 
     // Invoice Number Generation
     const count = await billModel.countDocuments({ user: req.user.id });
@@ -152,7 +152,7 @@ exports.getCreditBills = catchAsyncError(async (req, res, next) => {
 });
 
 // ===================== UPDATE CREDIT BILL PAYMENT =====================
-exports.updateCreditBillPayment = catchAsyncError(async (req, res, next) => {
+exports.updateCreditBills = catchAsyncError(async (req, res, next) => {
     const { billId } = req.params;
     const payment = Number(req.body.paidAmount);
 

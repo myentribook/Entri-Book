@@ -68,8 +68,8 @@ export default function Billing() {
       customerName,
       customerMobile: `91${cleanMobile}`,
       paymentType,
-      cgstPercent: Number(cgstPercent) || 0,
-      sgstPercent: Number(sgstPercent) || 0,
+      cgstPercent: Number(cgstPercent) || 0, // 🔥 FIXED: Sent CGST to backend
+      sgstPercent: Number(sgstPercent) || 0, // 🔥 FIXED: Sent SGST to backend
       items: tempItems.map(item => ({ 
         product: item.product, 
         saleType: item.saleType, 
