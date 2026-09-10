@@ -234,7 +234,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
     // Mobile number cleaning & validation
     const cleanMobile = String(customerMobile || "").replace(/\D/g, '');
-    const mobileRegex = /^[6-9]\d{9}$/; ///^(91)?[6-9]\d{9}$/
+    const mobileRegex = /^(91)?[6-9]\d{9}$/; ///^(91)?[6-9]\d{9}$/
 
     if (!mobileRegex.test(cleanMobile)) {
         return next(new ErrorHandler("Invalid mobile number", 400));
