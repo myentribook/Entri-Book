@@ -10,7 +10,8 @@ import '../styles/billing.css';
 
 export default function Billing() {
   const dispatch = useDispatch();
-  const { Billing = [], loading, error, message } = useSelector(state => state.billingState || {});
+  // 🔥 FIXED: Destructure 'bills' based on standard reducer state properties, fallback safely
+  const { bills = [], loading, error, message } = useSelector(state => state.billingState || {});
   const { products = [] } = useSelector(state => state.productState || { products: [] });
 
   const [keyword, setKeyword] = useState('');
@@ -41,8 +42,9 @@ export default function Billing() {
     }
     if (message) {
       toast.success(message);
+      dispatch(getBills()); // Refresh list on success
     }
-  }, [error, message]);
+  }, [error, message, dispatch]);
 
   const handleAddTemp = () => {
     if (!selectedProductId || !quantity || !price) return toast.error("Please fill all product fields");
@@ -68,8 +70,8 @@ export default function Billing() {
       customerName,
       customerMobile: `91${cleanMobile}`,
       paymentType,
-      cgstPercent: Number(cgstPercent) || 0, // 🔥 FIXED: Sent CGST to backend
-      sgstPercent: Number(sgstPercent) || 0, // 🔥 FIXED: Sent SGST to backend
+      cgstPercent: Number(cgstPercent) || 0,
+      sgstPercent: Number(sgstPercent) || 0,
       items: tempItems.map(item => ({ 
         product: item.product, 
         saleType: item.saleType, 
@@ -94,7 +96,8 @@ export default function Billing() {
     if (!selectedBill) return;
     try {
       setSharing(true);
-      const backendUrl = "https://16.171.148.56:8000";
+      // 🔥 FIXED: Changed from https:// to http:// matching backend server protocol, or use relative path
+      const backendUrl = "http://16.171.148.56:8000"; 
       const config = { withCredentials: true }; 
 
       const requestData = {
@@ -125,7 +128,7 @@ export default function Billing() {
           <div className="bill-mgr-card">
             <div className="bill-mgr-grid-form">
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Customer</label><input className="bill-mgr-input" type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="Enter name" /></div>
-              <div className="bill-mgr-input-group"><label className="bill-mgr-label">Mobile</label><input className="bill-mgr-input" type="text" maxLength="10" value={mobilenumber} onChange={(e) => setMobileNumber(e.target.value.replace(/[^0-9]/g, ''))} placeholder="91 0987654321" /></div>
+              <div className="bill-mgr-input-group"><label className="bill-mgr-label">Mobile</label><input className="bill-mgr-input" type="text" maxLength="10" value={mobilenumber} onChange={(e) => setMobileNumber(e.target.value.replace(/[^0-9]/g, ''))} placeholder="9109876543" /></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Payment</label><select className="bill-mgr-input" value={paymentType} onChange={(e) => setPaymentType(e.target.value)}><option value="CASH">Cash</option><option value="CREDIT">Credit</option></select></div>
               
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">CGST %</label><input className="bill-mgr-input" type="number" value={cgstPercent} onChange={(e) => setCgstPercent(e.target.value)} placeholder="0" /></div>
@@ -134,7 +137,7 @@ export default function Billing() {
 
             <div className="bill-mgr-entry-box">
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Product</label><select className="bill-mgr-input" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}><option value="">Select Item</option>{products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}</select></div>
-              <div className="bill-mgr-input-group"><label className="bill-mgr-label">Type</label><select className="bill-mgr-input" value={saleType} onChange={(e) => setSaleType(e.target.value)}><option value="bag">Bag</option><option value="kg">Kg</option></select></div>
+              <div className="bill-mgr-input-group"><label className="bill-mgr-label">Type</label><select className="bill-mgr-input" value={saleType} onChange={(e) => setSaleType(e.target.value)}><option value="bag">Bag</option><option value="kg">Kg</option><option value="litre">Litre</option><option value="milliliter">Milliliter</option><option value="gram">Gram</option></select></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Qty</label><input className="bill-mgr-input" type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" /></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Price</label><input className="bill-mgr-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="0.00" /></div>
               <button className="bill-mgr-btn bill-mgr-btn-primary" onClick={handleAddTemp}><i className="fa-solid fa-plus"></i> Add</button>
@@ -150,7 +153,7 @@ export default function Billing() {
           </div>
           
           <div className="bill-mgr-section-header">
-            <h2 className="bill-mgr-title"><i className="fa-solid fa-history" style={{ color: "var(--primary)" }}></i>Bill History</h2>
+            <h2 className="bill-mgr-title"><i className="fa-solid fa-history" style={{ color: "var(--primary)" }}></i> Bill History</h2>
             <input className="bill-mgr-input" type="text" placeholder="Search Bills ..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "180px", padding: "0.5rem 1rem" }} />
           </div>
           
@@ -159,15 +162,15 @@ export default function Billing() {
               <table className="bill-mgr-table">
                 <thead><tr><th className="bill-mgr-th">Customer</th><th className="bill-mgr-th">Date</th><th className="bill-mgr-th">Items</th><th className="bill-mgr-th">Total</th><th className="bill-mgr-th">Actions</th></tr></thead>
                 <tbody>
-                  {Billing && Billing.length > 0 ? Billing.filter(bill => (bill?.customerName ?? "").toLowerCase().includes(keyword.toLowerCase())).map(bill => (
+                  {bills && bills.length > 0 ? bills.filter(bill => (bill?.customerName ?? "").toLowerCase().includes(keyword.toLowerCase()) || (bill?.invoiceNo ?? "").toLowerCase().includes(keyword.toLowerCase())).map(bill => (
                     <tr key={bill._id}>
-                      <td className="bill-mgr-td" data-label="Customer">{bill.customerName}</td>
+                      <td className="bill-mgr-td" data-label="Customer">{bill.customerName} ({bill.invoiceNo})</td>
                       <td className="bill-mgr-td" data-label="Date">{bill.createdAt ? bill.createdAt.split('T')[0] : 'N/A'}</td>
                       <td className="bill-mgr-td" data-label="Items">{bill.items?.length || 0}</td>
                       <td className="bill-mgr-td" data-label="Total">₹{bill.grandTotal}</td>
                       <td className="bill-mgr-td" data-label="Actions">
-                        <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>
-                          <i className="fa-brands fa-whatsapp"></i> share
+                        <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>
+                          <i className="fa-brands fa-whatsapp"></i> Share
                         </button>
                       </td>
                     </tr>
