@@ -4,7 +4,7 @@ const {
     getBill,
     shareBillWhatsapp,
     getCreditBills,
-    updateCreditBillPayment
+    updateCreditBills
 } = require('../controllers/billController');
 
 const { isAuthenticatedUser } = require('../middlewares/authenticate');
