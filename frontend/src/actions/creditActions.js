@@ -11,10 +11,10 @@ export const getCreditBills = () => async (dispatch) => {
     }
 }
 
-export const updateCreditBills = (id, billData) => async (dispatch) => {
+export const updateCreditBills = (id, bill) => async (dispatch) => {
     try {
         dispatch(creditActionRequest())
-        const { data } = await axios.put(`/api/v1/credit/${id}`, billData, { withCredentials: true })
+        const { data } = await axios.put(`/api/v1/credit/${id}`, bill, { withCredentials: true })
         dispatch(creditActionSuccess(data))
         dispatch(getCreditBills()) // Refresh list
     } catch (error) {

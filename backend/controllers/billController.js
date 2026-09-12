@@ -65,7 +65,30 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         const product = await productModel.findOne({ _id: item.product, user: req.user.id });
         if (!product) throw new ErrorHandler("Product not found", 404);
 
-        let stockToReduce = saleTypeLower === "bag" ? quantity : quantity / Number(product.conversionFactor || 1);
+        // 🔥 Comprehensive stock reduction for all sale types
+        let stockToReduce = 0;
+        const conversion = Number(product.conversionFactor || 1);
+
+        switch (saleTypeLower) {
+            case "bag":
+                stockToReduce = quantity;
+                break;
+            case "kg":
+            case "litre":
+                // If base stock is maintained in smaller units (like grams or milliliters), 
+                // conversionFactor typically represents base units per kg/litre (e.g., 1000). 
+                // Adjust based on your schema structure.
+                stockToReduce = quantity; 
+                break;
+            case "gram":
+            case "milliliter":
+                // Assuming base stock is in kg/litre, converting grams/ml to kg/litre
+                stockToReduce = quantity / 1000;
+                break;
+            default:
+                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+                break;
+        }
 
         if (product.stock < stockToReduce) {
             throw new ErrorHandler(`${product.name} has insufficient stock`, 400);
