@@ -13,7 +13,7 @@ body {
 
 .credit-page-container {
     width: 100%;
-    max-width: 890px;
+    max-width: 920px;
     margin: 25px auto 0 auto; /* இது பக்கத்தை சரியாக நடுவில் (Center) கொண்டுவரும் */
     padding: 0 16px; /* மொபைல் அல்லது சிறிய திரைகளில் ஒட்டிக்கொள்ளாமல் இருக்க */
 }
