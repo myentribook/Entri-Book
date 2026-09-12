@@ -18,12 +18,14 @@ export default function Credit() {
 
     const openModal = (id, name, balance) => {
         setModalData({ id, name, amount: balance });
-        document.getElementById('payModal').style.display = 'flex';
+        const modal = document.getElementById('payModal');
+        if (modal) modal.style.display = 'flex';
     };
 
     const closeModal = () => {
         setPayAmount('');
-        document.getElementById('payModal').style.display = 'none';
+        const modal = document.getElementById('payModal');
+        if (modal) modal.style.display = 'none';
     };
 
     const handleConfirm = () => {
@@ -82,7 +84,7 @@ export default function Credit() {
                                                 <td data-label="Paid">{bill.paidAmount}</td>
                                                 <td data-label="Due">{bill.balanceAmount}</td>
                                                 <td data-label="Status">{bill.status}</td>
-                                                <td data-label="">
+                                                <td data-label="Action">
                                                     <button 
                                                         className="credit-pay-button" 
                                                         onClick={() => openModal(bill._id, bill.customerName, bill.balanceAmount)}
@@ -107,7 +109,7 @@ export default function Credit() {
                         </table>
                     </div>
 
-                    <div id="payModal" className="credit-modal-overlay">
+                    <div id="payModal" className="credit-modal-overlay" style={{ display: 'none' }}>
                         <div className="credit-modal-window">
                             <h2>{modalData.name}</h2>
                             <p>Due Amount: ₹{modalData.amount}</p>

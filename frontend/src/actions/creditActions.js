@@ -7,18 +7,17 @@ export const getCreditBills = () => async (dispatch) => {
         const { data } = await axios.get('/api/v1/credit', { withCredentials: true })
         dispatch(creditSuccess(data))
     } catch (error) {
-        dispatch(creditFailure(error.response.data.message))
+        dispatch(creditFailure(error.response?.data?.message || "Failed to fetch credit bills"))
     }
 }
 
 export const updateCreditBills = (id, creditData) => async (dispatch) => {
     try {
         dispatch(creditActionRequest())
-        // FIXED: The backend expects { paidAmount: ... } instead of { amount: ... }
-        const { data } = await axios.put(`/api/v1/bill/credit/${id}`, creditData, { withCredentials: true })
+        const { data } = await axios.put(`/api/v1/credit/${id}`, creditData, { withCredentials: true })
         dispatch(creditActionSuccess(data))
-        dispatch(getCreditBills())
+        dispatch(getCreditBills()) // Refresh list
     } catch (error) {
-        dispatch(creditActionFailure(error.response.data.message))
+        dispatch(creditActionFailure(error.response?.data?.message || "Failed to update payment"))
     }
 }

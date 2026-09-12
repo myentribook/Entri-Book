@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const creditSlice = createSlice({
-
     name: "Credit",
     initialState: {
         loading: false,
@@ -11,42 +10,52 @@ const creditSlice = createSlice({
     },
     reducers: {
         creditRequest(state) {
-            state.loading = true
+            state.loading = true;
+            state.error = null;
         },
         creditSuccess(state, action) {
-            state.loading = false
-            state.Credit = action.payload.creditBills
+            state.loading = false;
+            state.Credit = action.payload.creditBills || [];
         },
         creditFailure(state, action) {
-            state.loading = false
-            state.error = action.payload
+            state.loading = false;
+            state.error = action.payload;
         },
-        creditActionRequest(state, action) {
-            state.loading = true
+        creditActionRequest(state) {
+            state.loading = true;
+            state.error = null;
+            state.message = null;
         },
         creditActionSuccess(state, action) {
-            state.loading = false
-            state.message = action.payload.message
+            state.loading = false;
+            state.message = action.payload.message;
         },
         creditActionFailure(state, action) {
-            state.loading = false
-            state.error = action.payload
+            state.loading = false;
+            state.error = action.payload;
         },
-        clearCreditState(state, action) {
-            state.error = null
-            state.message = null
+        clearCreditState(state) {
+            state.error = null;
+            state.message = null;
         },
-        resetCredit(state, action) {
-            state.Credit = []
-            state.loading = false
-            state.error = null
-            state.message = null
+        resetCredit(state) {
+            state.Credit = [];
+            state.loading = false;
+            state.error = null;
+            state.message = null;
         }
     }
+});
 
-})
+export const { 
+    creditRequest, 
+    creditSuccess, 
+    creditFailure, 
+    creditActionRequest, 
+    creditActionSuccess, 
+    creditActionFailure, 
+    clearCreditState, 
+    resetCredit 
+} = creditSlice.actions;
 
-
-export const { creditRequest, creditSuccess, creditFailure, creditActionRequest, creditActionSuccess, creditActionFailure, clearCreditState, resetCredit } = creditSlice.actions
-
-export default creditSlice.reducer
+export default creditSlice.reducer;

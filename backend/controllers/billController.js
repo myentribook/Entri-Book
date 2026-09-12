@@ -151,16 +151,19 @@ exports.getCreditBills = catchAsyncError(async (req, res, next) => {
     res.status(200).json({ success: true, count: creditBills.length, creditBills });
 });
 
+
+
 // ===================== UPDATE CREDIT BILL PAYMENT =====================
 exports.updateCreditBills = catchAsyncError(async (req, res, next) => {
-    const { billId } = req.params;
+    const { id, billId } = req.params;
+    const targetId = billId || id; 
     const payment = Number(req.body.paidAmount);
 
     if (isNaN(payment) || payment <= 0) {
         return next(new ErrorHandler("Invalid amount", 400));
     }
 
-    const bill = await billModel.findOne({ _id: billId, user: req.user.id });
+    const bill = await billModel.findOne({ _id: targetId, user: req.user.id });
     if (!bill || bill.paymentType !== "CREDIT") {
         return next(new ErrorHandler("Credit bill not found", 404));
     }
