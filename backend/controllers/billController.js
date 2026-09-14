@@ -25,6 +25,156 @@ exports.getBill = catchAsyncError(async (req, res, next) => {
 });
 
 // ===================== CREATE BILL =====================
+// exports.createBill = catchAsyncError(async (req, res, next) => {
+//     const {
+//         customerName,
+//         customerMobile,
+//         items,
+//         paymentType = "CASH",
+//         cgstPercent = 0,
+//         sgstPercent = 0
+//     } = req.body;
+
+//     if (!["CASH", "CREDIT"].includes(paymentType)) return next(new ErrorHandler("Invalid payment type", 400));
+//     if (!customerName?.trim()) return next(new ErrorHandler("Customer name is required", 400));
+//     if (!items?.length) return next(new ErrorHandler("Please add at least one product", 400));
+
+//     // Mobile number cleaning & validation
+//     const cleanMobile = String(customerMobile || "").replace(/\D/g, '');
+//     const mobileRegex = /^(91)?[6-9]\d{9}$/;
+
+//     if (!mobileRegex.test(cleanMobile)) {
+//         return next(new ErrorHandler("Invalid mobile number", 400));
+//     }
+
+//     const formattedMobile = cleanMobile.length === 10 ? `91${cleanMobile}` : cleanMobile;
+
+//     let subTotal = 0;
+//     const billItems = [];
+//     const allowedSaleTypes = ["bag", "kg", "litre", "milliliter", "gram"];
+
+//     for (const item of items) {
+//         const quantity = Number(item.quantity);
+//         const price = Number(item.price); // Idhu Per Kg / Per Litre / Per Bag price
+
+//         if (quantity <= 0 || price <= 0) throw new ErrorHandler("Invalid quantity or price", 400);
+
+//         const saleTypeLower = String(item.saleType || "").toLowerCase();
+//         if (!allowedSaleTypes.includes(saleTypeLower)) throw new ErrorHandler("Invalid sale type", 400);
+
+//         const product = await productModel.findOne({ _id: item.product, user: req.user.id });
+//         if (!product) throw new ErrorHandler("Product not found", 404);
+
+//         let stockToReduce = 0;
+//         let itemTotal = 0;
+//         const conversion = Number(product.conversionFactor || 1); // e.g., 50 (1 stock = 50 kg)
+
+//         // 🔥 Comprehensive Stock and Price Calculation with Conversion Factor
+//         switch (saleTypeLower) {
+//             case "bag":
+//                 // 1 bag = conversion factor (e.g., 50 kg per stock unit or bag base)
+//                 stockToReduce = conversion > 0 ? quantity * (conversion / conversion) : quantity; // or quantity * conversion based on schema
+//                 // Let's keep bag reduction as quantity * conversion if 1 bag = conversion kg
+//                 stockToReduce = quantity * conversion;
+//                 itemTotal = quantity * price; // Or price per bag
+//                 break;
+
+//             case "kg":
+//             case "litre":
+//                 // If 1 stock = conversion kg (e.g., 50 kg), then reducing X kg means X / conversion stock units
+//                 stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+//                 itemTotal = quantity * price; 
+//                 break;
+
+//             case "gram":
+//             case "milliliter":
+//                 // 1. Convert grams/ml to kg/litre first: quantity / 1000
+//                 const totalKgOrLitre = quantity / 1000;
+                
+//                 // 2. Reduce stock based on conversion factor (e.g., if 1 stock = 50 kg)
+//                 stockToReduce = conversion > 0 ? totalKgOrLitre / conversion : totalKgOrLitre;
+                
+//                 // 3. Price calculation: Price is for 1 Kg, so for given grams -> totalKgOrLitre * price
+//                 itemTotal = totalKgOrLitre * price; 
+//                 break;
+
+//             default:
+//                 stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+//                 itemTotal = quantity * price;
+//                 break;
+//         }
+
+//         if (product.stock < stockToReduce) {
+//             throw new ErrorHandler(`${product.name} has insufficient stock`, 400);
+//         }
+
+//         product.stock = Number((product.stock - stockToReduce).toFixed(4));
+//         await product.save();
+
+//         subTotal += itemTotal;
+
+//         // 🔥 Robust HSN Code extraction from Product model variations
+//         const extractedHsn = product.hsnCode || product.HSNCode || product.hsn || "";
+
+//         billItems.push({
+//             product: product._id,
+//             saleType: item.saleType,
+//             quantity,
+//             price,
+//             hsnCode: extractedHsn,
+//             total: Number(itemTotal.toFixed(2))
+//         });
+//     }
+
+//     subTotal = Number(subTotal.toFixed(2));
+
+//     // 🔥 Explicit safe float parsing for tax rates
+//     const parsedCgstRate = parseFloat(cgstPercent) || 0;
+//     const parsedSgstRate = parseFloat(sgstPercent) || 0;
+
+//     const cgst = Number((subTotal * (parsedCgstRate / 100)).toFixed(2));
+//     const sgst = Number((subTotal * (parsedSgstRate / 100)).toFixed(2));
+//     const totalTax = Number((cgst + sgst).toFixed(2));
+//     const grandTotal = Number((subTotal + totalTax).toFixed(2));
+
+//     const finalPaidAmount = paymentType === "CASH" ? grandTotal : 0;
+//     const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
+
+//     // 🔥 Robust GSTIN extraction from User model variations
+//     const currentUser = await userModel.findById(req.user.id);
+//     const gstin = currentUser?.gstin || currentUser?.GSTIN || currentUser?.gstNumber || "";
+
+//     // Invoice Number Generation
+//     const count = await billModel.countDocuments({ user: req.user.id });
+//     const currentYear = new Date().getFullYear();
+//     const invoiceNo = `INV-${currentYear}-${String(count + 1).padStart(4, "0")}`;
+
+//     const bill = await billModel.create({
+//         invoiceNo,
+//         gstin,
+//         customerName,
+//         customerMobile: formattedMobile,
+//         items: billItems,
+//         subTotal,
+//         cgst,
+//         sgst,
+//         totalTax,
+//         grandTotal,
+//         paymentType,
+//         paidAmount: finalPaidAmount,
+//         balanceAmount,
+//         status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"),
+//         user: req.user.id,
+//         paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
+//     });
+
+//     res.status(201).json({
+//         success: true,
+//         message: "Invoice created successfully",
+//         bill
+//     });
+// });
+
 exports.createBill = catchAsyncError(async (req, res, next) => {
     const {
         customerName,
@@ -35,86 +185,203 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         sgstPercent = 0
     } = req.body;
 
-    if (!["CASH", "CREDIT"].includes(paymentType)) return next(new ErrorHandler("Invalid payment type", 400));
-    if (!customerName?.trim()) return next(new ErrorHandler("Customer name is required", 400));
-    if (!items?.length) return next(new ErrorHandler("Please add at least one product", 400));
+    if (!["CASH", "CREDIT"].includes(paymentType)) {
+        return next(new ErrorHandler("Invalid payment type", 400));
+    }
+
+    if (!customerName?.trim()) {
+        return next(new ErrorHandler("Customer name is required", 400));
+    }
+
+    if (!items?.length) {
+        return next(new ErrorHandler("Please add at least one product", 400));
+    }
 
     // Mobile number cleaning & validation
-    const cleanMobile = String(customerMobile || "").replace(/\D/g, '');
+    const cleanMobile = String(customerMobile || "").replace(/\D/g, "");
     const mobileRegex = /^(91)?[6-9]\d{9}$/;
 
     if (!mobileRegex.test(cleanMobile)) {
         return next(new ErrorHandler("Invalid mobile number", 400));
     }
 
-    const formattedMobile = cleanMobile.length === 10 ? `91${cleanMobile}` : cleanMobile;
+    const formattedMobile =
+        cleanMobile.length === 10 ? `91${cleanMobile}` : cleanMobile;
 
     let subTotal = 0;
     const billItems = [];
-    const allowedSaleTypes = ["bag", "kg", "litre", "milliliter", "gram"];
+
+    const allowedSaleTypes = [
+        "bag",
+        "kg",
+        "litre",
+        "milliliter",
+        "gram"
+    ];
 
     for (const item of items) {
         const quantity = Number(item.quantity);
-        const price = Number(item.price); // Idhu Per Kg / Per Litre / Per Bag price
+        const price = Number(item.price);
 
-        if (quantity <= 0 || price <= 0) throw new ErrorHandler("Invalid quantity or price", 400);
+        if (!Number.isFinite(quantity) || quantity <= 0) {
+            throw new ErrorHandler("Invalid quantity", 400);
+        }
+
+        if (!Number.isFinite(price) || price <= 0) {
+            throw new ErrorHandler("Invalid price", 400);
+        }
 
         const saleTypeLower = String(item.saleType || "").toLowerCase();
-        if (!allowedSaleTypes.includes(saleTypeLower)) throw new ErrorHandler("Invalid sale type", 400);
 
-        const product = await productModel.findOne({ _id: item.product, user: req.user.id });
-        if (!product) throw new ErrorHandler("Product not found", 404);
+        if (!allowedSaleTypes.includes(saleTypeLower)) {
+            throw new ErrorHandler("Invalid sale type", 400);
+        }
+
+        const product = await productModel.findOne({
+            _id: item.product,
+            user: req.user.id
+        });
+
+        if (!product) {
+            throw new ErrorHandler("Product not found", 404);
+        }
+
+        const conversion = Number(product.conversionFactor || 1);
+
+        if (conversion <= 0) {
+            throw new ErrorHandler(
+                `${product.name} has invalid conversion factor`,
+                400
+            );
+        }
 
         let stockToReduce = 0;
         let itemTotal = 0;
-        const conversion = Number(product.conversionFactor || 1); // e.g., 50 (1 stock = 50 kg)
 
-        // 🔥 Comprehensive Stock and Price Calculation with Conversion Factor
         switch (saleTypeLower) {
+
+            // --------------------------------
+            // BAG
+            // Price = ₹ per bag
+            // Stock = number of bags
+            // --------------------------------
             case "bag":
-                // 1 bag = conversion factor (e.g., 50 kg per stock unit or bag base)
-                stockToReduce = conversion > 0 ? quantity * (conversion / conversion) : quantity; // or quantity * conversion based on schema
-                // Let's keep bag reduction as quantity * conversion if 1 bag = conversion kg
-                stockToReduce = quantity * conversion;
-                itemTotal = quantity * price; // Or price per bag
-                break;
-
-            case "kg":
-            case "litre":
-                // If 1 stock = conversion kg (e.g., 50 kg), then reducing X kg means X / conversion stock units
-                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
-                itemTotal = quantity * price; 
-                break;
-
-            case "gram":
-            case "milliliter":
-                // 1. Convert grams/ml to kg/litre first: quantity / 1000
-                const totalKgOrLitre = quantity / 1000;
-                
-                // 2. Reduce stock based on conversion factor (e.g., if 1 stock = 50 kg)
-                stockToReduce = conversion > 0 ? totalKgOrLitre / conversion : totalKgOrLitre;
-                
-                // 3. Price calculation: Price is for 1 Kg, so for given grams -> totalKgOrLitre * price
-                itemTotal = totalKgOrLitre * price; 
-                break;
-
-            default:
-                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+                stockToReduce = quantity;
                 itemTotal = quantity * price;
                 break;
+
+
+            // --------------------------------
+            // KG
+            // Price = ₹ per KG
+            //
+            // Example:
+            // 1 bag = 50kg
+            // Sale = 10kg
+            //
+            // Stock reduction = 10 / 50 = 0.2 bag
+            // --------------------------------
+            case "kg":
+                stockToReduce = quantity / conversion;
+                itemTotal = quantity * price;
+                break;
+
+
+            // --------------------------------
+            // LITRE
+            // Price = ₹ per Litre
+            //
+            // Example:
+            // 1 container = 20 litre
+            // Sale = 5 litre
+            //
+            // Stock reduction = 5 / 20 = 0.25 container
+            // --------------------------------
+            case "litre":
+                stockToReduce = quantity / conversion;
+                itemTotal = quantity * price;
+                break;
+
+
+            // --------------------------------
+            // GRAM
+            // Price entered = ₹ per KG
+            //
+            // Example:
+            // 1kg = ₹200
+            // Sale = 500 gram
+            //
+            // 500g = 0.5kg
+            // Total = 0.5 × 200 = ₹100
+            //
+            // Stock:
+            // 0.5kg / 50kg = 0.01 bag
+            // --------------------------------
+            case "gram": {
+                const quantityInKg = quantity / 1000;
+
+                stockToReduce = quantityInKg / conversion;
+
+                itemTotal = quantityInKg * price;
+
+                break;
+            }
+
+
+            // --------------------------------
+            // MILLILITER
+            // Price entered = ₹ per Litre
+            //
+            // Example:
+            // 1 litre = ₹200
+            // Sale = 500ml
+            //
+            // 500ml = 0.5 litre
+            // Total = 0.5 × 200 = ₹100
+            //
+            // Stock:
+            // 0.5 litre / 20 litre = 0.025 container
+            // --------------------------------
+            case "milliliter": {
+                const quantityInLitre = quantity / 1000;
+
+                stockToReduce = quantityInLitre / conversion;
+
+                itemTotal = quantityInLitre * price;
+
+                break;
+            }
+
+            default:
+                throw new ErrorHandler("Invalid sale type", 400);
         }
 
+        // --------------------------------
+        // STOCK VALIDATION
+        // --------------------------------
         if (product.stock < stockToReduce) {
-            throw new ErrorHandler(`${product.name} has insufficient stock`, 400);
+            throw new ErrorHandler(
+                `${product.name} has insufficient stock`,
+                400
+            );
         }
 
-        product.stock = Number((product.stock - stockToReduce).toFixed(4));
+        // Reduce stock
+        product.stock = Number(
+            (product.stock - stockToReduce).toFixed(4)
+        );
+
         await product.save();
 
+        // Add item total
         subTotal += itemTotal;
 
-        // 🔥 Robust HSN Code extraction from Product model variations
-        const extractedHsn = product.hsnCode || product.HSNCode || product.hsn || "";
+        // HSN
+        const extractedHsn =
+            product.hsnCode ||
+            product.HSNCode ||
+            product.hsn ||
+            "";
 
         billItems.push({
             product: product._id,
@@ -126,29 +393,74 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         });
     }
 
+    // --------------------------------
+    // SUBTOTAL
+    // --------------------------------
     subTotal = Number(subTotal.toFixed(2));
 
-    // 🔥 Explicit safe float parsing for tax rates
+
+    // --------------------------------
+    // GST
+    // --------------------------------
     const parsedCgstRate = parseFloat(cgstPercent) || 0;
     const parsedSgstRate = parseFloat(sgstPercent) || 0;
 
-    const cgst = Number((subTotal * (parsedCgstRate / 100)).toFixed(2));
-    const sgst = Number((subTotal * (parsedSgstRate / 100)).toFixed(2));
-    const totalTax = Number((cgst + sgst).toFixed(2));
-    const grandTotal = Number((subTotal + totalTax).toFixed(2));
+    const cgst = Number(
+        (subTotal * (parsedCgstRate / 100)).toFixed(2)
+    );
 
-    const finalPaidAmount = paymentType === "CASH" ? grandTotal : 0;
-    const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
+    const sgst = Number(
+        (subTotal * (parsedSgstRate / 100)).toFixed(2)
+    );
 
-    // 🔥 Robust GSTIN extraction from User model variations
+    const totalTax = Number(
+        (cgst + sgst).toFixed(2)
+    );
+
+    const grandTotal = Number(
+        (subTotal + totalTax).toFixed(2)
+    );
+
+
+    // --------------------------------
+    // PAYMENT
+    // --------------------------------
+    const finalPaidAmount =
+        paymentType === "CASH" ? grandTotal : 0;
+
+    const balanceAmount = Number(
+        (grandTotal - finalPaidAmount).toFixed(2)
+    );
+
+
+    // --------------------------------
+    // GET USER GSTIN
+    // --------------------------------
     const currentUser = await userModel.findById(req.user.id);
-    const gstin = currentUser?.gstin || currentUser?.GSTIN || currentUser?.gstNumber || "";
 
-    // Invoice Number Generation
-    const count = await billModel.countDocuments({ user: req.user.id });
+    const gstin =
+        currentUser?.gstin ||
+        currentUser?.GSTIN ||
+        currentUser?.gstNumber ||
+        "";
+
+
+    // --------------------------------
+    // INVOICE NUMBER
+    // --------------------------------
+    const count = await billModel.countDocuments({
+        user: req.user.id
+    });
+
     const currentYear = new Date().getFullYear();
-    const invoiceNo = `INV-${currentYear}-${String(count + 1).padStart(4, "0")}`;
 
+    const invoiceNo =
+        `INV-${currentYear}-${String(count + 1).padStart(4, "0")}`;
+
+
+    // --------------------------------
+    // CREATE BILL
+    // --------------------------------
     const bill = await billModel.create({
         invoiceNo,
         gstin,
@@ -163,9 +475,22 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         paymentType,
         paidAmount: finalPaidAmount,
         balanceAmount,
-        status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"),
+        status:
+            balanceAmount <= 0
+                ? "PAID"
+                : finalPaidAmount > 0
+                    ? "PARTIAL"
+                    : "PENDING",
         user: req.user.id,
-        paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
+        paymentHistory:
+            finalPaidAmount > 0
+                ? [
+                    {
+                        amount: finalPaidAmount,
+                        date: Date.now()
+                    }
+                ]
+                : []
     });
 
     res.status(201).json({
