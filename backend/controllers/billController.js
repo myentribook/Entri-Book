@@ -55,7 +55,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
     for (const item of items) {
         const quantity = Number(item.quantity);
-        const price = Number(item.price);
+        const price = Number(item.price); // Idhu Per Kg / Per Litre / Per Bag price
 
         if (quantity <= 0 || price <= 0) throw new ErrorHandler("Invalid quantity or price", 400);
 
@@ -65,28 +65,42 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         const product = await productModel.findOne({ _id: item.product, user: req.user.id });
         if (!product) throw new ErrorHandler("Product not found", 404);
 
-        // 🔥 Comprehensive stock reduction for all sale types
         let stockToReduce = 0;
-        const conversion = Number(product.conversionFactor || 1);
+        let itemTotal = 0;
+        const conversion = Number(product.conversionFactor || 1); // e.g., 50 (1 stock = 50 kg)
 
+        // 🔥 Comprehensive Stock and Price Calculation with Conversion Factor
         switch (saleTypeLower) {
             case "bag":
-                stockToReduce = quantity;
+                // 1 bag = conversion factor (e.g., 50 kg per stock unit or bag base)
+                stockToReduce = conversion > 0 ? quantity * (conversion / conversion) : quantity; // or quantity * conversion based on schema
+                // Let's keep bag reduction as quantity * conversion if 1 bag = conversion kg
+                stockToReduce = quantity * conversion;
+                itemTotal = quantity * price; // Or price per bag
                 break;
+
             case "kg":
             case "litre":
-                // If base stock is maintained in smaller units (like grams or milliliters), 
-                // conversionFactor typically represents base units per kg/litre (e.g., 1000). 
-                // Adjust based on your schema structure.
-                stockToReduce = quantity; 
+                // If 1 stock = conversion kg (e.g., 50 kg), then reducing X kg means X / conversion stock units
+                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+                itemTotal = quantity * price; 
                 break;
+
             case "gram":
             case "milliliter":
-                // Assuming base stock is in kg/litre, converting grams/ml to kg/litre
-                stockToReduce = quantity / 1000;
+                // 1. Convert grams/ml to kg/litre first: quantity / 1000
+                const totalKgOrLitre = quantity / 1000;
+                
+                // 2. Reduce stock based on conversion factor (e.g., if 1 stock = 50 kg)
+                stockToReduce = conversion > 0 ? totalKgOrLitre / conversion : totalKgOrLitre;
+                
+                // 3. Price calculation: Price is for 1 Kg, so for given grams -> totalKgOrLitre * price
+                itemTotal = totalKgOrLitre * price; 
                 break;
+
             default:
                 stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+                itemTotal = quantity * price;
                 break;
         }
 
@@ -97,7 +111,6 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         product.stock = Number((product.stock - stockToReduce).toFixed(4));
         await product.save();
 
-        const itemTotal = quantity * price;
         subTotal += itemTotal;
 
         // 🔥 Robust HSN Code extraction from Product model variations
@@ -179,7 +192,7 @@ exports.getCreditBills = catchAsyncError(async (req, res, next) => {
 // ===================== UPDATE CREDIT BILL PAYMENT =====================
 exports.updateCreditBills = catchAsyncError(async (req, res, next) => {
     const { id, billId } = req.params;
-    const targetId = billId || id; 
+    const targetId = billId || id;
     const payment = Number(req.body.paidAmount);
 
     if (isNaN(payment) || payment <= 0) {
