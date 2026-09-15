@@ -222,7 +222,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         // 🔥 Stock and Price Calculation for Bag and Kg
         switch (saleTypeLower) {
             case "bag":
-                stockToReduce = quantity * conversion;
+                stockToReduce = quantity;
                 itemTotal = quantity * price; // Per bag price
                 break;
 
