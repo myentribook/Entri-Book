@@ -35,7 +35,7 @@ const sendEmail = async (options) => {
         console.log("Attempting to send email to:", options.email);
         console.log("Reset Link/URL being used:", options.message);
         console.log("API Key loaded:", process.env.RESEND_API_KEY ? "Yes (Hidden)" : "No!");
-        
+
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         const message = {
@@ -45,19 +45,19 @@ const sendEmail = async (options) => {
             html: `
                 <div style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px; border-radius: 8px;">
                     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                        <h2 style="color: #333333; margin-bottom: 20px;">Password Reset Request</h2>
+                        <h2 style="color: #333333; margin-bottom: 20px;">Your Password Reset Request: </h2>
                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">Hello,</p>
+                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">We received a request to reset the password for your myentribook account.</p> <br/>
                         <p style="color: #555555; font-size: 16px; line-height: 1.5;">Your password reset token URL is as follow:</p>
                         
                         <div style="margin: 20px 0; word-break: break-all;">
                             <a href="${options.message}" target="_blank" style="color: #007bff; font-size: 15px; text-decoration: underline;">
-                                ${options.message}
+                                Reset Your Passsword
                             </a>
                         </div>
                         
-                        <p style="color: #555555; font-size: 15px; line-height: 1.6; margin-top: 15px;">If you have not request this email then ignore it.</p>
-                        
-                        <p style="color: #777777; font-size: 14px; line-height: 1.4; margin-top: 25px;">If you didn't request this, you can safely ignore this email.</p>
+                        <p style="color: #555555; font-size: 15px; line-height: 1.6; margin-top: 15px;">If you did not request this password reset , you can safely ignore this email. No action is required from your side.</p> <br/>
+                        <p style="color: #555555; font-size: 15px; line-height: 1.6; margin-top: 15px;">For security reasons, please do not share this password reset link with anyone.</p>
                         <hr style="border: none; border-top: 1px solid #eeeeee; margin: 20px 0;">
                         <p style="color: #999999; font-size: 12px; text-align: center;">&copy; 2026 myentribook. All rights reserved.</p>
                     </div>

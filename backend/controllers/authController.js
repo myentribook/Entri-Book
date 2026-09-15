@@ -210,7 +210,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     try {
         await sendEmail({
             email: user.email,
-            subject: 'Password Reset Request for Your Myentribook Account',
+            subject: 'Reset Your Password Securely',
             message: resetUrl // Direct-aa link mattum anupprom
         });
         res.status(200).json({ success: true, message: `Email sent to ${user.email}` });
