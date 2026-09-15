@@ -231,7 +231,6 @@ import '../styles/billing.css';
 export default function Billing() {
   const dispatch = useDispatch();
   
-  // 🔥 Mapped to reducer state properties for cash bills
   const { bills = [], loading, error, message } = useSelector(state => state.billingState || {});
   const { products = [] } = useSelector(state => state.productState || { products: [] });
 
@@ -253,7 +252,7 @@ export default function Billing() {
   const [sgstPercent, setSgstPercent] = useState(0); 
   const [selectedProductId, setSelectedProductId] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [saleType, setSaleType] = useState('bag'); // Default to 'bag' matching backend
+  const [saleType, setSaleType] = useState('bag'); 
   const [price, setPrice] = useState('');
   const [tempItems, setTempItems] = useState([]);
 
@@ -263,7 +262,7 @@ export default function Billing() {
     }
     if (message) {
       toast.success(message);
-      dispatch(getBills()); // Refresh bill list on success
+      dispatch(getBills());
     }
   }, [error, message, dispatch]);
 
@@ -358,7 +357,6 @@ export default function Billing() {
             <div className="bill-mgr-entry-box">
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Product</label><select className="bill-mgr-input" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}><option value="">Select Item</option>{products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}</select></div>
               
-              {/* 🔥 Restricted Sale Types to match backend validation ("bag", "kg") */}
               <div className="bill-mgr-input-group">
                 <label className="bill-mgr-label">Type</label>
                 <select className="bill-mgr-input" value={saleType} onChange={(e) => setSaleType(e.target.value)}>

@@ -217,28 +217,29 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
         let stockToReduce = 0;
         let itemTotal = 0;
-        const conversion = Number(product.conversionFactor || 1); // e.g., 50 (1 stock = 50 kg)
+        // Fallback to 50 if conversionFactor is missing from product document
+        const conversion = Number(product.conversionFactor || 50); 
 
-        // 🔥 Stock and Price Calculation for Bag and Kg
+        // 🔥 Perfect Stock and Price Calculation for Bag and Kg
         switch (saleTypeLower) {
             case "bag":
-                stockToReduce = quantity;
+                stockToReduce = quantity; // 1 bag = 1 unit of stock reduction (since stock is in bags)
                 itemTotal = quantity * price; // Per bag price
                 break;
 
             case "kg":
-                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+                stockToReduce = conversion > 0 ? quantity / conversion : quantity; // Converts kg input to fractional bags
                 itemTotal = quantity * price; // Per Kg price
                 break;
 
             default:
-                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
+                stockToReduce = quantity;
                 itemTotal = quantity * price;
                 break;
         }
 
         if (product.stock < stockToReduce) {
-            throw new ErrorHandler(`${product.name} has insufficient stock`, 400);
+            throw new ErrorHandler(`${product.name} has insufficient stock. Available: ${product.stock} bags, Required: ${stockToReduce} bags`, 400);
         }
 
         product.stock = Number((product.stock - stockToReduce).toFixed(4));
