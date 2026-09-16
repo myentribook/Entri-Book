@@ -9,8 +9,15 @@ const axios = require('axios');
 
 // ===================== GET CASH BILLS (Searchable) =====================
 exports.getBill = catchAsyncError(async (req, res, next) => {
+    let filter = { user: req.user.id };
+
+    // Optional: allow filtering by paymentType if passed in query, otherwise fetch all
+    if (req.query.paymentType) {
+        filter.paymentType = { $regex: new RegExp(`^${req.query.paymentType}$`, 'i') };
+    }
+
     const apiFeatures = new APIFeature(
-        billModel.find({ user: req.user.id , paymentType: { $regex: /^cash$/i }}).populate('items.product'),
+        billModel.find(filter).populate('items.product'),
         req.query
     ).search(['customerName', 'invoiceNo']);
 
@@ -18,12 +25,11 @@ exports.getBill = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Cash bills fetched successfully",
+        message: "Bills fetched successfully",
         total: bills.length,
         bills
     });
 });
-
 // ===================== CREATE BILL =====================
 // exports.createBill = catchAsyncError(async (req, res, next) => {
 //     const {
