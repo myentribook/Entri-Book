@@ -10,7 +10,7 @@ const axios = require('axios');
 // ===================== GET CASH BILLS (Searchable) =====================
 exports.getBill = catchAsyncError(async (req, res, next) => {
     const apiFeatures = new APIFeature(
-        billModel.find({ user: req.user.id, paymentType: "CASH" }).populate('items.product'),
+        billModel.find({ user: req.user.id , paymentType: { $regex: /^cash$/i }}).populate('items.product'),
         req.query
     ).search(['customerName', 'invoiceNo']);
 
