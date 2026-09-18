@@ -8,13 +8,35 @@ const APIFeature = require('../utils/apiFeature');
 const axios = require('axios');
 
 // ===================== GET CASH BILLS (Searchable) =====================
-exports.getBill = catchAsyncError(async (req, res, next) => {
-    let filter = { user: req.user.id };
+// exports.getBill = catchAsyncError(async (req, res, next) => {
+//     let filter = { user: req.user.id };
 
-    // Optional: allow filtering by paymentType if passed in query, otherwise fetch all
-    if (req.query.paymentType) {
-        filter.paymentType = { $regex: new RegExp(`^${req.query.paymentType}$`, 'i') };
-    }
+//     // Optional: allow filtering by paymentType if passed in query, otherwise fetch all
+//     if (req.query.paymentType) {
+//         filter.paymentType = { $regex: new RegExp(`^${req.query.paymentType}$`, 'i') };
+//     }
+
+//     const apiFeatures = new APIFeature(
+//         billModel.find(filter).populate('items.product'),
+//         req.query
+//     ).search(['customerName', 'invoiceNo']);
+
+//     const bills = await apiFeatures.query.sort({ createdAt: -1 });
+
+//     res.status(200).json({
+//         success: true,
+//         message: "Bills fetched successfully",
+//         total: bills.length,
+//         bills
+//     });
+// });
+
+exports.getBill = catchAsyncError(async (req, res, next) => {
+    // Strictly filter by user AND force paymentType to be CASH
+    let filter = { 
+        user: req.user.id, 
+        paymentType: { $regex: /^cash$/i } 
+    };
 
     const apiFeatures = new APIFeature(
         billModel.find(filter).populate('items.product'),
@@ -25,11 +47,12 @@ exports.getBill = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Bills fetched successfully",
+        message: "Cash bills fetched successfully",
         total: bills.length,
         bills
     });
 });
+
 // ===================== CREATE BILL =====================
 // exports.createBill = catchAsyncError(async (req, res, next) => {
 //     const {
