@@ -4,7 +4,7 @@ const billSlice = createSlice({
     name: "Billing",
     initialState: {
         loading: false,
-        Billing: [],
+        bills: [],
         error: null,
         message: null
     },
@@ -14,7 +14,7 @@ const billSlice = createSlice({
         },
         billSuccess(state, action) {
             state.loading = false
-            state.Billing = action.payload.bills
+            state.bills = action.payload.bills
         },
         billFailure(state, action) {
             state.loading = false
@@ -36,7 +36,7 @@ const billSlice = createSlice({
             state.message = null
         },
         resetBill(state, action) {
-            state.Billing = []
+            state.bills = []
             state.loading = false
             state.error = null
             state.message = null

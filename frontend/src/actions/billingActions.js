@@ -1,34 +1,16 @@
 import axios from 'axios';
 import { billActionFailure, billActionRequest, billActionSuccess, billFailure, billRequest, billSuccess } from '../slices/billSlice';
 
-// export const getBills = () => async (dispatch) => {
-//     try {
-//         dispatch(billRequest());
-//         const { data } = await axios.get('/api/v1/getBill', { withCredentials: true });
-//         dispatch(billSuccess(data));
-//     } catch (error) {
-//         dispatch(billFailure(error.response?.data?.message || error.message));
-//     }
-// };
-
 export const getBills = () => async (dispatch) => {
     try {
-        dispatch({ type: 'GET_BILLS_REQUEST' });
-
-        // Ensure this URL matches your backend route setup
-        const { data } = await axios.get('/api/v1/bills', { withCredentials: true });
-
-        dispatch({
-            type: 'GET_BILLS_SUCCESS',
-            payload: data
-        });
+        dispatch(billRequest());
+        const { data } = await axios.get('/api/v1/getBill', { withCredentials: true });
+        dispatch(billSuccess(data));
     } catch (error) {
-        dispatch({
-            type: 'GET_BILLS_FAIL',
-            payload: error.response?.data?.message || error.message
-        });
+        dispatch(billFailure(error.response?.data?.message || error.message));
     }
 };
+
 
 
 export const createBill = (billData) => async (dispatch) => {
