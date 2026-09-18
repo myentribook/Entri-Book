@@ -232,7 +232,7 @@ export default function Billing() {
                   <p><strong>Mobile:</strong> {selectedBill.customerMobile}</p>
                   <p><strong>Payment Type:</strong> {selectedBill.paymentType}</p>
                   <p><strong>Date:</strong> {selectedBill.createdAt ? selectedBill.createdAt.split('T')[0] : 'N/A'}</p>
-                  <p><strong>Payment Type:</strong> {selectedBill.gstin}</p>
+                  <p><strong>GSTIN :</strong> {selectedBill.gstin}</p>
                   <div style={{ maxHeight: '120px', overflowY: 'auto', margin: '10px 0', border: '1px solid #eee', padding: '8px', borderRadius: '4px' }}>
                     <strong>Items:</strong>
                     {selectedBill.items?.map((it, i) => (
