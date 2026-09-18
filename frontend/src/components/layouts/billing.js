@@ -27,7 +27,7 @@ export default function Billing() {
 
   const [customerName, setCustomerName] = useState('');
   const [mobilenumber, setMobileNumber] = useState('');
-  const [paymentType, setPaymentType] = useState('cash');
+  const [paymentType, setPaymentType] = useState('CASH');
   const [cgstPercent, setCgstPercent] = useState(0); 
   const [sgstPercent, setSgstPercent] = useState(0); 
   const [selectedProductId, setSelectedProductId] = useState('');
