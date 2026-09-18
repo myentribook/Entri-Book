@@ -164,7 +164,7 @@ export default function Billing() {
             <input className="bill-mgr-input" type="text" placeholder="Search Bills ..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "180px", padding: "0.5rem 1rem" }} />
           </div>
           
-          <div className="bill-mgr-card">
+          {/* <div className="bill-mgr-card">
             <div className="bill-mgr-table-wrapper">
               <table className="bill-mgr-table">
                 <thead><tr><th className="bill-mgr-th">Customer</th><th className="bill-mgr-th">Date</th><th className="bill-mgr-th">Items</th><th className="bill-mgr-th">Total</th><th className="bill-mgr-th">Actions</th></tr></thead>
@@ -182,6 +182,40 @@ export default function Billing() {
                       </td>
                     </tr>
                   )) : <tr><td className="bill-mgr-td" colSpan="5" style={{ textAlign: "center" }}>No bills found</td></tr>}
+                </tbody>
+              </table>
+            </div>
+          </div> */}
+
+          <div className="bill-mgr-card">
+            <div className="bill-mgr-table-wrapper">
+              <table className="bill-mgr-table">
+                <thead>
+                  <tr>
+                    <th className="bill-mgr-th">Customer</th>
+                    <th className="bill-mgr-th">Date</th>
+                    <th className="bill-mgr-th">Items</th>
+                    <th className="bill-mgr-th">Total</th>
+                    <th className="bill-mgr-th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bills && bills.length > 0 ? bills
+                    .filter(bill => (bill?.paymentType ?? "").toUpperCase() === 'CASH')
+                    .filter(bill => (bill?.customerName ?? "").toLowerCase().includes(keyword.toLowerCase()) || (bill?.invoiceNo ?? "").toLowerCase().includes(keyword.toLowerCase()))
+                    .map(bill => (
+                      <tr key={bill._id}>
+                        <td className="bill-mgr-td" data-label="Customer">{bill.customerName} ({bill.invoiceNo})</td>
+                        <td className="bill-mgr-td" data-label="Date">{bill.createdAt ? bill.createdAt.split('T')[0] : 'N/A'}</td>
+                        <td className="bill-mgr-td" data-label="Items">{bill.items?.length || 0}</td>
+                        <td className="bill-mgr-td" data-label="Total">₹{bill.grandTotal}</td>
+                        <td className="bill-mgr-td" data-label="Actions">
+                          <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>
+                            <i className="fa-brands fa-whatsapp"></i> Share
+                          </button>
+                        </td>
+                      </tr>
+                    )) : <tr><td className="bill-mgr-td" colSpan="5" style={{ textAlign: "center" }}>No bills found</td></tr>}
                 </tbody>
               </table>
             </div>
