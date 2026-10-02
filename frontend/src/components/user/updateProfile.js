@@ -70,7 +70,7 @@ export default function UpdateProfile() {
     };
 
     // 3. UI Guard: If user is not yet loaded, return null or a loader
-    if (!user) return <div className="text-center mt-5">Loading profile...</div>;
+    if (!user) return <div className="text-center mt-5">Loading profile...</div>
 
     return (
         <Fragment>
