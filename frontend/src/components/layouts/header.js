@@ -359,7 +359,7 @@ export default function Header() {
 
                 <div className="logo">
 
-                    <img src="/headingLogo.png" alt="Entri Book Logo" className="heading-logo" />  <span>Entri Book</span>
+                    <img src="/headingLogo.png" alt="Entri Book Logo" className="heading-logo" />  <span className="app-headlines" >Entri Book</span>
 
                 </div>
 
