@@ -19,11 +19,6 @@ body {
     padding-top: 85px;
 }
 
-.app-headlines {
-  font-family: "Lilita One", cursive;
-  font-weight: 400;
-}
-
 .floating-navbar {
     position: fixed;
     top: 10px;
