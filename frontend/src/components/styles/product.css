@@ -62,8 +62,9 @@
 
 .prod-mgr-controls {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;   /*---2fr to 1fr - 1st one   new*/ 
     gap: 20px;
+    align-items: center;   /*---new*/
 }
 
 .prod-mgr-add-container {
@@ -78,6 +79,7 @@
     border-radius: 12px;
     outline: none;
     box-sizing: border-box;
+    
 }
 
 .prod-mgr-btn-add {
@@ -142,7 +144,7 @@
     border: 1px solid var(--prod-mgr-border);
     border-radius: 12px;
     padding: 10px;
-    white-space: nowrap;
+    white-space: nowrapH;
 }
 
 .prod-mgr-action-btns {
