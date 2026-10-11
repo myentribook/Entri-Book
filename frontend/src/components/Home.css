@@ -34,10 +34,17 @@
     margin-top: 20px;
 }
 
-.upi-grid {
+/* .upi-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 100px;
+} */
+
+.upi-grid {
+    display: flex; /* grid-க்கு பதில் flex பயன்படுத்தலாம் */
+    justify-content: flex-start; /* இடது பக்கத்தில் இருந்து வரிசையாக வரும் */
+    gap: 40px; /* ஐகான்களுக்கு இடைப்பட்ட space (30px - 50px வரை மாற்றலாம்) */
+    flex-wrap: wrap;
 }
 
 @media (max-width: 600px) {
