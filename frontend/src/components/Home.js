@@ -99,6 +99,13 @@ export default function Home() {
                 <span className="upi-label">Purchase <br /> Management</span>
               </Link>
 
+            </div>
+          </div>
+
+          <div className="section-wrapper">
+            <h2 className="upi-title">Explore & Guidelines</h2>
+            <div className="upi-grid">
+
               <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Search Products">
                 <div className="icon-circle"><i className="fas fa-search"></i></div>
                 <span className="upi-label">Search<br />Products</span>
@@ -109,15 +116,15 @@ export default function Home() {
                 <span className="upi-label">Terms & <br />Conditions</span>
               </Link>
 
-               <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
+              <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
                 <div className="icon-circle"><i className="fa-solid fa-award"></i></div>
                 <span className="upi-label">Comment & <br /> Reviews</span>
-               </Link>
+              </Link>
             </div>
           </div>
 
           <div className="section-wrapper">
-            <h2 className="upi-title"><i class="fa-solid fa-chart-column" style={{color:'#0056b3', marginRight:"10px" , fontWeight:'bold'}}></i> Business Overview</h2>
+            <h2 className="upi-title"><i class="fa-solid fa-chart-column" style={{ color: '#0056b3', marginRight: "10px", fontWeight: 'bold' }}></i> Business Overview</h2>
             <div className="dashboard-grid">
               {dashboardData.map((card, index) => (
                 <div key={index} className="card-wrapper">
