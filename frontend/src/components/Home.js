@@ -104,8 +104,9 @@ export default function Home() {
 
           <div className="section-wrapper">
             <h2 className="upi-title">Explore & Guidelines</h2>
-            <div className="upi-grid">
-              <div className="Explore-guidelines">
+            <div className="Explore-guidelines">
+              <div className="upi-grid">
+
 
                 <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Search Products">
                   <div className="icon-circle"><i className="fas fa-search"></i></div>
