@@ -249,6 +249,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getComments, addComment } from '../../actions/commentAction';
 import { clearCommentError, clearCommentCreated } from '../../slices/commentSlice';
 import toast, { Toaster } from "react-hot-toast";
+import confetti from 'canvas-confetti'; // 1. Confetti import panniyaachu
 import Loader from '../layouts/loader';
 import '../styles/reviews.css';
 
@@ -367,24 +368,12 @@ export default function Reviews() {
         const trimmedComment = comment.trim();
         if (!trimmedComment) return;
 
-        // Confetti burst animation trigger on click
-        const container = document.getElementById('ebRevBtnContainer');
-        if (container) {
-            const colors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
-            for (let i = 0; i < 24; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('eb-rev-confetti-particle');
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 60 + Math.random() * 80;
-                particle.style.setProperty('--end-x', `${Math.cos(angle) * distance}px`);
-                particle.style.setProperty('--end-y', `${Math.sin(angle) * distance}px`);
-                particle.style.setProperty('--end-rot', `${Math.random() * 360}deg`);
-                container.appendChild(particle);
-                particle.classList.add('eb-rev-burst-active');
-                setTimeout(() => particle.remove(), 700);
-            }
-        }
+        // 2. Button click pannum pothu alagaana confetti burst trigger aagum
+        confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.7 }
+        });
 
         dispatch(addComment({ name: trimmedName || 'Anonymous', comment: trimmedComment }));
     };
@@ -428,7 +417,7 @@ export default function Reviews() {
                                             </div>
                                         </form>
                                     </div>
-                                    <div className="eb-rev-btn-action-wrapper" id="ebRevBtnContainer">
+                                    <div className="eb-rev-btn-action-wrapper">
                                         <button type="submit" form="ebRevCommentForm" className="eb-rev-submit-trigger-btn" disabled={loading}>
                                             {loading ? 'Posting...' : 'Post Feedback Now'}
                                         </button>
