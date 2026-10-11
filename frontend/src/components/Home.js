@@ -105,21 +105,24 @@ export default function Home() {
           <div className="section-wrapper">
             <h2 className="upi-title">Explore & Guidelines</h2>
             <div className="upi-grid">
+              <div className="Explore-guidelines">
 
-              <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Search Products">
-                <div className="icon-circle"><i className="fas fa-search"></i></div>
-                <span className="upi-label">Search<br />Products</span>
-              </Link>
+                <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Search Products">
+                  <div className="icon-circle"><i className="fas fa-search"></i></div>
+                  <span className="upi-label">Search<br />Products</span>
+                </Link>
 
-              <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
-                <div className="icon-circle"><i className="fa-solid fa-file-contract"></i></div>
-                <span className="upi-label">Terms & <br />Conditions</span>
-              </Link>
+                <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
+                  <div className="icon-circle"><i className="fa-solid fa-file-contract"></i></div>
+                  <span className="upi-label">Terms & <br />Conditions</span>
+                </Link>
 
-              <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
-                <div className="icon-circle"><i className="fa-solid fa-award"></i></div>
-                <span className="upi-label">Comment & <br /> Reviews</span>
-              </Link>
+                <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
+                  <div className="icon-circle"><i className="fa-solid fa-award"></i></div>
+                  <span className="upi-label">Comment & <br /> Reviews</span>
+                </Link>
+
+              </div>
             </div>
           </div>
 
