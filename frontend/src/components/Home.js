@@ -294,7 +294,7 @@ export default function Home() {
 
                 {/* Comment & Reviews link with Floating Heart Popup */}
                 <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn review-upi-btn" aria-label="Comment and Reviews">
-                  <div className="icon-circle"><i className="fa-solid fa-award"  style="--fa-animation-duration: 2s;"></i></div>
+                  <div className="icon-circle"><i className="fa-solid fa-award" ></i></div>
                   <span className="upi-label">Comment & <br /> Reviews</span>
 
                   {showHeartPopup && (
