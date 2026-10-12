@@ -371,7 +371,7 @@ export default function Header() {
 
                 <Link to="/subscription" style={{ textDecoration: 'none' }} className="sub-btn-unique" aria-label="Subscribe">
 
-                    <i className="fa-solid fa-crown"></i> Pay Now
+                    <i class="fa-brands fa-web-awesome"></i> Pay Now
 
                 </Link>
 

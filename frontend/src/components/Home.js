@@ -283,7 +283,7 @@ export default function Home() {
               <div className="upi-grid">
 
                 <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Search Products">
-                  <div className="icon-circle"><i className="fas fa-search"></i></div>
+                  <div className="icon-circle"><i class="fa-solid fa-magnifying-glass-location"></i></div>
                   <span className="upi-label">Search<br />Products</span>
                 </Link>
 
@@ -294,7 +294,7 @@ export default function Home() {
 
                 {/* Comment & Reviews link with Floating Heart Popup */}
                 <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn review-upi-btn" aria-label="Comment and Reviews">
-                  <div className="icon-circle"><i className="fa-solid fa-award" ></i></div>
+                  <div className="icon-circle"><i className="fa-solid fa-comments" ></i></div>
                   <span className="upi-label">Comment & <br /> Reviews</span>
 
                   {showHeartPopup && (
