@@ -285,7 +285,7 @@ export default function Home() {
               <div className="upi-grid">
 
                 <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Search Products">
-                  <div className="icon-circles"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+                  <div className="icon-circles"><i class="fa-solid fa-magnifying-glass"></i></div>
                   <span className="upi-label">Search<br />Products</span>
                 </Link>
 

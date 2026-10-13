@@ -97,10 +97,10 @@
 }
 
 .icon-circle {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
     background-color: #0056b3;
-    -webkit-text-stroke: 1.5px #ffffff;
+    -webkit-text-stroke: 1px #ffffff;
     color: #0056b3;
     border-radius: 50%;
     display: flex;
