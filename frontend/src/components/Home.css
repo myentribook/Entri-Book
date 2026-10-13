@@ -101,7 +101,7 @@
     height: 60px;
     background-color: #0056b3;
     -webkit-text-stroke: 1.5px #ffffff;
-    /* color: white; */
+    color: #0056b3;
     border-radius: 50%;
     display: flex;
     align-items: center;
