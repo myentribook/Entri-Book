@@ -425,7 +425,7 @@ export default function Header() {
 
                         </Link>
 
-                    )}  <span className='app-name' >entri <span className='app-name'>book</span></span>
+                    )}  <span style={{marginLeft:"30px"}} className='app-name' >entri <span className='app-name'>book</span></span>
 
                 </div>
 

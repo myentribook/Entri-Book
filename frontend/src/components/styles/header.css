@@ -95,26 +95,17 @@ body {
 /* subscribe button  */
 
 .sub-btn-unique {
-    background: var(--primary-blue);
-    color: white;
+    /* background: var(--primary-blue); */
+    /* color: white; */
     border: none;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 14px;
+    /* padding: 6px 14px; */
+    /* border-radius: 8px; */
+    font-size: 24px;
     font-weight: 500;
     cursor: pointer;
-    margin-right: 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: opacity 0.3s;
-    position: relative;
-    /* Required for the shine effect */
-    overflow: hidden;
-    /* Keeps the shine inside the button */
 }
 
-/* Glassy Shine Animation */
+/* Glassy Shine Animation
 .sub-btn-unique::after {
     content: '';
     position: absolute;
@@ -125,7 +116,7 @@ body {
     background: rgba(255, 255, 255, 0.3);
     transform: rotate(30deg);
     animation: shine 3s infinite;
-}
+} */
 
 @keyframes shine {
     0% {
