@@ -255,23 +255,23 @@ export default function Home() {
             <h2 className="upi-title"></h2>
             <div className="Explore-guidelines">
               <div className="upi-grid">
-                <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btns" aria-label="Sales and Billing">
-                  <div className="icon-circles"><i className="fa-solid fa-receipt"></i></div>
+                <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btn" aria-label="Sales and Billing">
+                  <div className="icon-circle"><i className="fa-solid fa-receipt"></i></div>
                   <span className="upi-label">Sales<br />& Billing</span>
                 </Link>
 
-                <Link to="/product" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Products and Stock">
-                  <div className="icon-circles"><i className="fa-solid fa-boxes-stacked"></i></div>
+                <Link to="/product" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Products and Stock">
+                  <div className="icon-circle"><i className="fa-solid fa-boxes-stacked"></i></div>
                   <span className="upi-label">Products<br />& Stock</span>
                 </Link>
 
-                <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Credit Ledger">
-                  <div className="icon-circles"><i className="fa-solid fa-hand-holding-dollar"></i></div>
+                <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
+                  <div className="icon-circle"><i className="fa-solid fa-hand-holding-dollar"></i></div>
                   <span className="upi-label">Credit<br /> Ledger</span>
                 </Link>
 
-                <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Purchase Management">
-                  <div className="icon-circles"><i className="fa-solid fa-truck-loading"></i></div>
+                <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
+                  <div className="icon-circle"><i className="fa-solid fa-truck-loading"></i></div>
                   <span className="upi-label">Purchase <br /> Management</span>
                 </Link>
 
@@ -284,18 +284,18 @@ export default function Home() {
             <div className="Explore-guidelines">
               <div className="upi-grid">
 
-                <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Search Products">
-                  <div className="icon-circle"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+                <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Search Products">
+                  <div className="icon-circles"><i class="fa-solid fa-magnifying-glass-location"></i></div>
                   <span className="upi-label">Search<br />Products</span>
                 </Link>
 
-                <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
-                  <div className="icon-circle"><i className="fa-solid fa-file-contract"></i></div>
+                <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Purchase Management">
+                  <div className="icon-circles"><i className="fa-solid fa-file-contract"></i></div>
                   <span className="upi-label">Terms & <br />Conditions</span>
                 </Link>
 
-                <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btn review-upi-btn" aria-label="Comment and Reviews">
-                  <div className="icon-circle"><i className="fa-solid fa-comments" ></i></div>
+                <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btns review-upi-btn" aria-label="Comment and Reviews">
+                  <div className="icon-circles"><i className="fa-solid fa-comments" ></i></div>
                   <span className="upi-label">Comment & <br /> Reviews</span>
 
                   {showHeartPopup && (
