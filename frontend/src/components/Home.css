@@ -113,13 +113,14 @@
     width: 60px;
     height: 60px;
     /* background-color: #0056b3; */
-    color: #0056b3;
+    color: #E1F0FA;
+    -webkit-text-stroke: 2px #0056b3;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
-    margin-bottom: 15px;
+    font-size: 1.7rem;
+    margin-bottom: 30px;
 }
 
 .upi-label {
@@ -228,10 +229,12 @@
         opacity: 0;
         transform: translateY(0px) scale(0.5);
     }
+
     20% {
         opacity: 1;
         transform: translateY(-12px) scale(1.1);
     }
+
     100% {
         opacity: 0;
         transform: translateY(-40px) scale(1);
