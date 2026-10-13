@@ -96,13 +96,14 @@ body {
 
 .sub-btn-unique {
     /* background: var(--primary-blue); */
-    /* color: white; */
+    color: #000000 !important;
     border: none;
     /* padding: 6px 14px; */
     /* border-radius: 8px; */
     font-size: 24px;
     font-weight: 500;
     cursor: pointer;
+    margin-right: 16px;
 }
 
 /* Glassy Shine Animation
