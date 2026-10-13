@@ -252,7 +252,7 @@ export default function Home() {
           <Toaster />
           <MetaData title={'Entri Book'} />
           <div className="section-wrapper">
-            <h2 className="upi-title"></h2>
+            <h2 className="upi-title">Business Suite</h2>
 
             <div className="upi-grid">
               <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btn" aria-label="Sales and Billing">
