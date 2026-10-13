@@ -254,22 +254,22 @@
             <div className="section-wrapper">
               <h2 className="upi-title"></h2>
               <div className="upi-grid">
-                <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btn" aria-label="Sales and Billing">
+                <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btns" aria-label="Sales and Billing">
                   <div className="icon-circles"><i className="fa-solid fa-receipt"></i></div>
                   <span className="upi-label">Sales<br />& Billing</span>
                 </Link>
 
-                <Link to="/product" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Products and Stock">
+                <Link to="/product" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Products and Stock">
                   <div className="icon-circles"><i className="fa-solid fa-boxes-stacked"></i></div>
                   <span className="upi-label">Products<br />& Stock</span>
                 </Link>
 
-                <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
+                <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Credit Ledger">
                   <div className="icon-circles"><i className="fa-solid fa-hand-holding-dollar"></i></div>
                   <span className="upi-label">Credit<br /> Ledger</span>
                 </Link>
 
-                <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
+                <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Purchase Management">
                   <div className="icon-circles"><i className="fa-solid fa-truck-loading"></i></div>
                   <span className="upi-label">Purchase <br /> Management</span>
                 </Link>
