@@ -359,7 +359,73 @@ export default function Header() {
 
                 <div className="logo">
 
-                    <img src="/headingLogo.png" alt="Entri Book Logo" className="heading-logo" />  <span className='app-name' >entri <span className='app-name'>book</span></span>
+                    {isAuthenticated ? (
+
+                        <Dropdown className='d-inline'>
+
+                            <Dropdown.Toggle id='header-dropdown-toggle' className="border-0 bg-transparent p-0">
+
+                                <figure className='avatar avatar-nav-custom m-0'>
+
+                                    <Image
+
+                                        src={user?.avatar || '/images/default_avatar.jpg'}
+
+                                        roundedCircle
+
+                                        alt={user?.name || 'User'}
+
+                                    />
+
+                                </figure>
+
+                            </Dropdown.Toggle>
+
+
+
+                            <Dropdown.Menu align="end" className="header-dropdown-menu">
+
+                                <Dropdown.Header className="header-user-name">
+
+                                    {user?.name || 'User'}
+
+                                </Dropdown.Header>
+
+                                <Dropdown.Divider />
+
+                                {user?.role === 'admin' && <Dropdown.Item as={Link} onClick={() => { navigate('/admin') }} className='text-dark' to="/admin" style={{ fontWeight: 'bold' }} > <i class="fa-solid fa-user-tie" style={{ paddingRight: "7px" }}></i> admin</Dropdown.Item>}
+
+                                <Dropdown.Item as={Link} onClick={() => { navigate('/myprofile') }} className='text-dark' to="/myprofile" style={{ fontWeight: 'bold' }} > <i class="fa-solid fa-address-card" style={{ paddingRight: "7px" }}></i> Profile</Dropdown.Item>
+
+
+
+                                <Dropdown.Item
+
+                                    onClick={logoutHandler}
+
+                                    className='text-danger'
+
+                                    style={{ fontWeight: 'bold' }}
+
+                                >
+
+                                    <i class="fa-solid fa-right-from-bracket" style={{ paddingRight: "7px" }}></i> Logout
+
+                                </Dropdown.Item>
+
+                            </Dropdown.Menu>
+
+                        </Dropdown>
+
+                    ) : (
+
+                        <Link to="/login" className="user-icon-btn" aria-label="Login">
+
+                            <i className="fa-regular fa-user"></i>
+
+                        </Link>
+
+                    )}  <span className='app-name' >entri <span className='app-name'>book</span></span>
 
                 </div>
 
@@ -371,79 +437,13 @@ export default function Header() {
 
                 <Link to="/subscription" style={{ textDecoration: 'none' }} className="sub-btn-unique" aria-label="Subscribe">
 
-                    <i class="fa-brands fa-web-awesome"></i> Pay Now
+                    <i class="fa-solid fa-bell"></i>
 
                 </Link>
 
 
 
-                {isAuthenticated ? (
 
-                    <Dropdown className='d-inline'>
-
-                        <Dropdown.Toggle id='header-dropdown-toggle' className="border-0 bg-transparent p-0">
-
-                            <figure className='avatar avatar-nav-custom m-0'>
-
-                                <Image
-
-                                    src={user?.avatar || '/images/default_avatar.jpg'}
-
-                                    roundedCircle
-
-                                    alt={user?.name || 'User'}
-
-                                />
-
-                            </figure>
-
-                        </Dropdown.Toggle>
-
-
-
-                        <Dropdown.Menu align="end" className="header-dropdown-menu">
-
-                            <Dropdown.Header className="header-user-name">
-
-                                {user?.name || 'User'}
-
-                            </Dropdown.Header>
-
-                            <Dropdown.Divider />
-
-                            {user?.role === 'admin' && <Dropdown.Item as={Link} onClick={() => { navigate('/admin') }} className='text-dark' to="/admin" style={{ fontWeight: 'bold' }} > <i class="fa-solid fa-user-tie" style={{ paddingRight: "7px" }}></i> admin</Dropdown.Item>}
-
-                            <Dropdown.Item as={Link} onClick={() => { navigate('/myprofile') }} className='text-dark' to="/myprofile" style={{ fontWeight: 'bold' }} > <i class="fa-solid fa-address-card" style={{ paddingRight: "7px" }}></i> Profile</Dropdown.Item>
-
-
-
-                            <Dropdown.Item
-
-                                onClick={logoutHandler}
-
-                                className='text-danger'
-
-                                style={{ fontWeight: 'bold' }}
-
-                            >
-
-                                <i class="fa-solid fa-right-from-bracket" style={{ paddingRight: "7px" }}></i> Logout
-
-                            </Dropdown.Item>
-
-                        </Dropdown.Menu>
-
-                    </Dropdown>
-
-                ) : (
-
-                    <Link to="/login" className="user-icon-btn" aria-label="Login">
-
-                        <i className="fa-regular fa-user"></i>
-
-                    </Link>
-
-                )}
 
             </div>
 
