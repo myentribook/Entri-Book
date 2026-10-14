@@ -271,7 +271,7 @@ export default function Home() {
               </Link>
 
               <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
-                <div className="icon-circle"><i class="fa-solid fa-cart-flatbed"></i></div>
+                <div className="icon-circle"><i class="fa-solid fa-dolly"></i></div>
                 <span className="upi-label">Purchase <br /> Management</span>
               </Link>
 
