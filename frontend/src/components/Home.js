@@ -266,7 +266,7 @@ export default function Home() {
               </Link>
 
               <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
-                <div className="icon-circle"><i class="fa-solid fa-book-bookmark"></i></div>
+                <div className="icon-circle"><i class="fa-solid fa-address-book"></i></div>
                 <span className="upi-label">Credit<br /> Ledger</span>
               </Link>
 
