@@ -256,22 +256,22 @@ export default function Home() {
 
             <div className="upi-grid">
               <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btn" aria-label="Sales and Billing">
-                <div className="icon-circle"><i class="fa-regular fa-file-lines"></i></div>
+                <div className="icon-circle"><i class="fa-solid fa-receipt"></i></div>
                 <span className="upi-label">Sales<br />& Billing</span>
               </Link>
 
               <Link to="/product" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Products and Stock">
-                <div className="icon-circle"><i class="fa-solid fa-box-open"></i></div>
+                <div className="icon-circle"><i class="fa-solid fa-boxes-stacked"></i></div>
                 <span className="upi-label">Products<br />& Stock</span>
               </Link>
 
               <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
-                <div className="icon-circle"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div className="icon-circle"><i class="fa-solid fa-book-bookmark"></i></div>
                 <span className="upi-label">Credit<br /> Ledger</span>
               </Link>
 
               <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
-                <div className="icon-circle"><i class="fa-solid fa-truck-fast"></i></div>
+                <div className="icon-circle"><i class="fa-solid fa-cart-flatbed"></i></div>
                 <span className="upi-label">Purchase <br /> Management</span>
               </Link>
 
