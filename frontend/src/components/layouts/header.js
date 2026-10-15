@@ -429,9 +429,9 @@ export default function Header() {
                             to="/login"
                             className="user-icon-btn"
                             aria-label="Login"
-                            style={{ textDecoration: 'none', borderBottom: 'none', display: 'inline-block' }}
+                            style={{ textDecoration: 'none', borderBottom: 'none' }}
                         >
-                            <i className="fa-solid fa-bars-staggered" style={{ textDecoration: 'none' }}></i>
+                            <i class="fa-solid fa-circle-user" style={{ textDecoration: "none" }}></i>
                         </Link>
 
                     )}  <span style={{ marginLeft: "30px" }} className='app-name' >entri <span className='app-name'>book</span></span>
