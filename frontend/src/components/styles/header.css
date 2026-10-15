@@ -96,67 +96,33 @@ body {
 
 /* =========================================== subscription button shine animation and it things ===================================================== */
 
-/* Unique Button Styling */
+
+
 .sub-btn-unique {
-  display: inline-block;
-  position: relative;
-  overflow: hidden; /* Shine effect veliya varamaathiri clips pannum */
-  border-radius: 50%; /* Circle-la irukka (or you can adjust border-radius) */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 24px;
 }
 
-/* Subscription Button Box */
+
 .subscription-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;  /* Ungaloda size-kuetha maari width & height change pannikkalam */
-  height: 50px;
-  background-color: #e3f2fd; /* Image-la irukkra maari oru light blue background */
-  border: 2px solid #1976d2; /* Outer dark blue line/border */
-  border-radius: 50%;
-  color: #1976d2; /* Bell icon color */
-  font-size: 20px;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* ::after use panni shine/glossy effect */
-.sub-btn-unique::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    60deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    transparent 100%
-  );
-  transform: rotate(30deg) translateX(-100%);
-  transition: transform 0.6s ease-in-out;
-}
-
-/* Mouse hover pannum pothu shine animation run aagum
-.sub-btn-unique:hover::after {
-  transform: rotate(30deg) translateX(100%);
-} */
-
-.sub-btn-unique::after {
-  animation: shine 3s infinite;
-}
-
-@keyframes shine {
-  0% {
-    transform: rotate(30deg) translateX(-100%);
-  }
-  20% {
-    transform: rotate(30deg) translateX(100%);
-  }
-  100% {
-    transform: rotate(30deg) translateX(100%);
-  }
+    width: 60px;
+    height: 60px;
+    color: #E1F0FA;
+    -webkit-text-stroke: 1px #004496;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 15px;
 }
 
 /* ================================================================================ */
