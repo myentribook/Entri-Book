@@ -280,8 +280,8 @@ export default function Home() {
           </div>
 
           <div className="section-wrapper">
-            <h2 className="upi-title">Explore & Guidelines</h2>
             <div className="Explore-guidelines">
+              <h2 className="upi-title">Explore & Guidelines</h2>
               <div className="upi-grid">
 
                 <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Search Products">
