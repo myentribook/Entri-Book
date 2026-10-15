@@ -93,52 +93,35 @@ body {
     font-size: 24px;
 }
 
-/* Subscribe Button Styling */
-.bell {
-    position: relative;
-    overflow: hidden;
-    color: #FA8E8C; /* Interior color */
-    -webkit-text-stroke: 1px solid #FD6766;
-    color: #000000 !important;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 24px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-right: 16px;
-    display: inline-flex;
+
+.subscription-btn {
+    width: 60px;
+    height: 60px;
+    color: #E1F0FA;
+    -webkit-text-stroke: 1px #004496;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* Shine Effect */
-.bell::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -60%;
-    width: 20%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: rotate(30deg);
-    animation: shine 3s infinite;
+    font-size: 2rem;
+    margin-bottom: 15px;
 }
 
 
-@keyframes shine {
-    0% {
-        left: -60%;
-    }
-
-    20%,
-    100% {
-        left: 150%;
-    }
+.sub-btn-unique{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 24px;
 }
 
-.bell:hover {
-    opacity: 0.9;
-}
+
 
 /* Add or update this in your header.css */
 .logo-link {
