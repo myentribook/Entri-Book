@@ -97,7 +97,6 @@ body {
 /* =========================================== subscription button shine animation and it things ===================================================== */
 
 
-
 .sub-btn-unique {
   background: none;
   border: none;
@@ -108,33 +107,27 @@ body {
   align-items: center;
   transition: opacity 0.2s ease, transform 0.1s ease;
   -webkit-tap-highlight-color: transparent;
-  /* Margin-a koraichu alignment fix panniyachhi */
   margin-bottom: 0; 
-  position: relative; /* ::after shine effect-ukku thevai */
-  overflow: hidden;   /* Shine veliya varama irukka */
+  position: relative;
+  overflow: hidden;
   border-radius: 50%;
 }
 
 .subscription-btn {
-  /* Size-a 60px-la irundhu 35px-ku chinnadhu panniyachhi */
   width: 35px;
   height: 35px;
-  
-  /* Outer line & Inside color (Image 1-la irukka maari) */
   background-color: #E1F0FA;
   border: 1.5px solid #004496;
   border-radius: 50%;
-  
-  /* Icon styling */
   color: #004496;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem; /* Icon size-um chinnadhu panniyachhi */
+  font-size: 1.1rem;
   margin-bottom: 0;
 }
 
-/* ::after use panni Shine Effect */
+/* Automatic Shine Effect Using ::after */
 .sub-btn-unique::after {
   content: '';
   position: absolute;
@@ -149,12 +142,21 @@ body {
     transparent 70%
   );
   transform: rotate(30deg) translateX(-100%);
-  transition: transform 0.6s ease-in-out;
+  /* Continuous Automatic Animation */
+  animation: autoShine 3s infinite ease-in-out;
 }
 
-/* Mouse hover pannum pothu shine aagum */
-.sub-btn-unique:hover::after {
-  transform: rotate(30deg) translateX(100%);
+/* Keyframes for Automatic Shine */
+@keyframes autoShine {
+  0% {
+    transform: rotate(30deg) translateX(-100%);
+  }
+  30% {
+    transform: rotate(30deg) translateX(100%);
+  }
+  100% {
+    transform: rotate(30deg) translateX(100%);
+  }
 }
 
 /* ================================================================================ */
