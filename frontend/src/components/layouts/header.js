@@ -419,10 +419,19 @@ export default function Header() {
 
                     ) : (
 
-                        <Link to="/login" className="user-icon-btn" aria-label="Login">
+                        // <Link to="/login" className="user-icon-btn" aria-label="Login">
 
-                            <i style={{ textDecoration: "none" }} class="fa-solid fa-bars-staggered"></i>
+                        //     <i style={{ textDecoration: "none" }} class="fa-solid fa-bars-staggered"></i>
 
+                        // </Link>
+
+                        <Link
+                            to="/login"
+                            className="user-icon-btn"
+                            aria-label="Login"
+                            style={{ textDecoration: 'none', borderBottom: 'none', display: 'inline-block' }}
+                        >
+                            <i className="fa-solid fa-bars-staggered" style={{ textDecoration: 'none' }}></i>
                         </Link>
 
                     )}  <span style={{ marginLeft: "30px" }} className='app-name' >entri <span className='app-name'>book</span></span>
