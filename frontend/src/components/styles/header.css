@@ -15,7 +15,7 @@
 }
 
 body {
-    background-color: #f8f9fe;
+    background-color: var(--bg-color);
     padding-top: 85px;
 }
 
