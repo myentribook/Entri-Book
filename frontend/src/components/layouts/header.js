@@ -419,22 +419,13 @@ export default function Header() {
 
                     ) : (
 
-                        // <Link to="/login" className="user-icon-btn" aria-label="Login">
+                        <Link to="/login" className="user-icon-btn" aria-label="Login">
 
-                        //     <i style={{ textDecoration: "none" }} class="fa-solid fa-bars-staggered"></i>
+                            <i className="fa-regular fa-user"></i>
 
-                        // </Link>
-
-                        <Link
-                            to="/login"
-                            className="user-icon-btn"
-                            aria-label="Login"
-                            style={{ textDecoration: 'none', borderBottom: 'none' }}
-                        >
-                            <i class="fa-solid fa-circle-user" style={{ textDecoration: "none" }}></i>
                         </Link>
 
-                    )}  <span style={{ marginLeft: "30px" }} className='app-name' >entri <span className='app-name'>book</span></span>
+                    )}  <span style={{marginLeft:"25px"}} className='app-name' >entri <span className='app-name'>book</span></span>
 
                 </div>
 
@@ -447,7 +438,7 @@ export default function Header() {
                 <Link to="/subscription" style={{ textDecoration: 'none' }} className="sub-btn-unique" aria-label="Subscribe">
 
                     <div className='subscription-btn'> <i class="fa-solid fa-bell"></i></div>
-
+                   
                 </Link>
 
 
