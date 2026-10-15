@@ -421,11 +421,11 @@ export default function Header() {
 
                         <Link to="/login" className="user-icon-btn" aria-label="Login">
 
-                           <i class="fa-solid fa-bars-staggered"></i>
+                            <i style={{ textDecoration: "none" }} class="fa-solid fa-bars-staggered"></i>
 
                         </Link>
 
-                    )}  <span style={{marginLeft:"30px"}} className='app-name' >entri <span className='app-name'>book</span></span>
+                    )}  <span style={{ marginLeft: "30px" }} className='app-name' >entri <span className='app-name'>book</span></span>
 
                 </div>
 
@@ -438,7 +438,7 @@ export default function Header() {
                 <Link to="/subscription" style={{ textDecoration: 'none' }} className="sub-btn-unique" aria-label="Subscribe">
 
                     <div className='subscription-btn'> <i class="fa-solid fa-bell"></i></div>
-                   
+
                 </Link>
 
 
