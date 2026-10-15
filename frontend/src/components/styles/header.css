@@ -116,10 +116,10 @@ body {
 .subscription-btn {
   width: 35px;
   height: 35px;
-  background-color: #E7C2F8;
-  border: 1.5px solid #B87ADB;
+  background-color: #E1F0FA;
+  border: 1.5px solid #004496;
   border-radius: 50%;
-  color: #B87ADB;
+  color: #004496;
   display: flex;
   align-items: center;
   justify-content: center;
