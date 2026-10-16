@@ -19,6 +19,7 @@ body {
     padding-top: 85px;
 }
 
+
 .app-name {
 
     font-family: 'Rowdies', sans-serif;
@@ -46,7 +47,7 @@ body {
     background: #f8fafc;
     border-radius: 12px;
     /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
-     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -98,65 +99,65 @@ body {
 
 
 .sub-btn-unique {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: opacity 0.2s ease, transform 0.1s ease;
-  -webkit-tap-highlight-color: transparent;
-  margin-bottom: 0; 
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 .subscription-btn {
-  width: 35px;
-  height: 35px;
-  background-color: #E1F0FA;
-  border: 1.5px solid #004496;
-  border-radius: 50%;
-  color: #004496;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  margin-bottom: 0;
+    width: 35px;
+    height: 35px;
+    background-color: #E1F0FA;
+    border: 1.5px solid #004496;
+    border-radius: 50%;
+    color: #004496;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    margin-bottom: 0;
 }
 
 /* Automatic Shine Effect Using ::after */
 .sub-btn-unique::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    60deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.7) 50%,
-    transparent 70%
-  );
-  transform: rotate(30deg) translateX(-100%);
-  /* Continuous Automatic Animation */
-  animation: autoShine 3s infinite ease-in-out;
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(60deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.7) 50%,
+            transparent 70%);
+    transform: rotate(30deg) translateX(-100%);
+    /* Continuous Automatic Animation */
+    animation: autoShine 3s infinite ease-in-out;
 }
 
 /* Keyframes for Automatic Shine */
 @keyframes autoShine {
-  0% {
-    transform: rotate(30deg) translateX(-100%);
-  }
-  30% {
-    transform: rotate(30deg) translateX(100%);
-  }
-  100% {
-    transform: rotate(30deg) translateX(100%);
-  }
+    0% {
+        transform: rotate(30deg) translateX(-100%);
+    }
+
+    30% {
+        transform: rotate(30deg) translateX(100%);
+    }
+
+    100% {
+        transform: rotate(30deg) translateX(100%);
+    }
 }
 
 /* ================================================================================ */
@@ -213,4 +214,8 @@ body {
     align-items: center;
     background-color: transparent !important;
     border: none !important;
+}
+
+.dotin {
+    font-size: 5px;
 }

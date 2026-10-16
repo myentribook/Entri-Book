@@ -425,7 +425,7 @@ export default function Header() {
 
                         </Link>
 
-                    )}  <span style={{marginLeft:"25px"}} className='app-name' >entri <span className='app-name'>book</span></span>
+                    )}  <span style={{ marginLeft: "25px" }} className='app-name' >entri <span className='app-name'>book<span className='dotin'>.in</span></span></span>
 
                 </div>
 
@@ -438,7 +438,7 @@ export default function Header() {
                 <Link to="/subscription" style={{ textDecoration: 'none' }} className="sub-btn-unique" aria-label="Subscribe">
 
                     <div className='subscription-btn'> <i class="fa-solid fa-bell"></i></div>
-                   
+
                 </Link>
 
 
