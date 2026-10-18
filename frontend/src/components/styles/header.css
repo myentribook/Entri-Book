@@ -115,32 +115,36 @@ body {
 }
 
 .subscription-btn {
-    background: rgba(var(--primary-blue-rgb), 0.1);
-    /* Normal-ah light blue background */
+    background-color: #eaf0f6;
+    /* 1st image-la irukkra light blue background */
     border-radius: 50%;
-    /* Circular background */
     cursor: pointer;
-    color: var(--primary-blue);
+    color: #0b4f8a;
+    /* 1st image-la irukkra dark blue icon color */
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    /* Circle size */
-    height: 40px;
-    /* Circle size */
-    transition: background 0.3s ease, color 0.3s ease;
+    width: 42px;
+    height: 42px;
+    transition: all 0.3s ease;
 }
 
 .subscription-btn i {
-    font-size: 20px;
+    font-size: 18px;
+    transition: all 0.3s ease;
 }
 
-/* Mouse hover panra apo varra effect */
+/* Mouse hover panra appo (2nd image look) */
 .sub-btn-unique:hover .subscription-btn {
-    background: var(--primary-blue);
-    /* Dark blue full background */
+    background-color: #0b4f8a;
+    /* 2nd image-la irukkra full dark blue circle */
+}
+
+.sub-btn-unique:hover .subscription-btn i {
     color: #ffffff;
     /* Icon white color-a maarum */
+    font-weight: 900;
+    /* Font Awesome-laiyee regular-a irukkunthathu solid (filled) aagidum */
 }
 
 /* ================================================================================ */
