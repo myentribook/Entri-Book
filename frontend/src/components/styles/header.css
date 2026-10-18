@@ -81,28 +81,30 @@ body {
 
 .user-icon-btn {
     text-decoration: none;
-    /* display: inline-block; */
+    display: inline-block;
 }
 
 .user-login-page {
-    width: 42px;
-    height: 42px;
+    width: 45px;
+    height: 45px;
     background-color: #eaf0f6;
-    /* Light soft blue background */
     border-radius: 50%;
     display: flex;
     align-items: center;
+    /* Vertical center */
     justify-content: center;
+    /* Horizontal center */
+    padding: 0;
+    margin: 0;
 }
 
 .user-login-page i {
     color: #0b4f8a;
-    /* Deep solid blue color for the user icon */
     font-size: 18px;
-}
-
-.user-login-page:hover {
-    background-color: #dce7f3;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    /* Icon-oda line spacing-ai correct pannum */
 }
 
 /* =========================================== subscription button shine animation and it things ===================================================== */
