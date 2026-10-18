@@ -81,7 +81,7 @@ body {
 
 .user-icon-btn {
     text-decoration: none;
-    display: inline-block;
+    /* display: inline-block; */
 }
 
 .user-login-page {
