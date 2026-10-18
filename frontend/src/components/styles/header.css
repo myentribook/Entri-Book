@@ -80,12 +80,16 @@ body {
 }
 
 .user-icon-btn {
-    background: none;
+    background: rgba(var(--primary-blue-rgb), 0.1); /* light blue background */
     border: none;
+    border-radius: 50%; /* circular background */
     cursor: pointer;
     color: var(--primary-blue);
     display: flex;
     align-items: center;
+    justify-content: center; /* center the icon */
+    width: 40px; /* size of the background circle */
+    height: 40px; /* size of the background circle */
     padding: 0;
     transition: opacity 0.5s;
 }
@@ -94,70 +98,34 @@ body {
     font-size: 24px;
 }
 
-
 /* =========================================== subscription button shine animation and it things ===================================================== */
 
 
 .sub-btn-unique {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: opacity 0.2s ease, transform 0.1s ease;
-    -webkit-tap-highlight-color: transparent;
-    margin-bottom: 0;
-    position: relative;
-    overflow: hidden;
-    border-radius: 50%;
+    display: inline-block;
 }
 
 .subscription-btn {
-    width: 35px;
-    height: 35px;
-    background-color: #E1F0FA;
-    border: 1.5px solid #004496;
-    border-radius: 50%;
-    color: #004496;
+    background: rgba(var(--primary-blue-rgb), 0.1); /* Normal-ah light blue background */
+    border-radius: 50%; /* Circular background */
+    cursor: pointer;
+    color: var(--primary-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    margin-bottom: 0;
+    width: 40px;  /* Circle size */
+    height: 40px; /* Circle size */
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Automatic Shine Effect Using ::after */
-.sub-btn-unique::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(60deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.7) 50%,
-            transparent 70%);
-    transform: rotate(30deg) translateX(-100%);
-    /* Continuous Automatic Animation */
-    animation: autoShine 3s infinite ease-in-out;
+.subscription-btn i {
+    font-size: 20px;
 }
 
-/* Keyframes for Automatic Shine */
-@keyframes autoShine {
-    0% {
-        transform: rotate(30deg) translateX(-100%);
-    }
-
-    30% {
-        transform: rotate(30deg) translateX(100%);
-    }
-
-    100% {
-        transform: rotate(30deg) translateX(100%);
-    }
+/* Mouse hover panra apo varra effect */
+.sub-btn-unique:hover .subscription-btn {
+    background: var(--primary-blue); /* Dark blue full background */
+    color: #ffffff; /* Icon white color-a maarum */
 }
 
 /* ================================================================================ */
