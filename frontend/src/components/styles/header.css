@@ -80,23 +80,39 @@ body {
 }
 
 .user-icon-btn {
-    background: rgba(var(--primary-blue-rgb), 0.1); /* light blue background */
-    border: none;
-    border-radius: 50%; /* circular background */
-    cursor: pointer;
-    color: var(--primary-blue);
-    display: flex;
-    align-items: center;
-    justify-content: center; /* center the icon */
-    width: 40px; /* size of the background circle */
-    height: 40px; /* size of the background circle */
-    padding: 0;
-    transition: opacity 0.5s;
+    text-decoration: none;
+    /* Link-oda underline-a remove panna */
+    display: inline-block;
 }
 
-.user-icon-btn i {
-    font-size: 24px;
+.user-login-page {
+    width: 45px;
+    /* Circle-oda size (neengal thevaiyanatharku mathikkalam) */
+    height: 45px;
+    background-color: #eef2f7;
+    /* Light blue/grey background color */
+    border-radius: 50%;
+    /* Complete round/circle aakkum */
+    display: flex;
+    align-items: center;
+    /* Icon-ai vertical-a center panrathu */
+    justify-content: center;
+    /* Icon-ai horizontal-a center panrathu */
+    transition: background-color 0.3s ease;
 }
+
+.user-login-page i {
+    color: #004080;
+    /* User icon-oda color (dark blue) */
+    font-size: 20px;
+    /* Icon-oda size */
+}
+
+/* Hover effect (mouse mela vekkum pothu) */
+.user-login-page:hover {
+    background-color: #dce6f1;
+}
+
 /* =========================================== subscription button shine animation and it things ===================================================== */
 
 
@@ -105,15 +121,19 @@ body {
 }
 
 .subscription-btn {
-    background: rgba(var(--primary-blue-rgb), 0.1); /* Normal-ah light blue background */
-    border-radius: 50%; /* Circular background */
+    background: rgba(var(--primary-blue-rgb), 0.1);
+    /* Normal-ah light blue background */
+    border-radius: 50%;
+    /* Circular background */
     cursor: pointer;
     color: var(--primary-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;  /* Circle size */
-    height: 40px; /* Circle size */
+    width: 40px;
+    /* Circle size */
+    height: 40px;
+    /* Circle size */
     transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -123,8 +143,10 @@ body {
 
 /* Mouse hover panra apo varra effect */
 .sub-btn-unique:hover .subscription-btn {
-    background: var(--primary-blue); /* Dark blue full background */
-    color: #ffffff; /* Icon white color-a maarum */
+    background: var(--primary-blue);
+    /* Dark blue full background */
+    color: #ffffff;
+    /* Icon white color-a maarum */
 }
 
 /* ================================================================================ */
