@@ -81,36 +81,28 @@ body {
 
 .user-icon-btn {
     text-decoration: none;
-    /* Link-oda underline-a remove panna */
     display: inline-block;
 }
 
 .user-login-page {
-    width: 45px;
-    /* Circle-oda size (neengal thevaiyanatharku mathikkalam) */
-    height: 45px;
-    background-color: #eef2f7;
-    /* Light blue/grey background color */
+    width: 42px;
+    height: 42px;
+    background-color: #eaf0f6;
+    /* Light soft blue background */
     border-radius: 50%;
-    /* Complete round/circle aakkum */
     display: flex;
     align-items: center;
-    /* Icon-ai vertical-a center panrathu */
     justify-content: center;
-    /* Icon-ai horizontal-a center panrathu */
-    transition: background-color 0.3s ease;
 }
 
 .user-login-page i {
-    color: #004080;
-    /* User icon-oda color (dark blue) */
-    font-size: 20px;
-    /* Icon-oda size */
+    color: #0b4f8a;
+    /* Deep solid blue color for the user icon */
+    font-size: 18px;
 }
 
-/* Hover effect (mouse mela vekkum pothu) */
 .user-login-page:hover {
-    background-color: #dce6f1;
+    background-color: #dce7f3;
 }
 
 /* =========================================== subscription button shine animation and it things ===================================================== */

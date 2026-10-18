@@ -421,7 +421,7 @@ export default function Header() {
 
                         <Link to="/login" className="user-icon-btn" aria-label="Login">
 
-                           <div className='user-login-page'> <i className="fa-regular fa-user"></i></div>
+                           <div className='user-login-page'> <i className="fa-solid fa-user"></i></div>
 
                         </Link>
 
