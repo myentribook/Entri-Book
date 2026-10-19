@@ -115,7 +115,14 @@ export default function Login() {
             <MetaData title={`Login`} />
             <div className="ka-login-page-wrapper">
                 <div className="ka-card">
-                    <h1 className="ka-title"> <i className="fa-solid fa-store"></i> Shop Owner Sign In</h1>
+                    {/* <div className="ka-brand-header">
+
+                        <span className="ka-brand-title">entribook<small style={{ fontWeight: 500, color: '#64748b' }}>.in</small></span>
+                    </div> */}
+
+                    <div className="ka-avatar-icon">
+                        <i className="fa-solid fa-store"></i> <h1 className="ka-title"> Shop Owner Sign In</h1>
+                    </div> 
                     <p className='ka-para'>Access your billing, inventory, and ledger in one place.</p>
 
                     <form onSubmit={submitHandler}>
