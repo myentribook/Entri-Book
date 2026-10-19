@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
 :root {
     --bg-color: #f4f7fd;
@@ -39,6 +39,196 @@ body {
     justify-content: space-between;
     align-items: center;
     width: calc(100% - 20px);
+    max-width: 900px;
+    height: 65px;
+    flex-shrink: 0;
+    margin: 0 auto;
+    padding: 0 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    font-size: 19px;
+    font-weight: 650;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.logo i {
+    margin-right: 10px;
+    color: var(--primary-blue);
+    font-size: 20px;
+}
+
+.logo .heading-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon-btn {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.user-login-page {
+    width: 45px;
+    height: 45px;
+    background-color: #eaf0f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.user-login-page i {
+    color: #0b4f8a;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+
+
+.sub-btn-unique {
+    display: inline-block;
+}
+
+.subscription-btn {
+    background-color: #eaf0f6;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0b4f8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    transition: all 0.3s ease;
+}
+
+.subscription-btn i {
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.sub-btn-unique:hover .subscription-btn {
+    background-color: #0b4f8a;
+}
+
+.sub-btn-unique:hover .subscription-btn i {
+    color: #ffffff;
+    font-weight: 900;
+}
+
+
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+
+.header-container .avatar-nav-custom {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.header-container .avatar-nav-custom img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.header-container .header-user-name {
+    font-weight: 700;
+    color: var(--text-dark);
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+#header-dropdown-toggle::after {
+    display: none !important;
+}
+
+.header-container .header-dropdown-menu {
+    margin-top: 10px !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+}
+
+#header-dropdown-toggle {
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.dotin {
+    font-size: 15px;
+} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+:root {
+    --bg-color: #f4f7fd;
+    --card-bg: #ffffff;
+    --text-dark: #0d121f;
+    --primary-blue: #0056b3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    padding-top: 85px;
+}
+
+
+.app-name {
+
+    font-family: 'Rowdies', sans-serif;
+    font-size: 1.3rem !important;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+}
+
+.floating-navbar {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% 20px);
     max-width: 900px;
     height: 65px;
     flex-shrink: 0;
@@ -174,24 +364,9 @@ body {
     border-radius: 50%;
 }
 
-.header-container .header-user-name {
-    font-weight: 700;
-    color: var(--text-dark);
-    padding: 8px 16px;
-    font-size: 14px;
-}
-
 /* Hide default dropdown arrow specifically for this header */
 #header-dropdown-toggle::after {
     display: none !important;
-}
-
-/* Dropdown menu styling isolated to this component */
-.header-container .header-dropdown-menu {
-    margin-top: 10px !important;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    min-width: 160px;
 }
 
 /* Ensure Toggle doesn't have extra styling */
@@ -201,6 +376,51 @@ body {
     align-items: center;
     background-color: transparent !important;
     border: none !important;
+}
+
+/* Container styling for the dropdown menu */
+.header-dropdown-menu {
+    border: 1px solid #eaeaea !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+    padding: 12px !important;
+    min-width: 240px !important;
+    margin-top: 10px !important;
+}
+
+/* User name header styling */
+.header-dropdown-menu .header-user-name {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    padding: 8px 12px !important;
+}
+
+/* Divider line */
+.header-dropdown-menu .dropdown-divider {
+    margin: 8px 0 !important;
+    border-top: 1px solid #f3f4f6 !important;
+}
+
+/* Individual dropdown items styled as cards */
+.header-dropdown-menu .dropdown-item {
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+    margin-bottom: 4px !important;
+    font-weight: 600 !important;
+    transition: background-color 0.2s ease !important;
+}
+
+/* Hover effect similar to notification cards */
+.header-dropdown-menu .dropdown-item:hover {
+    background-color: #f8fafc !important;
+}
+
+/* Styling for icons inside the dropdown items */
+.header-dropdown-menu .dropdown-item i {
+    font-size: 15px;
+    width: 20px;
+    text-align: center;
 }
 
 .dotin {
