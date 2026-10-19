@@ -102,7 +102,7 @@ export default function Login() {
             toast.error(error, { position: 'bottom-right' });
             dispatch(clearAuthError());
         }
-    }, [isAuthenticated, error, navigate, dispatch]); 
+    }, [isAuthenticated, error, navigate, dispatch]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -116,13 +116,13 @@ export default function Login() {
             <div className="ka-login-page-wrapper">
                 <div className="ka-card">
                     <div className="ka-brand-header">
-                        <div className="ka-avatar-icon">
-                            <i className="fa-solid fa-store"></i>
-                        </div>
+
                         <span className="ka-brand-title">entribook<small style={{ fontWeight: 500, color: '#64748b' }}>.in</small></span>
                     </div>
 
-                    <h1 className="ka-title">Shop Owner Sign In</h1>
+                    <div className="ka-avatar-icon">
+                        <i className="fa-solid fa-store"></i>
+                    </div> <h1 className="ka-title"> Shop Owner Sign In</h1>
                     <p className='ka-para'>Access your billing, inventory, and ledger in one place.</p>
 
                     <form onSubmit={submitHandler}>
@@ -135,7 +135,6 @@ export default function Login() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="name@business.com"
-                                    required
                                 />
                             </div>
                         </div>
@@ -149,7 +148,6 @@ export default function Login() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
                                     autoComplete="current-password"
-                                    required
                                 />
                             </div>
                         </div>
@@ -164,7 +162,7 @@ export default function Login() {
 
                         <div className="ka-footer-links">
                             <Link to='/register' className="register-link">
-                                <i className="fa-solid fa-user-plus"></i> New User? Register
+                                <i className="fa-solid fa-user-plus"></i> Register ?
                             </Link>
                             <Link to='/password/forgot' className="forgot-password">
                                 <i className="fa-solid fa-key"></i> Forgot Password?
