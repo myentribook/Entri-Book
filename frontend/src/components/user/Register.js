@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [userData, setUserData] = useState({
-        name: "", email: "", password: "", city: "", phone: "", gstin: "" //--new
+        name: "", email: "", password: "", city: "", phone: "", gstin: ""
     });
     const [avatar, setAvatar] = useState("");
     const [avatarPreview, setAvatarPreview] = useState("/images/default_avatar.jpg");
@@ -41,7 +41,7 @@ export default function Register() {
         formData.append('city', userData.city);
         formData.append('phone', userData.phone);
         formData.append('avatar', avatar);
-        formData.append('gstin', userData.gstin);        //--new
+        formData.append('gstin', userData.gstin);
 
         dispatch(register(formData));
     };
@@ -72,15 +72,18 @@ export default function Register() {
                 <div className="auth-wrapper-v2">
                     <form onSubmit={submitHandler} className="shadow-lg" encType="multipart/form-data">
                         
-                        {/* Header Badge */}
-                        <div className="brand-badge">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                            </svg>  <h1 className="auth-title">Welcome to Entri Book</h1>
+                        {/* Header Row: Icon Badge + Heading Side-by-Side Centered */}
+                        <div className="auth-header-row">
+                            <div className="brand-badge">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                            </div>
+                            <h1 className="auth-title">Welcome to Entri Book</h1>
                         </div>
 
-                       
-                        <p className="subtitle">Create Your Account to access your billing, inventory, and ledger.</p>
+                        {/* Centered Subtitle */}
+                        <p className="subtitle">Access your billing, inventory, and ledger in one place.</p>
 
                         {/* Full Name */}
                         <div className="form-group">
@@ -103,7 +106,7 @@ export default function Register() {
                             </div>
                         </div>
 
-                        {/* Email Address */}
+                        {/* Email */}
                         <div className="form-group">
                             <label className="form-label" htmlFor="email_field">EMAIL ID</label>
                             <div className="input-icon-wrapper">
@@ -145,7 +148,7 @@ export default function Register() {
                             </div>
                         </div>
 
-                        {/* Profile Picture */}
+                        {/* Profile Photo */}
                         <div className="form-group">
                             <label className="form-label">PROFILE PHOTO</label>
                             <div className="avatar-upload-container">
@@ -160,7 +163,7 @@ export default function Register() {
                                         className="custom-file-inputs" 
                                         id="customFile" 
                                     />
-                                    <label className="custom-file-labels" htmlFor="customFile">Upload a profile avatar image</label>
+                                    <label className="custom-file-labels" htmlFor="customFile">UPLOAD A PROFILE AVATAR IMAGE</label>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +217,7 @@ export default function Register() {
                             <div className="input-icon-wrapper">
                                 <span className="input-icon">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-2" />
                                     </svg>
                                 </span>
                                 <input
@@ -231,11 +234,7 @@ export default function Register() {
 
                         {/* Submit Button */}
                         <button type="submit" className="submit-btn" disabled={loading}>
-                            {loading ? "Registering..." : (
-                                <>
-                                    Register Account &rarr;
-                                </>
-                            )}
+                            {loading ? "Registering..." : "Register Account \u2192"}
                         </button>
                     </form>
                 </div>
