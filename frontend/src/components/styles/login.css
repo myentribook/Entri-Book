@@ -1,6 +1,6 @@
 /* Page Wrapper to center and style locally without touching body */
 .ka-login-page-wrapper {
-    background: linear-gradient(135deg, #f0f4f9 0%, #e2ecf8 100%);
+    background: #f8fafc;
     width: 100%;
     min-height: 100vh;
     display: flex;
