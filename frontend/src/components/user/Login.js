@@ -121,8 +121,9 @@ export default function Login() {
                     </div> */}
 
                     <div className="ka-avatar-icon">
-                        <i className="fa-solid fa-store"></i> <h1 className="ka-title"> Shop Owner Sign In</h1>
+                        <i className="fa-solid fa-store"></i> 
                     </div> 
+                    <h1 className="ka-title"> Shop Owner Sign In</h1>
                     <p className='ka-para'>Access your billing, inventory, and ledger in one place.</p>
 
                     <form onSubmit={submitHandler}>
