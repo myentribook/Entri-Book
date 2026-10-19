@@ -385,6 +385,7 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
     padding: 12px !important;
     min-width: 240px !important;
+    background-color: #ffffff !important;
     margin-top: 10px !important;
 }
 
@@ -402,24 +403,31 @@ body {
     border-top: 1px solid #f3f4f6 !important;
 }
 
-/* Individual dropdown items styled as cards */
+/* Individual dropdown items styled as cards with light background like image 1 */
 .header-dropdown-menu .dropdown-item {
-    border-radius: 8px !important;
-    padding: 10px 12px !important;
-    margin-bottom: 4px !important;
+    background-color: #f4f8fb !important;
+    /* Image 1-la irukura soft light blue/grey background */
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    margin-bottom: 8px !important;
     font-weight: 600 !important;
-    transition: background-color 0.2s ease !important;
+    transition: all 0.2s ease !important;
 }
 
-/* Hover effect similar to notification cards */
+.header-dropdown-menu .dropdown-item:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Hover effect */
 .header-dropdown-menu .dropdown-item:hover {
-    background-color: #f8fafc !important;
+    background-color: #eaf2f8 !important;
+    /* Slight darker tint on hover */
 }
 
 /* Styling for icons inside the dropdown items */
 .header-dropdown-menu .dropdown-item i {
-    font-size: 15px;
-    width: 20px;
+    font-size: 16px;
+    width: 22px;
     text-align: center;
 }
 
