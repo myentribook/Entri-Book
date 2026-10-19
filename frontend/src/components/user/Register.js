@@ -76,10 +76,10 @@ export default function Register() {
                         <div className="brand-badge">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                            </svg>
+                            </svg>  <h1 className="auth-title">Welcome to Entri Book</h1>
                         </div>
 
-                        <h1 className="auth-title">Welcome to Entri Book</h1>
+                       
                         <p className="subtitle">Create Your Account to access your billing, inventory, and ledger.</p>
 
                         {/* Full Name */}
