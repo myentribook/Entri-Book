@@ -1,146 +1,193 @@
-/* Container for the component */
-.ka-card {
-    background: white;
-    padding: 3rem;
-    border-radius: 24px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+/* Page Wrapper to center and style locally without touching body */
+.ka-login-page-wrapper {
+    background: linear-gradient(135deg, #f0f4f9 0%, #e2ecf8 100%);
     width: 100%;
-    max-width: 420px;
-    text-align: center;
-    margin: 20px auto; 
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 20px;
     box-sizing: border-box;
 }
 
-/* Icon Styling */
-.ka-icon-container {
-    width: 80px;
-    height: 80px;
-    background: #eff6ff;
-    color: #0056B3;
-    border-radius: 50%;
+/* Container for the component */
+.ka-card {
+    background: #ffffff;
+    padding: 36px 32px;
+    border-radius: 28px;
+    box-shadow: 0 20px 40px rgba(15, 76, 129, 0.12);
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Brand Header */
+.ka-brand-header {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 0 auto 1.5rem;
-    font-size: 2.5rem;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ka-avatar-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #eef5fc;
+    color: #0f4c81;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.ka-brand-title {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #1e293b;
+    letter-spacing: -0.3px;
 }
 
 /* Typography */
-.ka-card h1 { 
-    color: #1e293b; 
-    font-size: 1.5rem; 
-    margin-bottom: 0.5rem; 
-    font-family: sans-serif;
+.ka-title { 
+    color: #0f172a; 
+    font-size: 1.4rem; 
+    font-weight: 800;
+    margin-bottom: 6px; 
+    padding-bottom: 0;
 }
 
-.ka-card p { 
+.ka-para { 
     color: #64748b; 
-    margin-bottom: 2rem; 
-    font-size: 0.9rem; 
-    font-family: sans-serif;
+    margin-bottom: 24px; 
+    font-size: 0.85rem; 
 }
 
 /* Input Styling */
 .ka-input-group { 
-    position: relative; 
-    margin-bottom: 1.25rem; 
+    margin-bottom: 16px; 
     text-align: left; 
 }
 
-.ka-input-group i { 
-    position: absolute; 
-    left: 16px; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    color: #94a3b8; 
+.ka-input-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
 }
 
-.ka-input-group input {
-    width: 100%;
-    padding: 14px 16px 14px 45px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 12px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+.ka-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ka-input-wrapper i { 
+    position: absolute; 
+    left: 16px; 
+    color: #0f4c81; 
     font-size: 0.95rem;
 }
 
-.ka-input-group input:focus { 
+.ka-input-wrapper input {
+    width: 100%;
+    padding: 12px 14px 12px 45px;
+    border: 2px dotted #94a3b8;
+    border-radius: 12px;
+    background-color: #fafbfc;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.ka-input-wrapper input:focus { 
     outline: none; 
-    border-color: #0056B3; 
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); 
+    border-style: solid;
+    border-color: #0f4c81; 
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px #eef5fc; 
 }
 
 /* Button Styling */
 .ka-btn-main {
     width: 100%;
     padding: 14px;
-    background: #0056B3;
+    background: #0f4c81;
     color: white;
     border: none;
     border-radius: 12px;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: transform 0.1s ease, opacity 0.2s;
+    box-shadow: 0 8px 20px rgba(15, 76, 129, 0.25);
+    transition: all 0.2s ease;
+    margin-top: 4px;
 }
 
 .ka-btn-main:active {
-    transform: scale(0.96);
+    transform: scale(0.98);
 }
 
-.ka-btn-main:hover { opacity: 0.9; }
-
-/* Footer */
-.ka-footer-text { 
-    margin-top: 1.5rem; 
-    font-size: 0.85rem; 
-    color: #64748b; 
-    font-family: sans-serif;
+.ka-btn-main:hover { 
+    background: #0a3860;
+    transform: translateY(-2px);
 }
 
-.ka-footer-text a { 
-    color: #0056B3; 
-    font-weight: 600; 
-    text-decoration: none; 
+/* Footer Links */
+.ka-footer-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+    font-size: 0.84rem;
 }
-
-.ka-title{
-    font-weight: 900;
-    padding-bottom: 14px;
-}
-
 
 .register-link {
-  /* Match the font family of your inputs/labels */
-  font-family: inherit; 
-  font-size: 14px;
-  font-weight: 500;
-  
-  /* Match the blue color of the design */
-  color: #0056b3; 
-  
-  /* Remove default underline */
-  text-decoration: none;
-  
-  /* Add spacing so it doesn't touch the button */
-  margin-top: 16px;
-  display: block;
-  text-align: center;
-  
-  /* Smooth transition for interaction */
-  transition: opacity 0.2s ease;
+    font-family: inherit; 
+    font-weight: 700;
+    color: #0f4c81; 
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s ease;
 }
 
 .register-link:hover {
-  opacity: 0.8;
-  text-decoration: underline;
+    text-decoration: underline;
+    opacity: 0.9;
 }
 
+.forgot-password {
+    font-family: inherit;
+    font-weight: 700;
+    color: #DC2626;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s ease;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+}
 
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .ka-card {
-        padding: 2rem 1.5rem;
+        padding: 24px 20px;
         border-radius: 20px;
     }
 }
