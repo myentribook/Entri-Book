@@ -162,7 +162,7 @@ export default function Login() {
 
                         <div className="ka-footer-links">
                             <Link to='/register' className="register-link">
-                                <i className="fa-solid fa-user-plus"></i> New User? Register
+                                <i className="fa-solid fa-user-plus"></i> Register ?
                             </Link>
                             <Link to='/password/forgot' className="forgot-password">
                                 <i className="fa-solid fa-key"></i> Forgot Password?

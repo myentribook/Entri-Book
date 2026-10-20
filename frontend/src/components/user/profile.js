@@ -5,33 +5,29 @@ import { useSelector } from 'react-redux';
 export default function Profile() {
     const { user } = useSelector((state) => state.authState);
 
-    // Guard clause handles the null/loading state
     if (!user) {
-        return <div className="profile-page-wrapper">Loading profile...</div>;
+        return <div className="profile-page-wrapper">Agidaldaldal...</div>;
     }
 
     return (
         <div className="profile-page-wrapper">
-            {/* Left Section */}
-            <div className="profile-page-sidebar-card">
-                <div className="profile-page-avatar-container">
-                    <img
-                        src={user.avatar && user.avatar.trim() !== '' ? user.avatar : '/images/default_avatar.jpg'}
-                        className="profile-page-img"
-                        alt="User Avatar"
-                    />
-                    <div className="profile-page-status-badge"></div>
-                </div>
-                <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>{user.name}</h3>
-                <p className="profile-page-user-role">
-                    <i className="fa-solid fa-shield-halved"></i> Administrator
-                </p>
-            </div>
-
-            {/* Right Section */}
-            <div className="profile-page-main-card">
-                <div className="profile-page-section-title">
-                    <i className="fa-solid fa-sliders"></i> General Information
+            <div className="profile-page-card-container">
+                <div className="profile-page-header-box">
+                    <div className="profile-page-avatar-container">
+                        <img
+                            src={user.avatar && user.avatar.trim() !== '' ? user.avatar : '/images/default_avatar.jpg'}
+                            className="profile-page-img"
+                            alt="User Avatar"
+                        />
+                        <div className="profile-page-status-badge"></div>
+                    </div>
+                    <h3 className="profile-page-title">
+                        <span style={{ background: '#e8f0fe', padding: '8px 12px', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <i className="fa-solid fa-store" style={{ color: 'var(--pp-accent)' }}></i>
+                        </span>
+                        {user.name}
+                    </h3>
+                    <p className="profile-page-desc">Administrator Account & Business Profile</p>
                 </div>
 
                 <div className="profile-page-grid-form">
@@ -49,7 +45,7 @@ export default function Profile() {
                     </div>
 
                     {/* Email Field */}
-                    <div className="profile-page-input-box" style={{ gridColumn: 'span 2' }}>
+                    <div className="profile-page-input-box">
                         <label>EMAIL ADDRESS</label>
                         <div className="profile-page-input-field-wrapper">
                             <i className="fa-regular fa-envelope"></i>
@@ -61,43 +57,47 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="profile-page-input-box" style={{ gridColumn: 'span 2' }}>
+                    {/* GSTIN Number */}
+                    <div className="profile-page-input-box">
                         <label>GSTIN NUMBER</label>
                         <div className="profile-page-input-field-wrapper">
-                            <i class="fa-solid fa-percent"></i>
+                            <i className="fa-solid fa-percent"></i>
                             <input
-                                type="email"
+                                type="text"
                                 defaultValue={user.gstin || ''}
                                 disabled
                             />
                         </div>
                     </div>
 
-
-                    <div className="profile-page-input-box" style={{ gridColumn: 'span 2' }}>
+                    {/* Joined Date */}
+                    <div className="profile-page-input-box">
                         <label>JOINED</label>
                         <div className="profile-page-input-field-wrapper">
-                            <i class="fa-solid fa-calendar-days"></i>
+                            <i className="fa-solid fa-calendar-days"></i>
                             <input
-                                type="email"
+                                type="text"
                                 defaultValue={String(user.createdAt || '').substring(0, 10)}
                                 disabled
                             />
                         </div>
                     </div>
-
                 </div>
 
-                <Link
-                    to="/myprofile/update"
-                    className="profile-page-btn"
-                    style={{ textDecoration: 'none' }}
-                >
-                    <i className="fa-solid fa-user-pen"></i> Edit Profile Details
-                </Link>
-                <Link to='/myprofile/update/password' style={{ textDecoration: 'none' }} className="profile-page-btn">
-                    <i class="fa-solid fa-key"></i>Change Password
-                </Link>
+                <div className="profile-page-actions">
+                    <Link
+                        to="/myprofile/update"
+                        className="profile-page-btn"
+                    >
+                        <i className="fa-solid fa-user-pen"></i> Edit Profile Details
+                    </Link>
+                    <Link 
+                        to="/myprofile/update/password" 
+                        className="profile-page-btn profile-page-btn-secondary"
+                    >
+                        <i className="fa-solid fa-key"></i> Change Password
+                    </Link>
+                </div>
             </div>
         </div>
     );
