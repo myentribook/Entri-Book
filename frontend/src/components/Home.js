@@ -46,7 +46,7 @@ export default function Home() {
   const handleInstallClick = async (e) => {
     e.preventDefault();
     if (!deferredPrompt) {
-      toast.success("App browser menu via-va 'Add to Home Screen' pannalaam!");
+      // toast.success("App browser menu via-va 'Add to Home Screen' pannalaam!");
       return;
     }
     deferredPrompt.prompt();
