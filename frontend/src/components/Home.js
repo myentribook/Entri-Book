@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import './Home.css';
 import MetaData from "./layouts/MetaData";
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,9 +13,6 @@ export default function Home() {
   const { isAuthenticated, loading: authLoading, user } = useSelector((state) => state.authState || state.userState || {});
   const { report, loading, error } = useSelector((state) => state.dashboardState);
 
-  // Floating heart popup state
-  const [showHeartPopup, setShowHeartPopup] = useState(false);
-
   useEffect(() => {
     if (authLoading) return;
 
@@ -25,16 +22,6 @@ export default function Home() {
       dispatch(getDashboardReports());
     }
   }, [dispatch, error, isAuthenticated, authLoading, user]);
-
-  // Every 2 seconds-ku heart popup trigger aaga
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowHeartPopup(false);
-      setTimeout(() => setShowHeartPopup(true), 50);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const dashboardData = [
     {
@@ -92,22 +79,22 @@ export default function Home() {
 
             <div className="upi-grid">
               <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btn" aria-label="Sales and Billing">
-                <div className="icon-circle"><i class="fa-solid fa-receipt"></i></div>
+                <div className="icon-circle"><i className="fa-solid fa-receipt"></i></div>
                 <span className="upi-label">Sales<br />& Billing</span>
               </Link>
 
               <Link to="/product" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Products and Stock">
-                <div className="icon-circle"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div className="icon-circle"><i className="fa-solid fa-boxes-stacked"></i></div>
                 <span className="upi-label">Products<br />& Stock</span>
               </Link>
 
               <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
-                <div className="icon-circle"><i class="fa-solid fa-address-book"></i></div>
+                <div className="icon-circle"><i className="fa-solid fa-address-book"></i></div>
                 <span className="upi-label">Credit<br /> Ledger</span>
               </Link>
 
               <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
-                <div className="icon-circle"><i class="fa-solid fa-dolly"></i></div>
+                <div className="icon-circle"><i className="fa-solid fa-dolly"></i></div>
                 <span className="upi-label">Purchase <br /> Management</span>
               </Link>
 
@@ -121,7 +108,7 @@ export default function Home() {
               <div className="upi-grid">
 
                 <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Search Products">
-                  <div className="icon-circles"><i class="fa-solid fa-magnifying-glass"></i></div>
+                  <div className="icon-circles"><i className="fa-solid fa-magnifying-glass"></i></div>
                   <span className="upi-label">Search<br />Products</span>
                 </Link>
 
@@ -130,17 +117,9 @@ export default function Home() {
                   <span className="upi-label">Terms & <br />Conditions</span>
                 </Link>
 
-                <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btns review-upi-btn" aria-label="Comment and Reviews">
-                  <div className="icon-circles"><i className="fa-solid fa-comments" ></i></div>
+                <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Comment and Reviews">
+                  <div className="icon-circles"><i className="fa-solid fa-comments"></i></div>
                   <span className="upi-label">Comment & <br /> Reviews</span>
-
-                  {showHeartPopup && (
-                    <div className="floating-heart-popup">
-                      <div className="heart-circle">
-                        <i className="fa-solid fa-heart"></i>
-                      </div>
-                    </div>
-                  )}
                 </Link>
 
               </div>
