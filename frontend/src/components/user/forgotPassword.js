@@ -8,7 +8,6 @@ export default function ForgotPassword() {
     const [email, setEmail] = useState("");
     const dispatch = useDispatch();
     
-    // Access state
     const { loading, error, message } = useSelector(state => state.authState);
 
     const submitHandler = (e) => {
@@ -16,24 +15,19 @@ export default function ForgotPassword() {
         const formData = new FormData();
         formData.append('email', email);
         
-        // This works because forgotPassword is a function
         dispatch(forgotPassword(formData));
     };
 
     useEffect(() => {
-        // Handle Success
         if (message) {
             const msgText = (typeof message === 'object' && message.message) ? message.message : message;
             toast.success(msgText, { position: 'bottom-right' });
             setEmail("");
         }
 
-        // Handle Error
         if (error) {
             const errText = (typeof error === 'object' && error.message) ? error.message : error;
             toast.error(errText, { position: 'bottom-right' });
-            
-            // FIX: Removed parentheses () because clearAuthError is an object
             dispatch(clearAuthError); 
         }
     }, [message, error, dispatch]);
@@ -43,23 +37,38 @@ export default function ForgotPassword() {
             <Toaster />
             <div className="auth-v9-viewport-fix">
                 <div className="auth-v9-card">
-                    <div className="auth-v9-icon"><i className="fa-solid fa-lock"></i></div>
-                    <h1 className="auth-v9-title">Forgot Password?</h1>
-                    <p className="auth-v9-desc">
-                        No worries, we'll send you reset instructions to your registered email.
-                    </p>
+                    
+                    {/* Header: Icon & Title on the same line, Paragraph below, centered */}
+                    <div className="auth-v9-header">
+                        <div className="auth-v9-title-row">
+                            <div className="auth-v9-icon">
+                                <i className="fa-solid fa-lock"></i>
+                            </div>
+                            <h1 className="auth-v9-title">Forgot Password?</h1>
+                        </div>
+                        <p className="auth-v9-desc">
+                            No worries, we'll send you reset instructions to your registered email.
+                        </p>
+                    </div>
 
                     <form onSubmit={submitHandler}>
-                        <input
-                            type="email"
-                            className="auth-v9-input"
-                            placeholder="name@example.com"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            required
-                        />
+                        <div className="auth-v9-group">
+                            <label className="auth-v9-label">EMAIL ID</label>
+                            <div className="auth-v9-input-wrapper">
+                                <i className="fa-regular fa-envelope"></i>
+                                <input
+                                    type="email"
+                                    className="auth-v9-input"
+                                    placeholder="name@business.com"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+
                         <button type="submit" className="auth-v9-btn" disabled={loading}>
-                            {loading ? "Sending..." : "Send Reset Link"}
+                            {loading ? "Sending..." : "Send Reset Link \u2192"}
                         </button>
                     </form>
                 </div>
