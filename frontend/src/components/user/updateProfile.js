@@ -16,7 +16,6 @@ export default function UpdateProfile() {
 
     const dispatch = useDispatch();
 
-    // 1. Guard Clause: Prevents crash while user data is being fetched
     useEffect(() => {
         if (user) {
             setName(user.name || "");
@@ -28,19 +27,16 @@ export default function UpdateProfile() {
         }
     }, [user]);
 
-    // 2. Notification Handling
     useEffect(() => {
         if (isUpdated) {
             toast.success('Profile updated successfully', { position: 'bottom-right' });
             dispatch(clearUpdateProfile());
-            return
+            return;
         }
         if (error) {
-            toast.error(error, {
-                position: 'bottom-right'
-            });
+            toast.error(error, { position: 'bottom-right' });
             dispatch(clearAuthError());
-            return
+            return;
         }
     }, [isUpdated, error, dispatch]);
 
@@ -62,37 +58,40 @@ export default function UpdateProfile() {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('email', email);
-        formData.append('gstin', gstin)
+        formData.append('gstin', gstin);
         if (avatar) {
             formData.append('avatar', avatar);
         }
         dispatch(updateProfile(formData));
     };
 
-    // 3. UI Guard: If user is not yet loaded, return null or a loader
-    if (!user) return <div className="text-center mt-5">Loading profile...</div>
+    if (!user) return <div className="text-center mt-5" style={{ color: '#0d4b82', fontWeight: 600 }}>Loading profile...</div>;
 
     return (
         <Fragment>
             <Toaster />
             <div className="profile-component-wrapper">
                 <div className="pc-container">
-                    <h2 className="pc-heading">Edit Profile</h2>
-                    <p className="pc-subtext">Update your personal information and profile picture.</p>
+                    
+                    {/* Header Box inspired by reference style */}
+                    <div className="pc-header-box">
+                        <div className="pc-top-icon-badge">
+                            <i className="fa-solid fa-user-pen"></i>
+                        </div>
+                        <h2 className="pc-heading">Edit Profile</h2>
+                        <p className="pc-subtext">Update your personal information and profile picture.</p>
+                    </div>
 
                     <form onSubmit={submitHandler} id="profileForm">
-                        <div className="pc-avatar-section d-flex align-items-center mb-4">
-                            <div>
-                                <figure className="avatar mr-3 item-rtl">
-                                    <img
-                                        src={avatarPreview}
-                                        className="rounded-circle"
-                                        alt="Avatar Preview"
-                                        style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-                                    />
-                                </figure>
-                            </div>
-
+                        {/* Avatar Section */}
+                        <div className="pc-avatar-section">
+                            <figure className="avatar">
+                                <img
+                                    src={avatarPreview}
+                                    className="rounded-circle"
+                                    alt="Avatar Preview"
+                                />
+                            </figure>
                             <div className="custom-file">
                                 <input
                                     type="file"
@@ -103,43 +102,56 @@ export default function UpdateProfile() {
                                     style={{ display: 'none' }}
                                 />
                                 <label className="custom-file-label" htmlFor="customFile">
-                                    Change Photo
+                                    <i className="fa-solid fa-camera" style={{ marginRight: '6px' }}></i> Change Photo
                                 </label>
                             </div>
                         </div>
 
                         <div className="pc-form-group">
                             <label>FULL NAME</label>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                                className="pc-input"
-                            />
+                            <div className="pc-input-wrapper">
+                                <i className="fa-regular fa-user"></i>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={e => setName(e.target.value)}
+                                    className="pc-input"
+                                    placeholder="Enter your name"
+                                />
+                            </div>
                         </div>
 
                         <div className="pc-form-group">
                             <label>EMAIL ADDRESS</label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                className="pc-input"
-                            />
+                            <div className="pc-input-wrapper">
+                                <i className="fa-regular fa-envelope"></i>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    className="pc-input"
+                                    placeholder="name@business.com"
+                                />
+                            </div>
                         </div>
 
                         <div className="pc-form-group">
                             <label>GSTIN NUMBER</label>
-                            <input
-                                type="text"
-                                value={gstin}
-                                onChange={e => setGstin(e.target.value)}
-                                className="pc-input"
-                                // placeholder="Enter your GSTIN"
-                            />
+                            <div className="pc-input-wrapper">
+                                <i className="fa-solid fa-percent"></i>
+                                <input
+                                    type="text"
+                                    value={gstin}
+                                    onChange={e => setGstin(e.target.value)}
+                                    className="pc-input"
+                                    placeholder="Enter your GSTIN"
+                                />
+                            </div>
                         </div>
 
-                        <button type="submit" className="pc-btn-submit">Save Changes</button>
+                        <button type="submit" className="pc-btn-submit">
+                            Save Changes &rarr;
+                        </button>
                     </form>
                 </div>
             </div>
