@@ -73,15 +73,15 @@ export default function UpdateProfile() {
             <div className="profile-component-wrapper">
                 <div className="pc-container">
                     
-                    {/* Header Box with icon & title in the same line */}
+                    {/* Header Box: Icon & Heading on same line, Paragraph below, all centered */}
                     <div className="pc-header-box">
-                        <div className="pc-top-icon-badge">
-                            <i className="fa-solid fa-user-pen"></i>
-                        </div>
-                        <div className="pc-header-text">
+                        <div className="pc-title-row">
+                            <div className="pc-top-icon-badge">
+                                <i className="fa-solid fa-user-pen"></i>
+                            </div>
                             <h2 className="pc-heading">Edit Profile</h2>
-                            <p className="pc-subtext">Update your personal information and profile picture.</p>
                         </div>
+                        <p className="pc-subtext">Update your personal information and profile picture.</p>
                     </div>
 
                     <form onSubmit={submitHandler} id="profileForm">
