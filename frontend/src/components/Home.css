@@ -310,37 +310,42 @@ body {
 
 @media (max-width: 640px) {
     .home-wrapper {
-        padding: 20px 16px 40px 16px;
+        padding: 20px 12px 40px 12px;
     }
 
+    /* Business Suite: Mobile-ல ஒரு row-க்கு 3 icons வர வைக்கிறதுக்கு */
     .upi-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px 12px;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 16px 8px !important;
     }
 
     .Explore-guidelines {
-        padding: 24px 16px;
+        padding: 20px 12px;
     }
 
     .Explore-guidelines .upi-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
     }
 
+    /* 3 icons ஒரே அடியில அழகா fit ஆக Circle size-அ 50px-ஆ கம்மி பண்றோம் */
     .icon-circle {
-        width: 58px;
-        height: 58px;
-        font-size: 1.35rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        margin-bottom: 8px;
     }
 
     .icon-circles {
-        width: 42px;
-        height: 42px;
-        font-size: 1.5rem;
+        width: 38px;
+        height: 38px;
+        font-size: 1.3rem;
+        margin-bottom: 6px;
     }
 
     .upi-label {
-        font-size: 0.78rem;
+        font-size: 0.72rem;
+        line-height: 1.2;
     }
 
     .dashboard-grid {
@@ -363,12 +368,25 @@ body {
     }
 }
 
+/* Small Screens (400px-க்கும் கீழ) */
 @media (max-width: 400px) {
     .dashboard-grid {
         grid-template-columns: repeat(1, 1fr) !important;
     }
-    .Explore-guidelines .upi-grid {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 20px;
+    
+    /* 400px-லையும் 3 icons கரெக்ட்டா fit ஆகும் */
+    .upi-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px 4px !important;
+    }
+    
+    .icon-circle {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+
+    .upi-label {
+        font-size: 0.68rem;
     }
 }
