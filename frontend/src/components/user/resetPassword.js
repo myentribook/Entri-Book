@@ -25,7 +25,6 @@ export default function ResetPassword() {
             return;
         }
         
-        // 2 different passwords iruntha intha block workout aagum
         if (password !== confirmPassword) {
             toast.error("Passwords do not match", { position: 'bottom-right' });
             return;
@@ -53,7 +52,6 @@ export default function ResetPassword() {
 
     return (
         <Fragment>
-            {/* Global Toaster with proper container settings to prevent hiding */}
             <Toaster 
                 position="bottom-right" 
                 reverseOrder={false} 
@@ -61,39 +59,55 @@ export default function ResetPassword() {
             />
             <div className="reset-password-container-module">
                 <div className="reset-password-card">
-                    <div className="reset-password-icon">
-                        <i className="fa-solid fa-key"></i>
+                    
+                    {/* Header: Icon & Title side-by-side, Description below, centered */}
+                    <div className="reset-password-header">
+                        <div className="reset-password-title-row">
+                            <div className="reset-password-icon">
+                                <i className="fa-solid fa-key"></i>
+                            </div>
+                            <h1 className="reset-password-title">Set new password</h1>
+                        </div>
+                        <p className="reset-password-desc">Must be at least 6 characters. Enter same password in both of the field</p>
                     </div>
-                    <h1 className="reset-password-title">Set new password</h1>
-                    <p className="reset-password-desc">Must be at least 6 characters. Enter same password in both of the field</p>
 
                     <form onSubmit={submitHandler}>
                         <div className="input-group">
-                            <label>Password</label>
-                            <input 
-                                type="password" 
-                                className="reset-input" 
-                                value={password} 
-                                onChange={e => setPassword(e.target.value)} 
-                                required 
-                            />
+                            <label>PASSWORD</label>
+                            <div className="reset-input-wrapper">
+                                <i className="fa-solid fa-lock"></i>
+                                <input 
+                                    type="password" 
+                                    className="reset-input" 
+                                    placeholder="••••••••"
+                                    value={password} 
+                                    onChange={e => setPassword(e.target.value)} 
+                                    required 
+                                />
+                            </div>
                         </div>
+
                         <div className="input-group">
-                            <label>Confirm Password</label>
-                            <input 
-                                type="password" 
-                                className="reset-input" 
-                                value={confirmPassword} 
-                                onChange={e => setConfirmPassword(e.target.value)} 
-                                required 
-                            />
+                            <label>CONFIRM PASSWORD</label>
+                            <div className="reset-input-wrapper">
+                                <i className="fa-solid fa-key"></i>
+                                <input 
+                                    type="password" 
+                                    className="reset-input" 
+                                    placeholder="••••••••"
+                                    value={confirmPassword} 
+                                    onChange={e => setConfirmPassword(e.target.value)} 
+                                    required 
+                                />
+                            </div>
                         </div>
+
                         <button 
                             type="submit" 
                             className="reset-btn" 
                             disabled={loading}
                         >
-                            {loading ? "Processing..." : "Reset Password"}
+                            {loading ? "Processing..." : "Reset Password \u2192"}
                         </button>
                     </form>
                 </div>
