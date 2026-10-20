@@ -21,14 +21,19 @@
     box-sizing: border-box;
 }
 
+/* Header layout: Icon and text side-by-side */
 .pc-header-box {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 14px;
     margin-bottom: 28px;
+    text-align: left;
 }
 
 .pc-top-icon-badge {
     width: 48px;
     height: 48px;
+    min-width: 48px;
     background-color: #f4f7fb;
     color: #0d4b82;
     border-radius: 14px;
@@ -36,12 +41,16 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    margin-bottom: 14px;
     box-shadow: 0 4px 12px rgba(13, 75, 130, 0.08);
 }
 
+.pc-header-text {
+    display: flex;
+    flex-direction: column;
+}
+
 .profile-component-wrapper .pc-heading { 
-    margin: 0 0 6px 0; 
+    margin: 0 0 2px 0; 
     color: #0c1a30; 
     font-size: 1.35rem;
     font-weight: 800;
@@ -50,7 +59,7 @@
 .profile-component-wrapper .pc-subtext { 
     color: #64748b; 
     margin: 0; 
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 500;
 }
 
@@ -80,7 +89,7 @@
     background-color: #ffffff;
     border: 1.5px solid #cbd5e1;
     border-radius: 10px;
-    font-size: 0.85rem; 
+    font-size: 0.82rem; 
     font-weight: 700;
     cursor: pointer;
     color: #0c1a30;

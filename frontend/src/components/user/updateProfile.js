@@ -73,13 +73,15 @@ export default function UpdateProfile() {
             <div className="profile-component-wrapper">
                 <div className="pc-container">
                     
-                    {/* Header Box inspired by reference style */}
+                    {/* Header Box with icon & title in the same line */}
                     <div className="pc-header-box">
                         <div className="pc-top-icon-badge">
                             <i className="fa-solid fa-user-pen"></i>
                         </div>
-                        <h2 className="pc-heading">Edit Profile</h2>
-                        <p className="pc-subtext">Update your personal information and profile picture.</p>
+                        <div className="pc-header-text">
+                            <h2 className="pc-heading">Edit Profile</h2>
+                            <p className="pc-subtext">Update your personal information and profile picture.</p>
+                        </div>
                     </div>
 
                     <form onSubmit={submitHandler} id="profileForm">
@@ -102,7 +104,7 @@ export default function UpdateProfile() {
                                     style={{ display: 'none' }}
                                 />
                                 <label className="custom-file-label" htmlFor="customFile">
-                                    <i className="fa-solid fa-camera" style={{ marginRight: '6px' }}></i> Change Photo
+                                    <i className="fa-solid fa-camera" style={{ marginRight: '6px' }}></i> CHANGE PHOTO
                                 </label>
                             </div>
                         </div>
