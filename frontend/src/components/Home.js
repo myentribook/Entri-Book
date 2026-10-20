@@ -148,18 +148,18 @@ export default function Home() {
           </div>
 
           <div className="section-wrapper">
-            <h2 className="upi-title"><i className="fa-solid fa-chart-column" style={{ color: '#0056b3', marginRight: "10px", fontWeight: 'bold' }}></i> Business Overview</h2>
+            <h2 className="upi-title"><i className="fa-solid fa-chart-column" style={{ color: '#0d4b82', marginRight: "10px", fontWeight: 'bold' }}></i> Business Overview</h2>
             <div className="dashboard-grid">
               {dashboardData.map((card, index) => (
                 <div key={index} className="card-wrapper">
                   <div className="card-content" style={{ backgroundColor: card.bg }}>
-                    <p style={{ fontSize: "0.95rem", color: "#333", lineHeight: "1.6", whiteSpace: "pre-line" }}>
+                    <p style={{ color: "#333", lineHeight: "1.6", whiteSpace: "pre-line" }}>
                       {card.text}
                     </p>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 8px" }}>
-                    <span style={{ fontWeight: 700, fontSize: "1.1rem" }}>{card.title}</span>
-                    <i className={`fa-solid ${card.icon}`} style={{ fontSize: "25px", color: "#0056b3" }}></i>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
+                    <span style={{ fontWeight: 700, fontSize: "1.05rem", color: "#0c1a30" }}>{card.title}</span>
+                    <i className={`fa-solid ${card.icon}`} style={{ fontSize: "22px", color: "#0d4b82" }}></i>
                   </div>
                 </div>
               ))}
