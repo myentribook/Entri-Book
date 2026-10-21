@@ -232,7 +232,7 @@ export default function Purchase() {
                                             <td colSpan="5" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
                                                     <div style={{ width: '40px', height: '40px', background: '#EFF6FF', color: 'var(--primary)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                        <i className="fa-solid fa-file-invoice"></i>
+                                                        <i className="fa-solid fa-folder-open"></i>
                                                     </div>
                                                     <span>No items added yet</span>
                                                 </div>
@@ -306,7 +306,7 @@ export default function Purchase() {
                                                 <td colSpan="4" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
                                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
                                                         <div style={{ width: '40px', height: '40px', background: '#EFF6FF', color: 'var(--primary)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                            <i className="fa-solid fa-file-invoice"></i>
+                                                            <i className="fa-solid fa-folder-open"></i>
                                                         </div>
                                                         <span>No purchase found</span>
                                                     </div>

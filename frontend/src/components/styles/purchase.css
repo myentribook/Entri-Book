@@ -273,14 +273,10 @@ body {
         max-width: 280px !important;
     }
 
-    /* 2-Column Grid for Form Inputs on Mobile */
+    /* 2-Column Grid for Supplier Name & Bill No on Mobile */
     .bill-mgr-grid-form {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
-    }
-
-    .bill-mgr-grid-form .bill-mgr-input-group:first-child {
-        grid-column: span 2;
     }
 
     /* Product Entry 2-Column Grid */
