@@ -100,14 +100,14 @@ export default function Purchase() {
     };
 
     return (
-        <div className="purchase-page-container">
+        <div className="bill-mgr-wrapper">
             <Toaster />
 
             {/* Modal Setup */}
-            <input type="checkbox" id="view-modal" className="modal-checkbox" />
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    <h3>Purchase Details</h3>
+            <input type="checkbox" id="view-modal" style={{ display: 'none' }} />
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'none', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
+                    <h3 style={{ marginTop: 0 }}>Purchase Details</h3>
                     {selectedView && (
                         <>
                             <p><strong>Supplier:</strong> {selectedView.supplierName}</p>
@@ -134,39 +134,41 @@ export default function Purchase() {
                             </p>
                         </>
                     )}
-                    <label htmlFor="view-modal" className="btn btn-primary" style={{ marginTop: "15px" }}>Close</label>
+                    <label htmlFor="view-modal" className="bill-mgr-btn bill-mgr-btn-primary" style={{ marginTop: "15px", width: '100%', cursor: 'pointer' }}>Close</label>
                 </div>
             </div>
 
             {loading ? <Loader /> : (
-                <div className="wrapper">
-                    {/* Header */}
-                    <div className="page-header">
-                        <div className="header-icon-box">
+                <>
+                    {/* Header Section */}
+                    <div className="bill-mgr-header-center">
+                        <div className="bill-mgr-badge-icon">
                             <i className="fa-solid fa-file-invoice"></i>
                         </div>
-                        <h1 className="header-title">Purchase Management</h1>
-                        <p className="header-subtitle">
+                        <h1 className="bill-mgr-title">Purchase Management</h1>
+                        <p className="bill-mgr-subtitle">
                             Create, manage, and track your supplier purchases and stock inventories seamlessly.
                         </p>
                     </div>
 
-                    {/* Main Purchase Card */}
-                    <div className="card">
-                        <div className="grid-form">
-                            <div className="input-group">
-                                <label>Supplier Name</label>
+                    {/* Main Card */}
+                    <div className="bill-mgr-card">
+                        <div className="bill-mgr-grid-form">
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Supplier Name</label>
                                 <input 
                                     type="text" 
+                                    className="bill-mgr-input" 
                                     value={supplierName} 
                                     onChange={(e) => setSupplierName(e.target.value)} 
                                     placeholder="Enter name" 
                                 />
                             </div>
-                            <div className="input-group">
-                                <label>Supplier Bill No</label>
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Supplier Bill No</label>
                                 <input 
                                     type="text" 
+                                    className="bill-mgr-input" 
                                     value={supplierBillNo} 
                                     onChange={(e) => setSupplierBillNo(e.target.value)} 
                                     placeholder="BILL-2026-001" 
@@ -174,62 +176,62 @@ export default function Purchase() {
                             </div>
                         </div>
 
-                        {/* Item Entry Dashed Container matching mobile layout reference */}
-                        <div className="entry-box">
-                            <div className="input-group product-group">
-                                <label>Product</label>
-                                <select value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}>
+                        {/* Entry Box */}
+                        <div className="bill-mgr-entry-box">
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Product</label>
+                                <select className="bill-mgr-select" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}>
                                     <option value="">Select Item</option>
                                     {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
                                 </select>
                             </div>
-                            <div className="input-group">
-                                <label>Qty</label>
-                                <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" />
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Qty</label>
+                                <input type="number" className="bill-mgr-input" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" />
                             </div>
-                            <div className="input-group">
-                                <label>Conv. F.</label>
-                                <input type="number" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder="1" />
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Conv. F.</label>
+                                <input type="number" className="bill-mgr-input" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder="1" />
                             </div>
-                            <div className="input-group">
-                                <label>Price</label>
-                                <input type="number" value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} placeholder="0.00" />
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Price</label>
+                                <input type="number" className="bill-mgr-input" value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} placeholder="0.00" />
                             </div>
-                            <div className="input-group">
-                                <label>Amount</label>
-                                <input type="number" readOnly value={quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00"} />
+                            <div className="bill-mgr-input-group">
+                                <label className="bill-mgr-label">Amount</label>
+                                <input type="number" className="bill-mgr-input" readOnly value={quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00"} />
                             </div>
-                            <button className="btn-add" onClick={handleAddTemp}>
-                                + Add
+                            <button className="bill-mgr-btn bill-mgr-btn-primary" onClick={handleAddTemp}>
+                                <i className="fa-solid fa-plus"></i> Add
                             </button>
                         </div>
 
                         {/* Temp Items Table */}
-                        <div className="table-wrapper">
-                            <table>
+                        <div className="bill-mgr-table-wrapper">
+                            <table className="bill-mgr-table">
                                 <thead>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Qty</th>
-                                        <th>Conv. F.</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
+                                        <th className="bill-mgr-th">Product</th>
+                                        <th className="bill-mgr-th">Qty</th>
+                                        <th className="bill-mgr-th">Conv. F.</th>
+                                        <th className="bill-mgr-th">Price</th>
+                                        <th className="bill-mgr-th">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {tempItems.length > 0 ? tempItems.map((item, idx) => (
                                         <tr key={idx}>
-                                            <td>{item.productName}</td>
-                                            <td>{item.quantity}</td>
-                                            <td>{item.conversionFactor}</td>
-                                            <td>{item.purchasePrice}</td>
-                                            <td>{item.amount.toFixed(2)}</td>
+                                            <td className="bill-mgr-td">{item.productName}</td>
+                                            <td className="bill-mgr-td">{item.quantity}</td>
+                                            <td className="bill-mgr-td">{item.conversionFactor}</td>
+                                            <td className="bill-mgr-td">{item.purchasePrice}</td>
+                                            <td className="bill-mgr-td">{item.amount.toFixed(2)}</td>
                                         </tr>
                                     )) : (
                                         <tr>
-                                            <td colSpan="5" className="table-message-state">
-                                                <div className="state-content-box">
-                                                    <div className="state-icon-box">
+                                            <td colSpan="5" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
+                                                    <div style={{ width: '40px', height: '40px', background: '#EFF6FF', color: 'var(--primary)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                         <i className="fa-solid fa-file-invoice"></i>
                                                     </div>
                                                     <span>No items added yet</span>
@@ -241,44 +243,45 @@ export default function Purchase() {
                             </table>
                         </div>
 
-                        {/* Save Action Container */}
-                        <div className="save-action-wrapper">
-                            <button className="btn-save" onClick={handleSavePurchase}>
+                        {/* Save Purchase Wrapper */}
+                        <div className="bill-mgr-save-wrapper">
+                            <button className="bill-mgr-save-btn" onClick={handleSavePurchase}>
                                 Save Purchase &rarr;
                             </button>
                         </div>
                     </div>
 
-                    {/* History Section Header */}
-                    <div className="section-header">
-                        <h2>History</h2>
+                    {/* Section Header */}
+                    <div className="bill-mgr-section-header">
+                        <h2 style={{ fontSize: '20px', fontWeight: '800', margin: 0, color: 'var(--text-main)' }}>History</h2>
                         <input 
                             type="text" 
                             placeholder="Search purchase..." 
                             value={keyword} 
                             onChange={(e) => setKeyword(e.target.value)} 
-                            className="search-input"
+                            className="bill-mgr-input"
+                            style={{ width: '220px' }}
                         />
                     </div>
 
-                    {/* History List Card */}
-                    <div className="card">
-                        <div className="table-wrapper history-scroll">
-                            <table>
+                    {/* History Card */}
+                    <div className="bill-mgr-card">
+                        <div className="bill-mgr-table-wrapper" style={{ margin: 0 }}>
+                            <table className="bill-mgr-table">
                                 <thead>
                                     <tr>
-                                        <th>Supplier</th>
-                                        <th>Bill No</th>
-                                        <th>Items</th>
-                                        <th style={{ textAlign: "right" }}>Actions</th>
+                                        <th className="bill-mgr-th">Supplier</th>
+                                        <th className="bill-mgr-th">Bill No</th>
+                                        <th className="bill-mgr-th">Items</th>
+                                        <th className="bill-mgr-th" style={{ textAlign: "right" }}>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {error ? (
                                         <tr>
-                                            <td colSpan="4" className="table-message-state">
-                                                <div className="state-content-box">
-                                                    <div className="state-icon-box error-box">
+                                            <td colSpan="4" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
+                                                    <div style={{ width: '40px', height: '40px', background: '#FEE2E2', color: '#EF4444', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                         <i className="fa-solid fa-circle-exclamation"></i>
                                                     </div>
                                                     <span>{error}</span>
@@ -289,20 +292,20 @@ export default function Purchase() {
                                         .filter(item => (item?.supplierName ?? "").toLowerCase().includes(keyword.toLowerCase()))
                                         .map((item) => (
                                             <tr key={item._id}>
-                                                <td>{item.supplierName}</td>
-                                                <td>{item.supplierBillNo}</td>
-                                                <td>{item.items?.length || 0}</td>
-                                                <td style={{ textAlign: "right" }}>
-                                                    <label htmlFor="view-modal" className="btn-view" onClick={() => setSelectedView(item)}>
+                                                <td className="bill-mgr-td">{item.supplierName}</td>
+                                                <td className="bill-mgr-td">{item.supplierBillNo}</td>
+                                                <td className="bill-mgr-td">{item.items?.length || 0}</td>
+                                                <td className="bill-mgr-td" style={{ textAlign: "right" }}>
+                                                    <label htmlFor="view-modal" className="bill-mgr-btn bill-mgr-btn-view" onClick={() => setSelectedView(item)}>
                                                         <i className="fa-solid fa-eye"></i> View
                                                     </label>
                                                 </td>
                                             </tr>
                                         )) : (
                                             <tr>
-                                                <td colSpan="4" className="table-message-state">
-                                                    <div className="state-content-box">
-                                                        <div className="state-icon-box">
+                                                <td colSpan="4" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
+                                                        <div style={{ width: '40px', height: '40px', background: '#EFF6FF', color: 'var(--primary)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                             <i className="fa-solid fa-file-invoice"></i>
                                                         </div>
                                                         <span>No purchase found</span>
@@ -314,7 +317,7 @@ export default function Purchase() {
                             </table>
                         </div>
                     </div>
-                </div>
+                </>
             )}
         </div>
     );
