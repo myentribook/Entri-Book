@@ -44,7 +44,7 @@ body {
     width: 48px;
     height: 48px;
     background-color: #e0f2fe;
-    color: #0284c7;
+    color: var(--text-dark);
     border-radius: 12px;
     font-size: 22px;
     margin-bottom: 12px;
@@ -69,11 +69,11 @@ body {
 
 /* Main Card */
 .card {
-    background: var(--card-bg);
+    background: #e0f2fe;
     padding: 32px;
     border-radius: var(--radius-lg);
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-    border: 1px solid #f1f5f9;
+    border: 2px solid #f1f5f9;
     margin-bottom: 24px;
     box-sizing: border-box;
 }
@@ -104,7 +104,7 @@ label {
 input,
 select {
     padding: 12px 14px;
-    border: 1px dashed var(--input-border);
+    border: 2px dashed var(--input-border);
     border-radius: var(--radius-md);
     font-size: 14px;
     width: 100%;
@@ -123,7 +123,7 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(11, 64, 121, 0.1);
 }
 
-/* Item Entry Box (Dashed Outline Box) */
+/* Item Entry Box Matching Mobile Reference Layout */
 .entry-box {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
@@ -184,7 +184,7 @@ td {
     border-bottom: 1px solid #f8fafc;
 }
 
-/* Table Status / Empty / Error State Styling */
+/* Table Status / Empty / Error State Styling with File Icon */
 .table-message-state {
     text-align: center !important;
     padding: 40px 20px !important;
@@ -196,19 +196,26 @@ td {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     color: var(--text-muted);
     font-size: 14px;
     font-weight: 500;
 }
 
-.state-icon {
-    font-size: 24px;
-    color: #94a3b8;
-    margin-bottom: 4px;
+.state-icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background-color: #e0f2fe;
+    color: #0284c7;
+    border-radius: 12px;
+    font-size: 20px;
 }
 
-.error-icon {
+.error-box {
+    background-color: #fee2e2;
     color: #ef4444;
 }
 
@@ -314,7 +321,7 @@ td {
     color: #0f172a;
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive Stacking */
 @media (max-width: 768px) {
     .entry-box {
         grid-template-columns: 1fr;

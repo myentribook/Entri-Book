@@ -174,9 +174,9 @@ export default function Purchase() {
                             </div>
                         </div>
 
-                        {/* Item Entry Dashed Container */}
+                        {/* Item Entry Dashed Container matching mobile layout reference */}
                         <div className="entry-box">
-                            <div className="input-group">
+                            <div className="input-group product-group">
                                 <label>Product</label>
                                 <select value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}>
                                     <option value="">Select Item</option>
@@ -229,7 +229,9 @@ export default function Purchase() {
                                         <tr>
                                             <td colSpan="5" className="table-message-state">
                                                 <div className="state-content-box">
-                                                    <i className="fa-solid fa-folder-open state-icon"></i>
+                                                    <div className="state-icon-box">
+                                                        <i className="fa-solid fa-file-invoice"></i>
+                                                    </div>
                                                     <span>No items added yet</span>
                                                 </div>
                                             </td>
@@ -276,7 +278,9 @@ export default function Purchase() {
                                         <tr>
                                             <td colSpan="4" className="table-message-state">
                                                 <div className="state-content-box">
-                                                    <i className="fa-solid fa-circle-exclamation state-icon error-icon"></i>
+                                                    <div className="state-icon-box error-box">
+                                                        <i className="fa-solid fa-circle-exclamation"></i>
+                                                    </div>
                                                     <span>{error}</span>
                                                 </div>
                                             </td>
@@ -298,7 +302,9 @@ export default function Purchase() {
                                             <tr>
                                                 <td colSpan="4" className="table-message-state">
                                                     <div className="state-content-box">
-                                                        <i className="fa-solid fa-folder-open state-icon"></i>
+                                                        <div className="state-icon-box">
+                                                            <i className="fa-solid fa-file-invoice"></i>
+                                                        </div>
                                                         <span>No purchase found</span>
                                                     </div>
                                                 </td>
