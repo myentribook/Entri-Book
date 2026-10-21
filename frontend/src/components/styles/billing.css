@@ -21,7 +21,13 @@
 
 .bill-mgr-header-center {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .bill-mgr-badge-icon {
@@ -39,12 +45,15 @@
 }
 
 .bill-mgr-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 800;
-    margin: 0 0 6px;
+    margin: 0 0 8px 0;
     color: var(--text-main);
-    letter-spacing: -0.02em;
-    white-space: nowrap;
+    letter-spacing: -0.01em;
+    width: 100%;
+    text-align: center;
+    display: block;
+    white-space: nowrap !important;
 }
 
 .bill-mgr-subheading {
@@ -58,10 +67,14 @@
 }
 
 .bill-mgr-subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-sub);
-    margin: 0;
-    white-space: nowrap;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 320px;
+    line-height: 1.4;
+    text-align: center;
+    display: block;
 }
 
 .bill-mgr-card {
@@ -238,7 +251,7 @@
 
 @media (max-width: 768px) {
     .bill-mgr-wrapper {
-        padding: 0.5rem !important;
+        padding: 0 10px !important;
     }
 
     .bill-mgr-card {
@@ -247,13 +260,12 @@
     }
 
     .bill-mgr-title {
-        font-size: 20px !important;
+        font-size: 18px !important;
     }
 
     .bill-mgr-subtitle {
-        font-size: 11px !important;
-        white-space: normal !important;
-        padding: 0 10px;
+        font-size: 12px !important;
+        max-width: 290px !important;
     }
 
     .bill-mgr-table,
