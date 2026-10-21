@@ -121,7 +121,7 @@ export default function Subscription() {
                     email: user?.email || "user@example.com",
                 },
                 theme: {
-                    color: "#004aad"
+                    color: "#5266eb"
                 },
                 modal: {
                     ondismiss: function () {
@@ -151,91 +151,98 @@ export default function Subscription() {
             <Toaster />
             <div className="pricing-root">
                 <div className="intro-block">
-                    <div className="tier-emblem" style={{ margin: '0 auto 16px auto' }}>
-                        <i className="fa-solid fa-file-invoice"></i>
-                    </div>
-                    <h1>Flexible Billing & Subscription Plans</h1>
-                    <p>Unlimited Bills , 
-                        Unlimited Products , 
-                        Unlimited Customers ,
-                        Unlimited Purchases ,
-                        Unlimited Reports ,
-                        Automatic Stock Management , 
-                        WhatsApp Invoice Sharing , 
-                        Free Feature Updates , 
-                        Secure Cloud Backup , 
-                        Priority Support</p>
+                    <h1>Simple, transparent pricing</h1>
+                    <p>No contracts. No surprise fees.</p>
                 </div>
 
                 <div className="switcher-wrapper">
                     <button className="switcher-pill" onClick={() => switchPlan('trial')}>Trial</button>
                     <button className="switcher-pill active-pill" onClick={() => switchPlan('monthly')}>Monthly</button>
-                    <button className="switcher-pill" onClick={() => switchPlan('annual')}>Annually</button>
+                    <button className="switcher-pill" onClick={() => switchPlan('annual')}>Yearly</button>
                 </div>
 
                 <div className="pricing-deck display-monthly" id="pricingDeckContainer">
+                    {/* Trial Tier */}
                     <div className="tier-box trial-tier">
                         <div className="tier-top">
-                            <div className="tier-emblem">
-                                <i className="fa-solid fa-clock"></i>
-                            </div>
                             <h3 className="tier-title">Trial</h3>
                         </div>
                         <div className="cost-section">
-                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign"></i> 0<span>/ 14 days</span></div>
+                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '24px'}}></i> 0<span>/ 14 days</span></div>
                         </div>
                         <p className="tier-summary">Experience every feature before you subscribe. No hidden charges.</p>
+                        
+                        <ul className="perks-checklist">
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited Bills</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited Products</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Stock Management</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Secure Cloud Backup</li>
+                        </ul>
+
                         <button 
                             className="action-cta" 
                             onClick={handleTrial} 
                             disabled={loading || isAlreadySubscribed}
                             style={isAlreadySubscribed ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
                         >
-                            {isAlreadySubscribed ? " Subscribed" : (loading ? "Processing..." : "Start free trial →")}
+                            {isAlreadySubscribed ? "Subscribed" : (loading ? "Processing..." : "Start free trial →")}
                         </button>
                     </div>
 
+                    {/* Monthly / Pro Tier (Featured / Popout) */}
                     <div className="tier-box tier-featured monthly-tier">
+                        <div className="popular-badge">Most Popular</div>
                         <div className="tier-top">
-                            <div className="tier-emblem">
-                                <i className="fa-solid fa-bolt"></i>
-                            </div>
                             <h3 className="tier-title">Monthly</h3>
                         </div>
                         <div className="cost-section">
-                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign"></i> 249<span>/ month</span></div>
+                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '28px'}}></i> 249<span>/ month</span></div>
                         </div>
-                        <p className="tier-summary">Everything your business needs for just ₹ 249</p>
+                        <p className="tier-summary">Everything your business needs to optimize web queries and billing.</p>
                         
+                        <ul className="perks-checklist">
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>All limited links</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Own analytics platform</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Chat support</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Optimize hashtags</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited users</li>
+                        </ul>
+
                         <button 
                             className="action-cta" 
                             onClick={() => handleSubscribe('monthly')} 
                             disabled={loading || isAlreadySubscribed}
                             style={isAlreadySubscribed ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
                         >
-                            {isAlreadySubscribed ? "Subscribed" : (loading ? "Processing..." : "Get started →")}
+                            {isAlreadySubscribed ? "Subscribed" : (loading ? "Processing..." : "Upgrade")}
                         </button>
                     </div>
 
+                    {/* Quarterly / Enterprise Tier */}
                     <div className="tier-box annual-tier">
                         <div className="tier-top">
-                            <div className="tier-emblem">
-                                <i className="fa-solid fa-shield-halved"></i>
-                            </div>
                             <h3 className="tier-title">Quarterly Plan</h3>
                         </div>
                         <div className="cost-section">
-                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign"></i> 660<span>/ 3 month </span></div>
+                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '24px'}}></i> 660<span>/ 3 month</span></div>
                         </div>
-                        <p className="tier-summary">Save more compared to monthly payments and enjoy uninterrupted business management for 3 months ( rs 747 - 10 %  Discount ).</p>
+                        <p className="tier-summary">Save more compared to monthly payments (rs 747 - 10% Discount).</p>
                         
+                        <ul className="perks-checklist">
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>All limited links</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Own analytics platform</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Chat support</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Optimize hashtags</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited users</li>
+                        </ul>
+
                         <button 
                             className="action-cta" 
                             onClick={() => handleSubscribe('quarterly')} 
                             disabled={loading || isAlreadySubscribed}
                             style={isAlreadySubscribed ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
                         >
-                            {isAlreadySubscribed ? "Subscribed" : (loading ? "Processing..." : "Get started →")}
+                            {isAlreadySubscribed ? "Subscribed" : (loading ? "Processing..." : "Upgrade")}
                         </button>
                     </div>
                 </div>
