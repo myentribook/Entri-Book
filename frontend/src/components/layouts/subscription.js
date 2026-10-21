@@ -121,7 +121,7 @@ export default function Subscription() {
                     email: user?.email || "user@example.com",
                 },
                 theme: {
-                    color: "#003366"
+                    color: "#004aad"
                 },
                 modal: {
                     ondismiss: function () {
@@ -152,7 +152,7 @@ export default function Subscription() {
             <div className="pricing-root">
                 <div className="intro-block">
                     <div className="tier-emblem" style={{ margin: '0 auto 16px auto' }}>
-                        <i className="fa-solid fa-file-invoice" style={{ fontSize: '20px' }}></i>
+                        <i className="fa-solid fa-file-invoice"></i>
                     </div>
                     <h1>Flexible Billing & Subscription Plans</h1>
                     <p>Unlimited Bills , 
@@ -191,7 +191,7 @@ export default function Subscription() {
                             disabled={loading || isAlreadySubscribed}
                             style={isAlreadySubscribed ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
                         >
-                            {isAlreadySubscribed ? "Subscribed" : (loading ? "Processing..." : "Start free trial →")}
+                            {isAlreadySubscribed ? " Subscribed" : (loading ? "Processing..." : "Start free trial →")}
                         </button>
                     </div>
 

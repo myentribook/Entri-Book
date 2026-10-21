@@ -1,8 +1,8 @@
 :root {
     --site-bg: #f8f9fe;
     --box-bg: #ffffff;
-    --brand-primary: #003366; /* Matching the deep navy blue tone from the reference */
-    --brand-hover: #002244;
+    --brand-primary: #004aad;
+    --brand-hover: #00337a;
     --text-heading: #1e1b4b;
     --text-sub: #6b7280;
     --line-divider: #f3f4f6;
@@ -17,7 +17,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    padding: 60px 20px;
+    padding: 50px 20px;
     overflow-x: auto;
     box-sizing: border-box;
     margin: 0;
@@ -32,9 +32,9 @@
 /* --- Section Heading --- */
 .intro-block {
     text-align: center;
-    margin-bottom: 40px;
-    max-width: 600px;
-    animation: fadeInDown 0.6s ease-out;
+    margin-bottom: 35px;
+    max-width: 650px;
+    animation: fadeInDown 0.5s ease-out;
 }
 
 .intro-block h1 {
@@ -90,17 +90,17 @@
     width: 100%;
     max-width: 1024px;
     padding: 20px 10px;
-    animation: fadeInUp 0.6s ease-out;
+    animation: fadeInUp 0.5s ease-out;
 }
 
-/* --- Individual Plan Card (Styled like reference card container) --- */
+/* --- Individual Plan Card --- */
 .tier-box {
     background-color: var(--box-bg);
-    border: 1px solid #f0f2f5;
-    border-radius: 16px;
-    padding: 32px 24px;
+    border: 1px solid #e5e9f0;
+    border-radius: 20px;
+    padding: 30px 24px;
     width: 100%;
-    max-width: 320px;
+    max-width: 310px;
     flex: 1;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
     display: flex;
@@ -110,7 +110,7 @@
 }
 
 .tier-box:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
 }
 
@@ -118,7 +118,7 @@
 .tier-box.tier-featured {
     background-color: var(--box-bg);
     border: 2px solid var(--brand-primary);
-    box-shadow: 0 16px 40px rgba(0, 51, 102, 0.08);
+    box-shadow: 0 16px 40px rgba(0, 74, 173, 0.1);
     transform: translateY(-6px);
     z-index: 2;
 }
@@ -174,22 +174,24 @@
 .tier-emblem {
     width: 44px;
     height: 44px;
-    background-color: #f0f4fa;
+    background-color: #eaf1fb;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--brand-primary);
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
 .tier-box.tier-featured .tier-emblem {
-    background-color: #f0f4fa;
+    background-color: #eaf1fb;
     color: var(--brand-primary);
 }
 
 .tier-emblem svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     fill: currentColor;
 }
 
@@ -202,6 +204,8 @@
 /* --- Cost Display --- */
 .cost-section {
     margin-bottom: 14px;
+    display: flex;
+    align-items: baseline;
 }
 
 .cost-display {
@@ -209,13 +213,20 @@
     font-weight: 800;
     color: var(--text-heading);
     line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.cost-display i {
+    font-size: 24px;
+    margin-right: 2px;
 }
 
 .cost-display span {
     font-size: 13px;
     font-weight: 500;
     color: var(--text-sub);
-    margin-left: 2px;
+    margin-left: 4px;
 }
 
 .tier-box.tier-featured .cost-display span {
@@ -226,7 +237,7 @@
     font-size: 13px;
     color: var(--text-sub);
     line-height: 1.5;
-    min-height: 44px;
+    min-height: 48px;
     margin-bottom: 24px;
 }
 
@@ -275,7 +286,7 @@
     background-color: var(--brand-primary);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -285,13 +296,13 @@
     gap: 8px;
     transition: all 0.2s ease;
     margin-bottom: 12px;
-    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 74, 173, 0.15);
 }
 
 .action-cta:hover {
     background-color: var(--brand-hover);
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 51, 102, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 74, 173, 0.2);
 }
 
 .action-cta:active {
