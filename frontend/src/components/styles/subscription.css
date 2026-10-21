@@ -1,8 +1,8 @@
 :root {
     --site-bg: #f8f9fe;
     --box-bg: #ffffff;
-    --brand-primary: #0055d4;
-    --brand-hover: #4338ca;
+    --brand-primary: #003366; /* Matching the deep navy blue tone from the reference */
+    --brand-hover: #002244;
     --text-heading: #1e1b4b;
     --text-sub: #6b7280;
     --line-divider: #f3f4f6;
@@ -34,20 +34,21 @@
     text-align: center;
     margin-bottom: 40px;
     max-width: 600px;
+    animation: fadeInDown 0.6s ease-out;
 }
 
 .intro-block h1 {
-    font-size: 38px;
+    font-size: 32px;
     font-weight: 800;
     color: var(--text-heading);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     letter-spacing: -0.5px;
 }
 
 .intro-block p {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-sub);
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* --- Mobile Navigation Switcher --- */
@@ -83,72 +84,83 @@
 /* --- Pricing Flex Wrapper --- */
 .pricing-deck {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    gap: 20px;
+    gap: 24px;
     width: 100%;
     max-width: 1024px;
     padding: 20px 10px;
+    animation: fadeInUp 0.6s ease-out;
 }
 
-/* --- Individual Plan Card --- */
+/* --- Individual Plan Card (Styled like reference card container) --- */
 .tier-box {
     background-color: var(--box-bg);
-    border-radius: 20px;
-    padding: 28px 24px;
+    border: 1px solid #f0f2f5;
+    border-radius: 16px;
+    padding: 32px 24px;
     width: 100%;
-    max-width: 280px;
+    max-width: 320px;
     flex: 1;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
     position: relative;
-    transition: transform 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Featured Tier Override (Growth) --- */
+.tier-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Featured Tier Override --- */
 .tier-box.tier-featured {
-    background-color: var(--brand-primary);
-    color: var(--box-bg);
-    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.25);
-    transform: scale(1.03);
+    background-color: var(--box-bg);
+    border: 2px solid var(--brand-primary);
+    box-shadow: 0 16px 40px rgba(0, 51, 102, 0.08);
+    transform: translateY(-6px);
     z-index: 2;
+}
+
+.tier-box.tier-featured:hover {
+    transform: translateY(-10px);
 }
 
 .tier-box.tier-featured .tier-title,
 .tier-box.tier-featured .cost-display,
 .tier-box.tier-featured .tier-summary {
-    color: var(--box-bg);
+    color: var(--text-heading);
 }
 
 .tier-box.tier-featured .tier-summary {
-    opacity: 0.9;
+    color: var(--text-sub);
 }
 
 .tier-box.tier-featured .tier-separator {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--line-divider);
 }
 
 .tier-box.tier-featured .perk-text {
-    color: var(--box-bg);
+    color: var(--text-heading);
 }
 
 .tier-box.tier-featured .perk-badge {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: var(--box-bg);
+    background-color: var(--brand-primary);
+    color: #ffffff;
 }
 
 .tier-box.tier-featured .action-cta {
-    background-color: var(--box-bg);
-    color: var(--brand-primary);
+    background-color: var(--brand-primary);
+    color: #ffffff;
 }
 
 .tier-box.tier-featured .action-cta:hover {
-    background-color: #f3f4f6;
+    background-color: var(--brand-hover);
 }
 
 .tier-box.tier-featured .footnote-hint {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-sub);
 }
 
 /* --- Card Header Elements --- */
@@ -156,13 +168,13 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .tier-emblem {
     width: 44px;
     height: 44px;
-    background-color: #e0e7ff;
+    background-color: #f0f4fa;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -171,8 +183,8 @@
 }
 
 .tier-box.tier-featured .tier-emblem {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: var(--box-bg);
+    background-color: #f0f4fa;
+    color: var(--brand-primary);
 }
 
 .tier-emblem svg {
@@ -189,11 +201,11 @@
 
 /* --- Cost Display --- */
 .cost-section {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 .cost-display {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 800;
     color: var(--text-heading);
     line-height: 1;
@@ -201,20 +213,20 @@
 
 .cost-display span {
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--text-sub);
     margin-left: 2px;
 }
 
 .tier-box.tier-featured .cost-display span {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-sub);
 }
 
 .tier-summary {
     font-size: 13px;
     color: var(--text-sub);
     line-height: 1.5;
-    min-height: 40px;
+    min-height: 44px;
     margin-bottom: 24px;
 }
 
@@ -259,11 +271,11 @@
 /* --- Action Button & Footnote --- */
 .action-cta {
     width: 100%;
-    padding: 14px;
+    padding: 13px 16px;
     background-color: var(--brand-primary);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -271,12 +283,19 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.15);
 }
 
 .action-cta:hover {
     background-color: var(--brand-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 51, 102, 0.2);
+}
+
+.action-cta:active {
+    transform: translateY(0);
 }
 
 .footnote-hint {
@@ -302,12 +321,23 @@
     text-decoration: underline;
 }
 
-/* --- Mobile Breakpoint Styles --- */
-@keyframes popupFade {
-    from { opacity: 0; transform: translateY(6px); }
+/* --- Animations --- */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popupFade {
+    from { opacity: 0; transform: scale(0.98) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* --- Mobile Breakpoint Styles --- */
 @media (max-width: 768px) {
     .pricing-root {
         overflow-x: hidden;
@@ -330,7 +360,7 @@
         width: 100%;
         max-width: 360px;
         transform: none !important;
-        animation: popupFade 0.3s ease-in-out;
+        animation: popupFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .pricing-deck.display-trial .tier-box.trial-tier,
@@ -339,14 +369,3 @@
         display: flex;
     }
 }
-
-
-
-
-
-
-
-
-
-/* ------------------------- */
-

@@ -10,7 +10,7 @@
 
 .prod-mgr-wrapper {
     padding: 40px 20px;
-    background-color: var(--prod-mgr-bg-color);
+    background-color: #F8FAFC;
     min-height: 100vh;
     box-sizing: border-box;
 }
