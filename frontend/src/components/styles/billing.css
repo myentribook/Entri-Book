@@ -1,29 +1,30 @@
 :root {
     --primary: #0A3C75;
     --primary-hover: #082F5C;
-    --bg: #F4F7FD;
+    --bg: #F8FAFC;
     --card-bg: #FFFFFF;
     --text-main: #0F172A;
-    --text-sub: #475569;
+    --text-sub: #64748B;
     --border: #CBD5E1;
-    --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    --border-light: #E2E8F0;
+    --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
     --radius: 16px;
-    --transition: all 0.2s ease-in-out;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bill-mgr-wrapper {
     max-width: 920px;
-    margin: 30px auto; 
-    padding: 0 20px;
+    margin: 20px auto; 
+    padding: 0 16px;
     width: 100%;
     box-sizing: border-box;
 }
 
+/* Header Section */
 .bill-mgr-header-center {
     text-align: center;
     margin-bottom: 24px;
     width: 100%;
-    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,25 +32,25 @@
 }
 
 .bill-mgr-badge-icon {
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
     background: #EFF6FF;
     color: var(--primary);
-    border-radius: 14px;
+    border-radius: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    margin-bottom: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 86, 179, 0.08);
+    font-size: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(10, 60, 117, 0.08);
 }
 
 .bill-mgr-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
     color: var(--text-main);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     width: 100%;
     text-align: center;
     display: block;
@@ -57,13 +58,13 @@
 }
 
 .bill-mgr-subheading {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
     margin: 0;
     color: var(--text-main);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .bill-mgr-subtitle {
@@ -71,38 +72,40 @@
     color: var(--text-sub);
     margin: 0 auto;
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
     line-height: 1.4;
     text-align: center;
     display: block;
 }
 
+/* Card Styling */
 .bill-mgr-card {
     background: var(--card-bg);
-    padding: 32px;
+    padding: 24px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid #F1F5F9;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     box-sizing: border-box;
 }
 
+/* Form Layout Grids */
 .bill-mgr-grid-form {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .bill-mgr-entry-box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
     align-items: end;
     background: #F8FAFC;
-    padding: 20px;
+    padding: 16px;
     border-radius: 12px;
-    border: 1px dashed #E2E8F0;
+    border: 1.5px dashed var(--border);
 }
 
 .bill-mgr-input-group {
@@ -119,10 +122,11 @@
     letter-spacing: 0.05em;
 }
 
+/* DOTTED BORDER APPLIED TO ALL INPUTS AND SELECTS */
 .bill-mgr-input,
 .bill-mgr-select {
-    padding: 12px 14px;
-    border: 1.5px dashed var(--border);
+    padding: 10px 14px;
+    border: 1.5px dashed var(--border) !important;
     border-radius: 10px;
     font-size: 14px;
     width: 100%;
@@ -133,15 +137,17 @@
     transition: var(--transition);
 }
 
-.bill-mgr-input:focus {
+.bill-mgr-input:focus,
+.bill-mgr-select:focus {
     outline: none;
-    border-color: var(--primary);
-    border-style: solid;
-    box-shadow: 0 0 0 4px rgba(10, 60, 117, 0.08);
+    border-color: var(--primary) !important;
+    border-style: solid !important;
+    box-shadow: 0 0 0 3px rgba(10, 60, 117, 0.1);
 }
 
+/* Buttons */
 .bill-mgr-btn {
-    padding: 12px 20px;
+    padding: 11px 18px;
     border-radius: 10px;
     border: none;
     font-weight: 700;
@@ -161,7 +167,7 @@
 .bill-mgr-btn-primary {
     background: var(--primary);
     color: #fff;
-    box-shadow: 0 4px 12px rgba(10, 60, 117, 0.2);
+    box-shadow: 0 4px 12px rgba(10, 60, 117, 0.18);
 }
 
 .bill-mgr-btn-primary:hover {
@@ -178,9 +184,9 @@
 .bill-mgr-save-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #E2E8F0;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-light);
 }
 
 .bill-mgr-save-btn {
@@ -193,17 +199,18 @@
     cursor: pointer;
     transition: var(--transition);
     font-size: 14px;
-    box-shadow: 0 4px 12px rgba(10, 60, 117, 0.2);
+    box-shadow: 0 4px 12px rgba(10, 60, 117, 0.18);
 }
 
 .bill-mgr-save-btn:hover {
     background: var(--primary-hover);
 }
 
+/* Table Section */
 .bill-mgr-table-wrapper {
     width: 100%;
     overflow-x: auto;
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .bill-mgr-table {
@@ -224,7 +231,7 @@
     text-align: left;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid #E2E8F0;
+    border-bottom: 2px solid var(--border-light);
 }
 
 .bill-mgr-td {
@@ -239,24 +246,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 30px 0 16px;
+    margin: 24px 0 14px;
+    gap: 12px;
 }
 
+/* ==========================================
+   OPTIMIZED PROFESSIONAL MOBILE VIEW (<= 600px)
+   ========================================== */
 @media (max-width: 600px) {
-    .bill-mgr-grid-form,
-    .bill-mgr-entry-box {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
     .bill-mgr-wrapper {
-        padding: 0 10px !important;
+        padding: 0 12px !important;
+        margin: 12px auto !important;
     }
 
     .bill-mgr-card {
-        padding: 1rem !important;
-        margin-bottom: 1rem !important;
+        padding: 16px !important;
+        border-radius: 14px !important;
+        margin-bottom: 16px !important;
     }
 
     .bill-mgr-title {
@@ -265,9 +271,60 @@
 
     .bill-mgr-subtitle {
         font-size: 12px !important;
-        max-width: 290px !important;
+        max-width: 280px !important;
     }
 
+    /* 2-Column Grid for Form Inputs on Mobile */
+    .bill-mgr-grid-form {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    /* Customer Name takes full width top line */
+    .bill-mgr-grid-form .bill-mgr-input-group:first-child {
+        grid-column: span 2;
+    }
+
+    /* Product Entry 2-Column Grid */
+    .bill-mgr-entry-box {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 12px !important;
+    }
+
+    /* Product Select dropdown takes full width */
+    .bill-mgr-entry-box .bill-mgr-input-group:first-child {
+        grid-column: span 2;
+    }
+
+    /* Add Button takes full width at bottom */
+    .bill-mgr-entry-box .bill-mgr-btn {
+        grid-column: span 2;
+        width: 100%;
+        margin-top: 4px;
+    }
+
+    .bill-mgr-save-wrapper {
+        margin-top: 14px;
+        padding-top: 14px;
+    }
+
+    .bill-mgr-save-btn {
+        width: 100% !important;
+        text-align: center;
+    }
+
+    .bill-mgr-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .bill-mgr-section-header .bill-mgr-input {
+        width: 100% !important;
+    }
+
+    /* Responsive Card-style View for Tables on Mobile */
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -276,7 +333,6 @@
     .bill-mgr-table tr {
         display: block !important;
         width: 100% !important;
-        min-width: 0 !important;
         box-sizing: border-box !important;
     }
 
@@ -287,20 +343,19 @@
     }
 
     .bill-mgr-table tr {
-        background: #ffffff !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: var(--radius) !important;
-        margin-bottom: 1rem !important;
-        padding: 1rem !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        background: #FFFFFF !important;
+        border: 1px solid var(--border-light) !important;
+        border-radius: 12px !important;
+        margin-bottom: 12px !important;
+        padding: 12px !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
     .bill-mgr-table td {
         border: none !important;
-        position: relative !important;
-        padding: 8px 0 !important; 
+        padding: 6px 0 !important; 
         text-align: right !important;
-        font-size: 0.9rem !important;
+        font-size: 13px !important;
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
@@ -309,30 +364,25 @@
 
     .bill-mgr-table td:nth-child(1)::before { content: "Product / Customer"; }
     .bill-mgr-table td:nth-child(2)::before { content: "Type / Date"; }
-    .bill-mgr-table td:nth-child(3)::before { content: "Quantity / Items"; }
+    .bill-mgr-table td:nth-child(3)::before { content: "Qty / Items"; }
     .bill-mgr-table td:nth-child(4)::before { content: "Price / Total"; }
     .bill-mgr-table td:nth-child(5)::before { content: "Actions"; }
 
     .bill-mgr-table td::before {
-        font-weight: 800;
+        font-weight: 700;
         color: var(--text-sub);
         text-transform: uppercase;
-        font-size: 0.7rem;
-        letter-spacing: 0.05em;
+        font-size: 11px;
+        letter-spacing: 0.03em;
         text-align: left;
     }
 
-    .bill-mgr-table td .bill-mgr-btn-view {
-        display: inline-flex !important;
-        margin-left: auto;
-    }
-
     .bill-mgr-table td[colspan] {
-        padding: 1rem !important;
+        padding: 12px !important;
         text-align: center !important;
         display: block !important;
     }
-    
+
     .bill-mgr-table td[colspan]::before {
         content: none !important;
     }
