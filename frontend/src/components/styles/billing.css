@@ -44,6 +44,7 @@
     margin: 0 0 6px;
     color: var(--text-main);
     letter-spacing: -0.02em;
+    white-space: nowrap;
 }
 
 .bill-mgr-subheading {
@@ -60,6 +61,7 @@
     font-size: 14px;
     color: var(--text-sub);
     margin: 0;
+    white-space: nowrap;
 }
 
 .bill-mgr-card {
@@ -242,6 +244,16 @@
     .bill-mgr-card {
         padding: 1rem !important;
         margin-bottom: 1rem !important;
+    }
+
+    .bill-mgr-title {
+        font-size: 20px !important;
+    }
+
+    .bill-mgr-subtitle {
+        font-size: 11px !important;
+        white-space: normal !important;
+        padding: 0 10px;
     }
 
     .bill-mgr-table,
