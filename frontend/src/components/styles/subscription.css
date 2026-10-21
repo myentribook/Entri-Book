@@ -1,8 +1,8 @@
 :root {
     --site-bg: #f8f9fe;
     --box-bg: #ffffff;
-    --brand-primary: #5266eb; /* Exact purple-blue shade from reference */
-    --brand-hover: #4052d6;
+    --brand-primary: #0B4F8A; /* Exact purple-blue shade from reference */
+    --brand-hover: #2D76B4;
     --text-heading: #1e1b4b;
     --text-sub: #6b7280;
     --line-divider: #f3f4f6;
@@ -37,8 +37,8 @@
 }
 
 .intro-block h1 {
-    font-size: 36px;
-    font-weight: 800;
+    font-size: 20px;
+    font-weight:600;
     color: var(--text-heading);
     margin-bottom: 8px;
     letter-spacing: -0.5px;
