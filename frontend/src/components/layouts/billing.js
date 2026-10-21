@@ -123,7 +123,12 @@ export default function Billing() {
       <Toaster />
       {loading ? <Loader /> : (
         <div className="bill-mgr-wrapper">
-          <h2 className="bill-mgr-title"><i className="fa-solid fa-file-invoice" style={{ color: "var(--primary)" }}></i> Bill Management</h2>
+          <div className="bill-mgr-header-center">
+            <div className="bill-mgr-badge-icon"><i className="fa-solid fa-file-invoice"></i></div>
+            <h2 className="bill-mgr-title">Bill Management</h2>
+            <p className="bill-mgr-subtitle">Create, manage, and share your customer retail invoices seamlessly.</p>
+          </div>
+
           <div className="bill-mgr-card">
             <div className="bill-mgr-grid-form">
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Customer</label><input className="bill-mgr-input" type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="Enter name" /></div>
@@ -155,37 +160,14 @@ export default function Billing() {
                 <thead><tr><th className="bill-mgr-th">Product</th><th className="bill-mgr-th">Type</th><th className="bill-mgr-th">Qty</th><th className="bill-mgr-th">Price</th><th className="bill-mgr-th">Total</th></tr></thead>
                 <tbody>{tempItems.map((item, idx) => (<tr key={idx}><td className="bill-mgr-td">{item.productName}</td><td className="bill-mgr-td">{item.saleType}</td><td className="bill-mgr-td">{item.quantity}</td><td className="bill-mgr-td">{item.price}</td><td className="bill-mgr-td">{item.total}</td></tr>))}</tbody>
               </table>
-              <div className="bill-mgr-save-wrapper"><button className="bill-mgr-save-btn" onClick={handleSaveInvoice} disabled={loading}>{loading ? "Saving..." : "Save Invoice"}</button></div>
+              <div className="bill-mgr-save-wrapper"><button className="bill-mgr-save-btn" onClick={handleSaveInvoice} disabled={loading}>{loading ? "Saving..." : "Save Invoice →"}</button></div>
             </div>
           </div>
           
           <div className="bill-mgr-section-header">
-            <h2 className="bill-mgr-title"><i className="fa-solid fa-history" style={{ color: "var(--primary)" }}></i> Bill History</h2>
+            <h2 className="bill-mgr-subheading"><i className="fa-solid fa-history" style={{ color: "var(--primary)" }}></i> Bill History</h2>
             <input className="bill-mgr-input" type="text" placeholder="Search Bills ..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "180px", padding: "0.5rem 1rem" }} />
           </div>
-          
-          {/* <div className="bill-mgr-card">
-            <div className="bill-mgr-table-wrapper">
-              <table className="bill-mgr-table">
-                <thead><tr><th className="bill-mgr-th">Customer</th><th className="bill-mgr-th">Date</th><th className="bill-mgr-th">Items</th><th className="bill-mgr-th">Total</th><th className="bill-mgr-th">Actions</th></tr></thead>
-                <tbody>
-                  {bills && bills.length > 0 ? bills.filter(bill => (bill?.customerName ?? "").toLowerCase().includes(keyword.toLowerCase()) || (bill?.invoiceNo ?? "").toLowerCase().includes(keyword.toLowerCase())).map(bill => (
-                    <tr key={bill._id}>
-                      <td className="bill-mgr-td" data-label="Customer">{bill.customerName} ({bill.invoiceNo})</td>
-                      <td className="bill-mgr-td" data-label="Date">{bill.createdAt ? bill.createdAt.split('T')[0] : 'N/A'}</td>
-                      <td className="bill-mgr-td" data-label="Items">{bill.items?.length || 0}</td>
-                      <td className="bill-mgr-td" data-label="Total">₹{bill.grandTotal}</td>
-                      <td className="bill-mgr-td" data-label="Actions">
-                        <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>
-                          <i className="fa-brands fa-whatsapp"></i> Share
-                        </button>
-                      </td>
-                    </tr>
-                  )) : <tr><td className="bill-mgr-td" colSpan="5" style={{ textAlign: "center" }}>No bills found</td></tr>}
-                </tbody>
-              </table>
-            </div>
-          </div> */}
 
           <div className="bill-mgr-card">
             <div className="bill-mgr-table-wrapper">
@@ -223,31 +205,31 @@ export default function Billing() {
 
           {showShareModal && selectedBill && (
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-              <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', width: '400px', maxWidth: '90%', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-                <h3 style={{ margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', width: '400px', maxWidth: '90%', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)' }}>
+                <h3 style={{ margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#0F172A', fontWeight: '800' }}>
                   <i className="fa-solid fa-file-invoice" style={{ color: "var(--primary)" }}></i> Bill Details Preview
                 </h3>
-                <div style={{ fontSize: '14px', color: '#555', marginBottom: '16px', lineHeight: '1.6' }}>
+                <div style={{ fontSize: '14px', color: '#475569', marginBottom: '16px', lineHeight: '1.6' }}>
                   <p><strong>Customer:</strong> {selectedBill.customerName}</p>
                   <p><strong>Mobile:</strong> {selectedBill.customerMobile}</p>
                   <p><strong>Payment Type:</strong> {selectedBill.paymentType}</p>
                   <p><strong>Date:</strong> {selectedBill.createdAt ? selectedBill.createdAt.split('T')[0] : 'N/A'}</p>
                   <p><strong>GSTIN :</strong> {selectedBill.gstin}</p>
-                  <div style={{ maxHeight: '120px', overflowY: 'auto', margin: '10px 0', border: '1px solid #eee', padding: '8px', borderRadius: '4px' }}>
+                  <div style={{ maxHeight: '120px', overflowY: 'auto', margin: '10px 0', border: '1px solid #E2E8F0', padding: '8px', borderRadius: '8px' }}>
                     <strong>Items:</strong>
                     {selectedBill.items?.map((it, i) => (
-                      <div key={i} style={{ fontSize: '13px', borderBottom: '1px solid #f9f9f9', padding: '4px 0' }}>
-                        {it.product?.name || "Product"} ({it.saleType}) - Qty: {it.quantity} - ₹{it.total} - {it.hsnCode}
+                      <div key={i} style={{ fontSize: '13px', borderBottom: '1px solid #F1F5F9', padding: '4px 0' }}>
+                        {it.product?.name || "Product"} ({it.saleType}) - Qty: {it.quantity} - ₹{it.total}
                       </div>
                     ))}
                   </div>
-                  <p style={{ fontSize: '14px', color: '#666' }}>SubTotal: ₹{selectedBill.subTotal}</p>
-                  <p style={{ fontSize: '14px', color: '#666' }}>Tax (CGST+SGST): ₹{selectedBill.totalTax}</p>
-                  <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#000', marginTop: '4px' }}>Grand Total: ₹{selectedBill.grandTotal}</p>
+                  <p style={{ fontSize: '14px', color: '#64748B' }}>SubTotal: ₹{selectedBill.subTotal}</p>
+                  <p style={{ fontSize: '14px', color: '#64748B' }}>Tax (CGST+SGST): ₹{selectedBill.totalTax}</p>
+                  <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#0F172A', marginTop: '4px' }}>Grand Total: ₹{selectedBill.grandTotal}</p>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                  <button onClick={() => setShowShareModal(false)} disabled={sharing} style={{ padding: '8px 16px', background: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '500' }}>Cancel</button>
-                  <button onClick={handleConfirmShare} disabled={sharing} style={{ padding: '8px 16px', background: '#25D366', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <button onClick={() => setShowShareModal(false)} disabled={sharing} style={{ padding: '10px 16px', background: '#E2E8F0', color: '#334155', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Cancel</button>
+                  <button onClick={handleConfirmShare} disabled={sharing} style={{ padding: '10px 16px', background: '#25D366', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <i className="fa-brands fa-whatsapp"></i> {sharing ? "Sending..." : "Confirm & Send"}
                   </button>
                 </div>
