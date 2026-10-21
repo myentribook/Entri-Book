@@ -140,7 +140,7 @@ export default function Purchase() {
 
             {loading ? <Loader /> : (
                 <div className="wrapper">
-                    {/* Header matching reference UI */}
+                    {/* Header */}
                     <div className="page-header">
                         <div className="header-icon-box">
                             <i className="fa-solid fa-file-invoice"></i>
@@ -227,8 +227,11 @@ export default function Purchase() {
                                         </tr>
                                     )) : (
                                         <tr>
-                                            <td colSpan="5" style={{ textAlign: "center", color: "#9ca3af", padding: "24px 0" }}>
-                                                No items added yet
+                                            <td colSpan="5" className="table-message-state">
+                                                <div className="state-content-box">
+                                                    <i className="fa-solid fa-folder-open state-icon"></i>
+                                                    <span>No items added yet</span>
+                                                </div>
                                             </td>
                                         </tr>
                                     )}
@@ -270,7 +273,14 @@ export default function Purchase() {
                                 </thead>
                                 <tbody>
                                     {error ? (
-                                        <tr><td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>{error}</td></tr>
+                                        <tr>
+                                            <td colSpan="4" className="table-message-state">
+                                                <div className="state-content-box">
+                                                    <i className="fa-solid fa-circle-exclamation state-icon error-icon"></i>
+                                                    <span>{error}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     ) : purchase && purchase.length > 0 ? purchase
                                         .filter(item => (item?.supplierName ?? "").toLowerCase().includes(keyword.toLowerCase()))
                                         .map((item) => (
@@ -285,7 +295,14 @@ export default function Purchase() {
                                                 </td>
                                             </tr>
                                         )) : (
-                                            <tr><td colSpan="4" style={{ textAlign: "center", padding: "20px", color: "#9ca3af" }}>No purchase found</td></tr>
+                                            <tr>
+                                                <td colSpan="4" className="table-message-state">
+                                                    <div className="state-content-box">
+                                                        <i className="fa-solid fa-folder-open state-icon"></i>
+                                                        <span>No purchase found</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         )}
                                 </tbody>
                             </table>
