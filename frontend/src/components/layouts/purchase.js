@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { getPurchase, createPurchase } from '../../actions/purchaseActions';
-import { clearPurchaseState } from '../../slices/purchaseSlices'; // Ensure this matches your slice export
+import { clearPurchaseState } from '../../slices/purchaseSlices';
 import { getProducts } from '../../actions/productAction';
 import toast, { Toaster } from "react-hot-toast";
 import Loader from '../layouts/loader';
@@ -37,19 +37,16 @@ export default function Purchase() {
         dispatch(getPurchase());
         dispatch(getProducts());
 
-        // Fix: Clear purchase data on component unmount
         return () => {
             dispatch(clearPurchaseState());
         };
     }, [dispatch]);
 
-  const handleAddTemp = () => {
+    const handleAddTemp = () => {
         if (!selectedProductId || !quantity || !purchasePrice) return toast.error("Please fill all product fields");
         const selectedProduct = products.find(p => p._id === selectedProductId);
         const q = Number(quantity);
         const p = Number(purchasePrice);
-        
-        // இங்கதான் மாற்றம்: ஒருவேளை Conv.F. கொடுக்காவிட்டால் ஏற்கனவே இருக்கிற product-ன் conversionFactor-ஐ எடுத்துக்கொள்ளும்
         const cf = Number(conversionFactor || selectedProduct?.conversionFactor || 0);
 
         const newItem = {
@@ -65,7 +62,7 @@ export default function Purchase() {
         setQuantity(''); setConversionFactor(''); setPurchasePrice(''); setSelectedProductId('');
     };
 
-  const handleSavePurchase = () => {
+    const handleSavePurchase = () => {
         if (!supplierName || !supplierBillNo || tempItems.length === 0) return toast.error("Fill all fields and add items");
 
         const mergedItemsMap = {};
@@ -94,21 +91,23 @@ export default function Purchase() {
 
         dispatch(createPurchase(purchaseData)).then(() => {
             dispatch(getPurchase());
-            dispatch(getProducts()); // மிக முக்கியம்: ஸ்டாக் மாறியவுடன் பிராடக்ட் லிஸ்ட்டை ரெஃப்ரெஷ் செய்ய வேண்டும்
+            dispatch(getProducts());
         });
 
         setTempItems([]);
         setSupplierName('');
         setSupplierBillNo('');
     };
+
     return (
-        <>
+        <div className="purchase-page-container">
             <Toaster />
 
+            {/* Modal Setup */}
             <input type="checkbox" id="view-modal" className="modal-checkbox" />
             <div className="modal-overlay">
                 <div className="modal-content">
-                    <h3 style={{ marginTop: 0 }}>Purchase Details</h3>
+                    <h3>Purchase Details</h3>
                     {selectedView && (
                         <>
                             <p><strong>Supplier:</strong> {selectedView.supplierName}</p>
@@ -124,28 +123,58 @@ export default function Purchase() {
                                     const subTotal = item.quantity * item.purchasePrice;
 
                                     return (
-                                        <li key={index} style={{ marginBottom: "5px", borderBottom: "1px solid #eee" }}>
+                                        <li key={index} style={{ marginBottom: "8px", borderBottom: "1px solid #f0f0f0", paddingBottom: "4px" }}>
                                             {finalProductName} - {item.quantity} x {item.purchasePrice} = {subTotal.toFixed(2)}
                                         </li>
                                     );
                                 })}
                             </ul>
-                            <p><strong>Grand Total: {selectedView.items?.reduce((acc, item) => acc + (item.quantity * item.purchasePrice), 0).toFixed(2)}</strong></p>
+                            <p style={{ marginTop: "15px" }}>
+                                <strong>Grand Total: ${selectedView.items?.reduce((acc, item) => acc + (item.quantity * item.purchasePrice), 0).toFixed(2)}</strong>
+                            </p>
                         </>
                     )}
-                    <label htmlFor="view-modal" className="btn btn-primary">Close</label>
+                    <label htmlFor="view-modal" className="btn btn-primary" style={{ marginTop: "15px" }}>Close</label>
                 </div>
             </div>
 
             {loading ? <Loader /> : (
                 <div className="wrapper">
-                    <h2 style={{ paddingBottom: '30px', fontWeight: "bolder" }}><i className="fa-solid fa-cart-shopping" style={{ color: '#0056B3' }}></i> Purchase Management</h2>
+                    {/* Header matching reference UI */}
+                    <div className="page-header">
+                        <div className="header-icon-box">
+                            <i className="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <h1 className="header-title">Purchase Management</h1>
+                        <p className="header-subtitle">
+                            Create, manage, and track your supplier purchases and stock inventories seamlessly.
+                        </p>
+                    </div>
+
+                    {/* Main Purchase Card */}
                     <div className="card">
                         <div className="grid-form">
-                            <div className="input-group"><label>Supplier Name</label><input type="text" value={supplierName} onChange={(e) => setSupplierName(e.target.value)} placeholder="ABC " /></div>
-                            <div className="input-group"><label>Supplier Bill Number</label><input type="text" value={supplierBillNo} onChange={(e) => setSupplierBillNo(e.target.value)} placeholder="e.g. BILL-2026-001" /></div>
+                            <div className="input-group">
+                                <label>Supplier Name</label>
+                                <input 
+                                    type="text" 
+                                    value={supplierName} 
+                                    onChange={(e) => setSupplierName(e.target.value)} 
+                                    placeholder="Enter name" 
+                                />
+                            </div>
+                            <div className="input-group">
+                                <label>Supplier Bill No</label>
+                                <input 
+                                    type="text" 
+                                    value={supplierBillNo} 
+                                    onChange={(e) => setSupplierBillNo(e.target.value)} 
+                                    placeholder="BILL-2026-001" 
+                                />
+                            </div>
                         </div>
 
+                        {/* Item Entry Dashed Container */}
                         <div className="entry-box">
                             <div className="input-group">
                                 <label>Product</label>
@@ -154,37 +183,91 @@ export default function Purchase() {
                                     {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
                                 </select>
                             </div>
-                            <div className="input-group"><label>Qty</label><input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" /></div>
-                            <div className="input-group"><label>Conv. F.</label><input type="number" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder="1" /></div>
-                            <div className="input-group"><label>Price</label><input type="number" value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} placeholder="0.00" /></div>
-                            <div className="input-group"><label>Amount</label><input type="number" readOnly value={quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00"} /></div>
-                            <button className="btn btn-primary" onClick={handleAddTemp}><i className="fa-solid fa-plus"></i> Add</button>
+                            <div className="input-group">
+                                <label>Qty</label>
+                                <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" />
+                            </div>
+                            <div className="input-group">
+                                <label>Conv. F.</label>
+                                <input type="number" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder="1" />
+                            </div>
+                            <div className="input-group">
+                                <label>Price</label>
+                                <input type="number" value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} placeholder="0.00" />
+                            </div>
+                            <div className="input-group">
+                                <label>Amount</label>
+                                <input type="number" readOnly value={quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00"} />
+                            </div>
+                            <button className="btn-add" onClick={handleAddTemp}>
+                                + Add
+                            </button>
                         </div>
 
+                        {/* Temp Items Table */}
                         <div className="table-wrapper">
                             <table>
-                                <thead><tr><th>Product</th><th>Qty</th><th>Conv. F.</th><th>Price</th><th>Amount</th></tr></thead>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Qty</th>
+                                        <th>Conv. F.</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
-                                    {tempItems.map((item, idx) => (
-                                        <tr key={idx}><td>{item.productName}</td><td>{item.quantity}</td><td>{item.conversionFactor}</td><td>{item.purchasePrice}</td><td>{item.amount.toFixed(2)}</td></tr>
-                                    ))}
+                                    {tempItems.length > 0 ? tempItems.map((item, idx) => (
+                                        <tr key={idx}>
+                                            <td>{item.productName}</td>
+                                            <td>{item.quantity}</td>
+                                            <td>{item.conversionFactor}</td>
+                                            <td>{item.purchasePrice}</td>
+                                            <td>{item.amount.toFixed(2)}</td>
+                                        </tr>
+                                    )) : (
+                                        <tr>
+                                            <td colSpan="5" style={{ textAlign: "center", color: "#9ca3af", padding: "24px 0" }}>
+                                                No items added yet
+                                            </td>
+                                        </tr>
+                                    )}
                                 </tbody>
                             </table>
-                            <div className="dificultly-wrapper">
-                                <button className="dificultly-btn" onClick={handleSavePurchase}><i className="fa-solid fa-check"></i> Save</button>
-                            </div>
+                        </div>
+
+                        {/* Save Action Container */}
+                        <div className="save-action-wrapper">
+                            <button className="btn-save" onClick={handleSavePurchase}>
+                                Save Purchase &rarr;
+                            </button>
                         </div>
                     </div>
 
+                    {/* History Section Header */}
                     <div className="section-header">
-                        <h2 style={{ paddingBottom: '30px', fontWeight: "bolder" }}><i className="fa-solid fa-clock-rotate-left" style={{ color: '#0056B3' }}></i> History</h2>
-                        <input type="text" placeholder="Search purchase..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ padding: '10px 15px', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '13px', width: '200px' }} />
+                        <h2>History</h2>
+                        <input 
+                            type="text" 
+                            placeholder="Search purchase..." 
+                            value={keyword} 
+                            onChange={(e) => setKeyword(e.target.value)} 
+                            className="search-input"
+                        />
                     </div>
 
+                    {/* History List Card */}
                     <div className="card">
                         <div className="table-wrapper history-scroll">
                             <table>
-                                <thead><tr><th>Supplier</th><th>Bill No</th><th>Items</th><th>Actions</th></tr></thead>
+                                <thead>
+                                    <tr>
+                                        <th>Supplier</th>
+                                        <th>Bill No</th>
+                                        <th>Items</th>
+                                        <th style={{ textAlign: "right" }}>Actions</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     {error ? (
                                         <tr><td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>{error}</td></tr>
@@ -195,15 +278,21 @@ export default function Purchase() {
                                                 <td>{item.supplierName}</td>
                                                 <td>{item.supplierBillNo}</td>
                                                 <td>{item.items?.length || 0}</td>
-                                                <td><label htmlFor="view-modal" className="btn btn-view" onClick={() => setSelectedView(item)}><i className="fa-solid fa-eye"></i> View</label></td>
+                                                <td style={{ textAlign: "right" }}>
+                                                    <label htmlFor="view-modal" className="btn-view" onClick={() => setSelectedView(item)}>
+                                                        <i className="fa-solid fa-eye"></i> View
+                                                    </label>
+                                                </td>
                                             </tr>
-                                        )) : <tr><td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>No purchase found</td></tr>}
+                                        )) : (
+                                            <tr><td colSpan="4" style={{ textAlign: "center", padding: "20px", color: "#9ca3af" }}>No purchase found</td></tr>
+                                        )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }
