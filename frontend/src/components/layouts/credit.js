@@ -47,9 +47,17 @@ export default function Credit() {
             {loading ? <Loader /> : (
                 <div className="credit-page-container">
                     <div className="credit-header-row">
-                        <h2 className="credit-title-heading">
-                            <i className="fa-solid fa-book" style={{ color: '#0056B3' }}></i> Credits
-                        </h2>
+                        <div className="credit-title-wrapper">
+                            <div className="credit-icon-box">
+                                <i className="fa-solid fa-book" style={{ color: '#0056B3' }}></i>
+                            </div>
+                            <div>
+                                <h2 className="credit-title-heading">Credits</h2>
+                                <p className="credit-subtitle-text">
+                                    Track, manage, and settle your customer credit balances and due payments seamlessly.
+                                </p>
+                            </div>
+                        </div>
                         <input 
                             type="text" 
                             className="credit-search-bar" 
