@@ -58,29 +58,34 @@ export default function Product() {
                 <div className="prod-mgr-wrapper">
                     <div className="prod-mgr-container">
                         
-                        {/* Top Header Section matching design style */}
+                        {/* Heading & Subtitle Container (Same line arrangement layout) */}
                         <div className="prod-mgr-top-header">
-                            <div className="prod-mgr-top-icon">
-                                <i className="fa-solid fa-box-open" style={{ color: "#004a99" }}></i>
+                            <div className="prod-mgr-title-row">
+                                <div className="prod-mgr-top-icon">
+                                    <i className="fa-solid fa-box-open" style={{ color: "#004a99" }}></i>
+                                </div>
+                                <h2 className="prod-mgr-main-title">Product Management</h2>
                             </div>
-                            <h2 className="prod-mgr-main-title">Product Management</h2>
                             <p className="prod-mgr-subtitle">Create, organize, and manage your inventory items and HSN codes seamlessly.</p>
                         </div>
 
+                        {/* Search Input Field Container (Separated below paragraph) */}
+                        <div className="prod-mgr-search-card">
+                            <Search keyword={keyword} setKeyword={setKeyword} />
+                        </div>
+
+                        {/* Product Name, HSN Code and Save Button Container */}
                         <div className="prod-mgr-card">
-                            <div className="prod-mgr-controls">
-                                <Search keyword={keyword} setKeyword={setKeyword} />
-                                <div className="prod-mgr-add-container">
-                                    <div className="prod-mgr-input-group">
-                                        <label className="prod-mgr-label">PRODUCT NAME</label>
-                                        <input value={newProductName} onChange={(e) => setNewProductName(e.target.value)} placeholder="New product name..." />
-                                    </div>
-                                    <div className="prod-mgr-input-group">
-                                        <label className="prod-mgr-label">HSN CODE</label>
-                                        <input value={newHsnCode} onChange={(e) => setNewHsnCode(e.target.value)} placeholder="HSN Code..." />
-                                    </div>
-                                    <button className="prod-mgr-btn-add" onClick={handleAdd}>+ Save</button>
+                            <div className="prod-mgr-add-container">
+                                <div className="prod-mgr-input-group">
+                                    <label className="prod-mgr-label">PRODUCT NAME</label>
+                                    <input value={newProductName} onChange={(e) => setNewProductName(e.target.value)} placeholder="New product name..." />
                                 </div>
+                                <div className="prod-mgr-input-group">
+                                    <label className="prod-mgr-label">HSN CODE</label>
+                                    <input value={newHsnCode} onChange={(e) => setNewHsnCode(e.target.value)} placeholder="HSN Code..." />
+                                </div>
+                                <button className="prod-mgr-btn-add" onClick={handleAdd}>+ Save</button>
                             </div>
                         </div>
 
