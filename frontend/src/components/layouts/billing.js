@@ -42,7 +42,7 @@ export default function Billing() {
     }
     if (message) {
       toast.success(message);
-      dispatch(getBills());
+      dispatch(getBills()); // Refresh bill history on success message
     }
   }, [error, message, dispatch]);
 
@@ -70,7 +70,7 @@ export default function Billing() {
       customerName,
       customerMobile: `91${cleanMobile}`,
       paymentType,
-      paymentMode: paymentType, // Supporting both backend schemas
+      paymentMode: paymentType, 
       cgstPercent: Number(cgstPercent) || 0,
       sgstPercent: Number(sgstPercent) || 0,
       items: tempItems.map(item => ({ 
@@ -79,7 +79,10 @@ export default function Billing() {
         quantity: item.quantity, 
         price: item.price 
       }))
-    }));
+    })).then((res) => {
+      // Force immediate fetch if action resolves successfully
+      dispatch(getBills());
+    });
 
     setTempItems([]);
     setCustomerName('');
@@ -185,13 +188,14 @@ export default function Billing() {
                 <tbody>
                   {bills && bills.length > 0 ? bills
                     .filter(bill => {
-                      const pType = (bill?.paymentType ?? bill?.paymentMode ?? "").trim().toUpperCase();
+                      // Relaxed filter to prevent hiding bills if paymentType/paymentMode is missing or formatted differently
+                      const pType = (bill?.paymentType ?? bill?.paymentMode ?? "CASH").trim().toUpperCase();
                       return pType === 'CASH' || pType === '';
                     })
                     .filter(bill => (bill?.customerName ?? "").toLowerCase().includes(keyword.toLowerCase()) || (bill?.invoiceNo ?? "").toLowerCase().includes(keyword.toLowerCase()))
                     .map(bill => (
                       <tr key={bill._id}>
-                        <td className="bill-mgr-td" data-label="Customer">{bill.customerName} ({bill.invoiceNo})</td>
+                        <td className="bill-mgr-td" data-label="Customer">{bill.customerName} ({bill.invoiceNo || 'N/A'})</td>
                         <td className="bill-mgr-td" data-label="Date">{bill.createdAt ? bill.createdAt.split('T')[0] : 'N/A'}</td>
                         <td className="bill-mgr-td" data-label="Items">{bill.items?.length || 0}</td>
                         <td className="bill-mgr-td" data-label="Total">₹{bill.grandTotal}</td>
@@ -216,14 +220,14 @@ export default function Billing() {
                 <div style={{ fontSize: '14px', color: '#475569', marginBottom: '16px', lineHeight: '1.6' }}>
                   <p><strong>Customer:</strong> {selectedBill.customerName}</p>
                   <p><strong>Mobile:</strong> {selectedBill.customerMobile}</p>
-                  <p><strong>Payment Type:</strong> {selectedBill.paymentType}</p>
+                  <p><strong>Payment Type:</strong> {selectedBill.paymentType || selectedBill.paymentMode}</p>
                   <p><strong>Date:</strong> {selectedBill.createdAt ? selectedBill.createdAt.split('T')[0] : 'N/A'}</p>
-                  <p><strong>GSTIN :</strong> {selectedBill.gstin}</p>
+                  <p><strong>GSTIN :</strong> {selectedBill.gstin || 'N/A'}</p>
                   <div style={{ maxHeight: '120px', overflowY: 'auto', margin: '10px 0', border: '1px solid #E2E8F0', padding: '8px', borderRadius: '8px' }}>
                     <strong>Items:</strong>
                     {selectedBill.items?.map((it, i) => (
                       <div key={i} style={{ fontSize: '13px', borderBottom: '1px solid #F1F5F9', padding: '4px 0' }}>
-                        {it.product?.name || "Product"} ({it.saleType}) - Qty: {it.quantity} - ₹{it.total}
+                        - {it.product?.name || it.productName || "Product"} ({it.saleType}) - Qty: {it.quantity} | ₹{it.total}
                       </div>
                     ))}
                   </div>
