@@ -137,7 +137,7 @@ export default function Credit() {
                                 </button>
                                 <button
                                     className="credit-modal-action-btn"
-                                    style={{ background: '#2563eb', color: 'white' }}
+                                    style={{ background: '#09233f', color: 'white' }}
                                     onClick={handleConfirm}
                                 >
                                     Confirm
