@@ -103,40 +103,46 @@ export default function Purchase() {
         <div className="bill-mgr-wrapper">
             <Toaster />
 
-            {/* Modal Setup */}
-            <input type="checkbox" id="view-modal" style={{ display: 'none' }} />
-            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'none', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
-                    <h3 style={{ marginTop: 0 }}>Purchase Details</h3>
-                    {selectedView && (
+            {/* Modal Setup - Controlled via selectedView state */}
+            {selectedView && (
+                <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+                    <div style={{ background: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
+                        <h3 style={{ marginTop: 0 }}>Purchase Details</h3>
                         <>
                             <p><strong>Supplier:</strong> {selectedView.supplierName}</p>
                             <p><strong>Bill No:</strong> {selectedView.supplierBillNo}</p>
                             <p><strong>Items Count:</strong> {selectedView.items?.length || 0}</p>
-                            <ul style={{ listStyle: "none", padding: 0 }}>
+                            <ul style={{ listStyle: "none", padding: 0, maxHeight: '200px', overflowY: 'auto' }}>
                                 {selectedView.items?.map((item, index) => {
                                     const productDetail = products.find(p => String(p._id) === String(item.product));
                                     const finalProductName = item.productName && item.productName !== "Unknown"
                                         ? item.productName
                                         : (productDetail?.name || "Product Name Not Found");
 
-                                    const subTotal = item.quantity * item.purchasePrice;
+                                    const subTotal = Number(item.quantity) * Number(item.purchasePrice);
 
                                     return (
                                         <li key={index} style={{ marginBottom: "8px", borderBottom: "1px solid #f0f0f0", paddingBottom: "4px" }}>
-                                            {finalProductName} - {item.quantity} x {item.purchasePrice} = {subTotal.toFixed(2)}
+                                            <strong>{finalProductName}</strong><br />
+                                            {item.quantity} x {item.purchasePrice} = {subTotal.toFixed(2)}
                                         </li>
                                     );
                                 })}
                             </ul>
                             <p style={{ marginTop: "15px" }}>
-                                <strong>Grand Total: ${selectedView.items?.reduce((acc, item) => acc + (item.quantity * item.purchasePrice), 0).toFixed(2)}</strong>
+                                <strong>Grand Total: ${selectedView.items?.reduce((acc, item) => acc + (Number(item.quantity) * Number(item.purchasePrice)), 0).toFixed(2)}</strong>
                             </p>
                         </>
-                    )}
-                    <label htmlFor="view-modal" className="bill-mgr-btn bill-mgr-btn-primary" style={{ marginTop: "15px", width: '100%', cursor: 'pointer' }}>Close</label>
+                        <button 
+                            className="bill-mgr-btn bill-mgr-btn-primary" 
+                            style={{ marginTop: "15px", width: '100%', cursor: 'pointer' }}
+                            onClick={() => setSelectedView(null)}
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {loading ? <Loader /> : (
                 <>
@@ -296,9 +302,9 @@ export default function Purchase() {
                                                 <td className="bill-mgr-td">{item.supplierBillNo}</td>
                                                 <td className="bill-mgr-td">{item.items?.length || 0}</td>
                                                 <td className="bill-mgr-td" style={{ textAlign: "right" }}>
-                                                    <label htmlFor="view-modal" className="bill-mgr-btn bill-mgr-btn-view" onClick={() => setSelectedView(item)}>
+                                                    <button type="button" className="bill-mgr-btn bill-mgr-btn-view" onClick={() => setSelectedView(item)}>
                                                         <i className="fa-solid fa-eye"></i> View
-                                                    </label>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         )) : (
