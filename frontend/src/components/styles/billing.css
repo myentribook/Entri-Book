@@ -183,7 +183,7 @@
 
 .bill-mgr-save-wrapper {
     display: flex;
-    justifyContent: flex-end;
+    justify-Content: flex-end;
     margin-top: 18px;
     padding-top: 18px;
     border-top: 1px solid var(--border-light);
