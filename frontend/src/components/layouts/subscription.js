@@ -220,7 +220,7 @@ export default function Subscription() {
                             <h3 className="tier-title">Quarterly Plan</h3>
                         </div>
                         <div className="cost-section">
-                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '24px'}}></i> 660<span>/ 3 month</span></div>
+                            <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '24px'}}></i> 673<span>/ 3 month</span></div>
                         </div>
                         <p className="tier-summary">Save more compared to monthly payments (rs 747 - 10% Discount).</p>
                         
