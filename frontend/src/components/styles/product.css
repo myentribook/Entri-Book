@@ -111,7 +111,8 @@
     letter-spacing: 0.5px;
 }
 
-.prod-mgr-wrapper input {
+.prod-mgr-wrapper input,
+.prod-mgr-modal-inputs input {
     width: 100%;
     padding: 12px 16px;
     border: 2px dashed #cbd5e1;
@@ -123,7 +124,8 @@
     transition: border-color 0.2s;
 }
 
-.prod-mgr-wrapper input:focus {
+.prod-mgr-wrapper input:focus,
+.prod-mgr-modal-inputs input:focus {
     border-color: var(--prod-mgr-primary);
     border-style: solid;
 }

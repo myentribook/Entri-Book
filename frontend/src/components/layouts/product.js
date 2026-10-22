@@ -86,14 +86,14 @@ export default function Product() {
                                     <input value={newHsnCode} onChange={(e) => setNewHsnCode(e.target.value)} placeholder="HSN Code..." />
                                 </div>
                                 <button className="prod-mgr-btn-add" onClick={handleAdd}>+ Save</button>
-                            </div>
+                          </div>
                         </div>
 
                         <div className="prod-mgr-header-row">
                             <div className="prod-mgr-section-header">
                                 <i className="fa-solid fa-scroll" style={{ color: "#004a99" }}></i> Stock List
                             </div>
-                        </div>
+                    </div>
 
                         <div className="prod-mgr-card prod-mgr-table-view">
                             <div className="prod-mgr-table-container">
@@ -122,11 +122,11 @@ export default function Product() {
                                             </tr>
                                         ))}
                                     </tbody>
-                                </table>
+                              </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                      </div>
+                  </div>
+              </div>
             )}
 
             {showEdit && (
@@ -142,7 +142,7 @@ export default function Product() {
                             <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>
                         </div>
                     </div>
-                </div>
+            </div>
             )}
 
             {showDelete && (
@@ -154,7 +154,7 @@ export default function Product() {
                             <button className="prod-mgr-btn-confirm prod-mgr-btn-danger" onClick={handleDelete}>Delete</button>
                         </div>
                     </div>
-                </div>
+            </div>
             )}
         </Fragment>
     );
