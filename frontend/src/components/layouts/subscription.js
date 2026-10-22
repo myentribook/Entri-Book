@@ -152,7 +152,7 @@ export default function Subscription() {
             <div className="pricing-root">
                 <div className="intro-block">
                     <h1>Simple, transparent pricing</h1>
-                    <p>No contracts. No surprise fees.</p>
+                    <p>All features included. Pay as per your subscription duration.</p>
                 </div>
 
                 <div className="switcher-wrapper">
@@ -170,13 +170,12 @@ export default function Subscription() {
                         <div className="cost-section">
                             <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '24px'}}></i> 0<span>/ 14 days</span></div>
                         </div>
-                        <p className="tier-summary">Experience every feature before you subscribe. No hidden charges.</p>
+                        <p className="tier-summary">Test all feature sets with zero commitment and setup your billing workflow seamlesslt.</p>
                         
                         <ul className="perks-checklist">
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited Bills</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited Products</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Stock Management</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Secure Cloud Backup</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Complete Access to All Features</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Create Unlimited B2C Tax Invoices</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Instant Activation</li>
                         </ul>
 
                         <button 
@@ -198,14 +197,11 @@ export default function Subscription() {
                         <div className="cost-section">
                             <div className="cost-display"><i className="fa-solid fa-indian-rupee-sign" style={{fontSize: '28px'}}></i> 249<span>/ month</span></div>
                         </div>
-                        <p className="tier-summary">Everything your business needs to optimize web queries and billing.</p>
+                        <p className="tier-summary"></p>
                         
                         <ul className="perks-checklist">
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>All limited links</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Own analytics platform</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Chat support</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Optimize hashtags</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited users</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Full feature access with simple month-to-month payments.</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Automated daily backups and continuous software updates.</li>
                         </ul>
 
                         <button 
@@ -229,11 +225,8 @@ export default function Subscription() {
                         <p className="tier-summary">Save more compared to monthly payments (rs 747 - 10% Discount).</p>
                         
                         <ul className="perks-checklist">
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>All limited links</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Own analytics platform</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Chat support</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Optimize hashtags</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Unlimited users</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Half a year of smooth POS and stock tracking.</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Better value pricing with priority technical support.</li>
                         </ul>
 
                         <button 
