@@ -11,7 +11,7 @@
 
 .pricing-root {
     font-family: var(--main-font);
-    background-color: var(--site-bg);
+    background-color: #f4f7fa;
     color: var(--text-heading);
     display: flex;
     flex-direction: column;
