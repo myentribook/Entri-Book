@@ -229,6 +229,7 @@ export default function Billing() {
                       <div key={i} style={{ fontSize: '13px', borderBottom: '1px solid #F1F5F9', padding: '4px 0' }}>
                         - {it.product?.name || it.productName || "Product"} ({it.saleType}) - Qty: {it.quantity} | ₹{it.total}
                       </div>
+                      
                     ))}
                   </div>
                   <p style={{ fontSize: '14px', color: '#64748B' }}>SubTotal: ₹{selectedBill.subTotal}</p>

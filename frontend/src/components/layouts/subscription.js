@@ -225,8 +225,8 @@ export default function Subscription() {
                         <p className="tier-summary">Save more compared to monthly payments (rs 747 - 10% Discount).</p>
                         
                         <ul className="perks-checklist">
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Half a year of smooth POS and stock tracking.</li>
-                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Better value pricing with priority technical support.</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Full quarter of smooth POS and inventory management.</li>
+                            <li className="perk-row"><span className="perk-badge"><i className="fa-solid fa-check"></i></span>Improved value with reliable priority technical support.</li>
                         </ul>
 
                         <button 
