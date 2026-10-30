@@ -15,28 +15,13 @@
 //     )
 // }
 
-import React, { useState } from 'react';
+
+import React from 'react';
 import '../styles/loader.css';
 
-export default function Loader({ initialLoading = true }) {
-    // JavaScript state to control loader visibility programmatically
-    const [isLoading, setIsLoading] = useState(initialLoading);
-
-    // Optional: Example function to hide the loader via JS logic
-    const hideLoader = () => {
-        setIsLoading(false);
-    };
-
-    // Optional: Example function to show the loader via JS logic
-    const showLoader = () => {
-        setIsLoading(true);
-    };
-
-    // If loading is false, the loader component is not rendered
-    if (!isLoading) return null;
-
+export default function Loader() {
     return (
-        <div className="dots-container" id="dotsLoader">
+        <div className="dots-container">
             <div className="dots-loader">
                 <span className="dot"></span>
                 <span className="dot"></span>
