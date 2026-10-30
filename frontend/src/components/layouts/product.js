@@ -22,7 +22,11 @@ export default function Product() {
     const [showDelete, setShowDelete] = useState(false);
 
     useEffect(() => {
-        dispatch(getProducts(keyword));
+        const timer = setTimeout(() => {
+            dispatch(getProducts(keyword));
+        }, 400);
+
+        return () => clearTimeout(timer);
     }, [dispatch, keyword]);
 
     useEffect(() => {
@@ -87,13 +91,13 @@ export default function Product() {
                                 </div>
                                 <button className="prod-mgr-btn-add" onClick={handleAdd}>+ Save</button>
                           </div>
-                        </div>
+                      </div>
 
                         <div className="prod-mgr-header-row">
                             <div className="prod-mgr-section-header">
                                 <i className="fa-solid fa-scroll" style={{ color: "#004a99" }}></i> Stock List
                             </div>
-                    </div>
+                        </div>
 
                         <div className="prod-mgr-card prod-mgr-table-view">
                             <div className="prod-mgr-table-container">
