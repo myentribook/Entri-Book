@@ -86,12 +86,12 @@
 }
 
 .dots-loader .dot:nth-child(4) {
-    background-color: #99daf2; /* Bright Cyan */
+    background-color: #08345C; /* Bright Cyan */
     animation-delay: -0.08s;
 }
 
 .dots-loader .dot:nth-child(5) {
-    background-color: #bbe9fa; /* Light Cyan */
+    background-color: #08345C; /* Light Cyan */
     animation-delay: 0s;
 }
 
