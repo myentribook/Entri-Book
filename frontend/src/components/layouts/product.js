@@ -1,4 +1,4 @@
-// import React, { useState, useEffect, Fragment } from 'react';
+// import React, { useState, useEffect, useRef, Fragment } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { Link } from 'react-router-dom';
 // import { getProducts, createProduct, updateProduct, deleteProduct } from '../../actions/productAction';
@@ -21,7 +21,18 @@
 //     const [showEdit, setShowEdit] = useState(false);
 //     const [showDelete, setShowDelete] = useState(false);
 
+//     // useRef to track initial render to prevent flash/delay on first load
+//     const isFirstRender = useRef(true);
+
 //     useEffect(() => {
+//         // Initial load-kku 400ms wait pannama instant-a dispatch aagum (Prevents blank page flash)
+//         if (isFirstRender.current) {
+//             isFirstRender.current = false;
+//             dispatch(getProducts(keyword));
+//             return;
+//         }
+
+//         // Search bar-la type pannum podhu mattum 400ms debounce work aagum
 //         const timer = setTimeout(() => {
 //             dispatch(getProducts(keyword));
 //         }, 400);
@@ -90,8 +101,8 @@
 //                                     <input value={newHsnCode} onChange={(e) => setNewHsnCode(e.target.value)} placeholder="HSN Code..." />
 //                                 </div>
 //                                 <button className="prod-mgr-btn-add" onClick={handleAdd}>+ Save</button>
-//                           </div>
-//                       </div>
+//                             </div>
+//                         </div>
 
 //                         <div className="prod-mgr-header-row">
 //                             <div className="prod-mgr-section-header">
@@ -126,11 +137,11 @@
 //                                             </tr>
 //                                         ))}
 //                                     </tbody>
-//                               </table>
+//                                 </table>
 //                             </div>
-//                       </div>
-//                   </div>
-//               </div>
+//                         </div>
+//                     </div>
+//                 </div>
 //             )}
 
 //             {showEdit && (
@@ -164,7 +175,9 @@
 //     );
 // }
 
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+
+
+import React, { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getProducts, createProduct, updateProduct, deleteProduct } from '../../actions/productAction';
@@ -187,24 +200,10 @@ export default function Product() {
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
 
-    // useRef to track initial render to prevent flash/delay on first load
-    const isFirstRender = useRef(true);
-
+    // Fetch all products once on initial mount (similar to Credit component)
     useEffect(() => {
-        // Initial load-kku 400ms wait pannama instant-a dispatch aagum (Prevents blank page flash)
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            dispatch(getProducts(keyword));
-            return;
-        }
-
-        // Search bar-la type pannum podhu mattum 400ms debounce work aagum
-        const timer = setTimeout(() => {
-            dispatch(getProducts(keyword));
-        }, 400);
-
-        return () => clearTimeout(timer);
-    }, [dispatch, keyword]);
+        dispatch(getProducts());
+    }, [dispatch]);
 
     useEffect(() => {
         if (message || error) {
@@ -231,6 +230,12 @@ export default function Product() {
         setDeleteId(null);
     };
 
+    // Client-side instant filtering based on product name or HSN code
+    const filteredProducts = products ? products.filter((p) => 
+        p.name?.toLowerCase().includes(keyword.toLowerCase()) ||
+        p.hsnCode?.toLowerCase().includes(keyword.toLowerCase())
+    ) : [];
+
     return (
         <Fragment>
             <Toaster />
@@ -239,7 +244,7 @@ export default function Product() {
                 <div className="prod-mgr-wrapper">
                     <div className="prod-mgr-container">
                         
-                        {/* Heading & Subtitle Container (Same line arrangement layout) */}
+                        {/* Heading & Subtitle Container */}
                         <div className="prod-mgr-top-header">
                             <div className="prod-mgr-title-row">
                                 <div className="prod-mgr-top-icon">
@@ -250,7 +255,7 @@ export default function Product() {
                             <p className="prod-mgr-subtitle">Create, organize, and manage your inventory items and HSN codes seamlessly.</p>
                         </div>
 
-                        {/* Search Input Field Container (Separated below paragraph) */}
+                        {/* Search Input Field Container */}
                         <div className="prod-mgr-search-card">
                             <Search keyword={keyword} setKeyword={setKeyword} />
                         </div>
@@ -289,19 +294,25 @@ export default function Product() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {products && products.map((p) => (
-                                            <tr key={p._id}>
-                                                <td><div className="prod-mgr-info-card">{p.name}</div></td>
-                                                <td>{p.hsnCode || '-'}</td>
-                                                <td>{p.stock || 0}</td>
-                                                <td>{p.conversionFactor || 0}</td>
-                                                <td>
-                                                    <div className="prod-mgr-action-btns">
-                                                        <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name, hsnCode: p.hsnCode || '' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
-                                                    </div>
-                                                </td>
+                                        {filteredProducts.length > 0 ? (
+                                            filteredProducts.map((p) => (
+                                                <tr key={p._id}>
+                                                    <td><div className="prod-mgr-info-card">{p.name}</div></td>
+                                                    <td>{p.hsnCode || '-'}</td>
+                                                    <td>{p.stock || 0}</td>
+                                                    <td>{p.conversionFactor || 0}</td>
+                                                    <td>
+                                                        <div className="prod-mgr-action-btns">
+                                                            <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name, hsnCode: p.hsnCode || '' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="5" style={{ textAlign: "center" }}>No products found</td>
                                             </tr>
-                                        ))}
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -323,7 +334,7 @@ export default function Product() {
                             <button className="prod-mgr-btn-confirm" onClick={handleUpdate}>Update</button>
                         </div>
                     </div>
-            </div>
+                </div>
             )}
 
             {showDelete && (
@@ -335,7 +346,7 @@ export default function Product() {
                             <button className="prod-mgr-btn-confirm prod-mgr-btn-danger" onClick={handleDelete}>Delete</button>
                         </div>
                     </div>
-            </div>
+                </div>
             )}
         </Fragment>
     );
