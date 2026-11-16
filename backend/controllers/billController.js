@@ -33,9 +33,9 @@ const axios = require('axios');
 
 exports.getBill = catchAsyncError(async (req, res, next) => {
     // Strictly filter by user AND force paymentType to be CASH
-    let filter = { 
-        user: req.user.id, 
-        paymentType: { $regex: /^cash$/i } 
+    let filter = {
+        user: req.user.id,
+        paymentType: { $regex: /^cash$/i }
     };
 
     const apiFeatures = new APIFeature(
@@ -119,10 +119,10 @@ exports.getBill = catchAsyncError(async (req, res, next) => {
 //             case "milliliter":
 //                 // 1. Convert grams/ml to kg/litre first: quantity / 1000
 //                 const totalKgOrLitre = quantity / 1000;
-                
+
 //                 // 2. Reduce stock based on conversion factor (e.g., if 1 stock = 50 kg)
 //                 stockToReduce = conversion > 0 ? totalKgOrLitre / conversion : totalKgOrLitre;
-                
+
 //                 // 3. Price calculation: Price is for 1 Kg, so for given grams -> totalKgOrLitre * price
 //                 itemTotal = totalKgOrLitre * price; 
 //                 break;
@@ -247,7 +247,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         let stockToReduce = 0;
         let itemTotal = 0;
         // Fallback to 50 if conversionFactor is missing from product document
-        const conversion = Number(product.conversionFactor || 50); 
+        const conversion = Number(product.conversionFactor || 50);
 
         // 🔥 Perfect Stock and Price Calculation for Bag and Kg
         switch (saleTypeLower) {
@@ -387,8 +387,101 @@ exports.updateCreditBills = catchAsyncError(async (req, res, next) => {
 });
 
 // ===================== SHARE BILL VIA WHATSAPP =====================
+// exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
+//     const bill = await billModel.findOne({ _id: req.params.billId, user: req.user.id }).populate('items.product');
+
+//     if (!bill) {
+//         return next(new ErrorHandler("Bill not found", 404));
+//     }
+
+//     const { customerMobile } = req.body;
+//     const targetMobile = customerMobile || bill.customerMobile;
+
+//     if (!targetMobile) {
+//         return next(new ErrorHandler("Customer mobile number is missing", 400));
+//     }
+
+//     const rawNumber = String(targetMobile).replace(/\D/g, '');
+//     const formattedNumber = rawNumber.startsWith('91') ? rawNumber : `91${rawNumber}`;
+
+//     const itemsText = bill.items.map(it => `• ${it.product?.name || 'Item'} (${it.quantity} ${it.saleType}) - ₹${it.total}`).join('\n');
+
+//     const messageBody = `🧾 *Tax Invoice*\n` +
+//         `Invoice No: ${bill.invoiceNo}\n` +
+//         `Customer: ${bill.customerName}\n\n` +
+//         `*Items:*\n${itemsText}\n\n` +
+//         `Subtotal: ₹${bill.subTotal}\n` +
+//         `CGST: ₹${bill.cgst}\n` +
+//         `SGST: ₹${bill.sgst}\n` +
+//         `Total Tax: ₹${bill.totalTax}\n` +
+//         `*Grand Total: ₹${bill.grandTotal}*\n\n` +
+//         `Thank you for your business!`;
+
+//     try {
+//         // const response = await axios.post(
+//         //     `https://graph.facebook.com/v25.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+//         //     {
+//         //         messaging_product: "whatsapp",
+//         //         to: formattedNumber,
+//         //         type: "text",
+//         //         text: { body: messageBody }
+//         //     },
+//         //     {
+//         //         headers: {
+//         //             Authorization: `Bearer ${process.env.WHATSAPP_TOKEN?.trim()}`,
+//         //             "Content-Type": "application/json"
+//         //         },
+//         //         timeout: 10000
+//         //     }
+//         // );
+
+//         // ===================================================
+
+
+//         const response = await axios.post(
+//             `https://graph.facebook.com/v25.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+//             {
+//                 messaging_product: "whatsapp",
+//                 to: formattedNumber,
+//                 type: "template",
+//                 template: {
+//                     name: "entri_book",
+//                     language: {
+//                         code: "en"
+//                     }
+//                 }
+//             },
+//             {
+//                 headers: {
+//                     Authorization: `Bearer ${process.env.WHATSAPP_TOKEN?.trim()}`,
+//                     "Content-Type": "application/json"
+//                 },
+//                 timeout: 10000
+//             }
+//         );
+
+
+//         // ===================================================
+//         res.status(200).json({
+//             success: true,
+//             message: "Invoice sent via WhatsApp successfully",
+//             data: response.data
+//         });
+
+//     } catch (err) {
+//         const errorMessage = err.response?.data?.error?.message || "Failed to send WhatsApp message";
+//         return next(new ErrorHandler(errorMessage, 502));
+//     }
+// });
+
+
 exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
-    const bill = await billModel.findOne({ _id: req.params.billId, user: req.user.id }).populate('items.product');
+    const bill = await billModel
+        .findOne({
+            _id: req.params.billId,
+            user: req.user.id
+        })
+        .populate('items.product');
 
     if (!bill) {
         return next(new ErrorHandler("Bill not found", 404));
@@ -398,24 +491,42 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
     const targetMobile = customerMobile || bill.customerMobile;
 
     if (!targetMobile) {
-        return next(new ErrorHandler("Customer mobile number is missing", 400));
+        return next(
+            new ErrorHandler("Customer mobile number is missing", 400)
+        );
     }
 
     const rawNumber = String(targetMobile).replace(/\D/g, '');
-    const formattedNumber = rawNumber.startsWith('91') ? rawNumber : `91${rawNumber}`;
 
-    const itemsText = bill.items.map(it => `• ${it.product?.name || 'Item'} (${it.quantity} ${it.saleType}) - ₹${it.total}`).join('\n');
+    const formattedNumber = rawNumber.startsWith('91')
+        ? rawNumber
+        : `91${rawNumber}`;
 
-    const messageBody = `🧾 *Tax Invoice*\n` +
-        `Invoice No: ${bill.invoiceNo}\n` +
-        `Customer: ${bill.customerName}\n\n` +
-        `*Items:*\n${itemsText}\n\n` +
-        `Subtotal: ₹${bill.subTotal}\n` +
-        `CGST: ₹${bill.cgst}\n` +
-        `SGST: ₹${bill.sgst}\n` +
-        `Total Tax: ₹${bill.totalTax}\n` +
-        `*Grand Total: ₹${bill.grandTotal}*\n\n` +
-        `Thank you for your business!`;
+    // =========================================
+    // PREPARE APPROVED TEMPLATE VALUES
+    // =========================================
+
+    const customerName = String(bill.customerName || "Customer");
+
+    const invoiceDate = new Date(bill.createdAt)
+        .toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit"
+        })
+        .replace(/\//g, ".");
+
+    const paymentMode = String(
+        bill.paymentType || bill.paymentMode || "Cash"
+    ).toLowerCase();
+
+    const itemsPurchased = String(bill.items.length);
+
+    const grandTotal = String(bill.grandTotal);
+
+    // =========================================
+    // SEND APPROVED WHATSAPP TEMPLATE
+    // =========================================
 
     try {
         const response = await axios.post(
@@ -423,8 +534,40 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
             {
                 messaging_product: "whatsapp",
                 to: formattedNumber,
-                type: "text",
-                text: { body: messageBody }
+                type: "template",
+                template: {
+                    name: "entri_book",
+                    language: {
+                        code: "en"
+                    },
+                    components: [
+                        {
+                            type: "body",
+                            parameters: [
+                                {
+                                    type: "text",
+                                    text: customerName
+                                },
+                                {
+                                    type: "text",
+                                    text: invoiceDate
+                                },
+                                {
+                                    type: "text",
+                                    text: paymentMode
+                                },
+                                {
+                                    type: "text",
+                                    text: itemsPurchased
+                                },
+                                {
+                                    type: "text",
+                                    text: grandTotal
+                                }
+                            ]
+                        }
+                    ]
+                }
             },
             {
                 headers: {
@@ -435,14 +578,22 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
             }
         );
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Invoice sent via WhatsApp successfully",
             data: response.data
         });
 
     } catch (err) {
-        const errorMessage = err.response?.data?.error?.message || "Failed to send WhatsApp message";
+        console.error(
+            "WhatsApp API Error:",
+            err.response?.data || err.message
+        );
+
+        const errorMessage =
+            err.response?.data?.error?.message ||
+            "Failed to send WhatsApp message";
+
         return next(new ErrorHandler(errorMessage, 502));
     }
 });

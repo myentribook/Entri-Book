@@ -10,7 +10,7 @@ import '../styles/billing.css';
 
 export default function Billing() {
   const dispatch = useDispatch();
-  
+
   const { bills = [], loading, error, message } = useSelector(state => state.billingState || {});
   const { products = [] } = useSelector(state => state.productState || { products: [] });
 
@@ -28,11 +28,11 @@ export default function Billing() {
   const [customerName, setCustomerName] = useState('');
   const [mobilenumber, setMobileNumber] = useState('');
   const [paymentType, setPaymentType] = useState('CASH');
-  const [cgstPercent, setCgstPercent] = useState(0); 
-  const [sgstPercent, setSgstPercent] = useState(0); 
+  const [cgstPercent, setCgstPercent] = useState(0);
+  const [sgstPercent, setSgstPercent] = useState(0);
   const [selectedProductId, setSelectedProductId] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [saleType, setSaleType] = useState('bag'); 
+  const [saleType, setSaleType] = useState('bag');
   const [price, setPrice] = useState('');
   const [tempItems, setTempItems] = useState([]);
 
@@ -70,14 +70,14 @@ export default function Billing() {
       customerName,
       customerMobile: `91${cleanMobile}`,
       paymentType,
-      paymentMode: paymentType, 
+      paymentMode: paymentType,
       cgstPercent: Number(cgstPercent) || 0,
       sgstPercent: Number(sgstPercent) || 0,
-      items: tempItems.map(item => ({ 
-        product: item.product, 
-        saleType: item.saleType, 
-        quantity: item.quantity, 
-        price: item.price 
+      items: tempItems.map(item => ({
+        product: item.product,
+        saleType: item.saleType,
+        quantity: item.quantity,
+        price: item.price
       }))
     })).then((res) => {
       // Force immediate fetch if action resolves successfully
@@ -100,8 +100,8 @@ export default function Billing() {
     if (!selectedBill) return;
     try {
       setSharing(true);
-      const backendUrl = "http://16.171.148.56:8000"; 
-      const config = { withCredentials: true }; 
+      const backendUrl = "http://16.171.148.56:8000";
+      const config = { withCredentials: true };
 
       const requestData = {
         customerMobile: selectedBill.customerMobile
@@ -138,14 +138,14 @@ export default function Billing() {
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Customer</label><input className="bill-mgr-input" type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="Enter name" /></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Mobile</label><input className="bill-mgr-input" type="text" maxLength="10" value={mobilenumber} onChange={(e) => setMobileNumber(e.target.value.replace(/[^0-9]/g, ''))} placeholder="9109876543" /></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Payment</label><select className="bill-mgr-input" value={paymentType} onChange={(e) => setPaymentType(e.target.value)}><option value="CASH">Cash</option><option value="CREDIT">Credit</option></select></div>
-              
+
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">CGST %</label><input className="bill-mgr-input" type="number" value={cgstPercent} onChange={(e) => setCgstPercent(e.target.value)} placeholder="0" /></div>
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">SGST %</label><input className="bill-mgr-input" type="number" value={sgstPercent} onChange={(e) => setSgstPercent(e.target.value)} placeholder="0" /></div>
             </div>
 
             <div className="bill-mgr-entry-box">
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Product</label><select className="bill-mgr-input" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}><option value="">Select Item</option>{products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}</select></div>
-              
+
               <div className="bill-mgr-input-group">
                 <label className="bill-mgr-label">Type</label>
                 <select className="bill-mgr-input" value={saleType} onChange={(e) => setSaleType(e.target.value)}>
@@ -158,7 +158,7 @@ export default function Billing() {
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Price</label><input className="bill-mgr-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="0.00" /></div>
               <button className="bill-mgr-btn bill-mgr-btn-primary" onClick={handleAddTemp}><i className="fa-solid fa-plus"></i> Add</button>
             </div>
-            
+
             <div className="bill-mgr-table-wrapper">
               <table className="bill-mgr-table">
                 <thead><tr><th className="bill-mgr-th">Product</th><th className="bill-mgr-th">Type</th><th className="bill-mgr-th">Qty</th><th className="bill-mgr-th">Price</th><th className="bill-mgr-th">Total</th></tr></thead>
@@ -167,7 +167,7 @@ export default function Billing() {
               <div className="bill-mgr-save-wrapper"><button className="bill-mgr-save-btn" onClick={handleSaveInvoice} disabled={loading}>{loading ? "Saving..." : "Save Invoice →"}</button></div>
             </div>
           </div>
-          
+
           <div className="bill-mgr-section-header">
             <h2 className="bill-mgr-subheading"><i className="fa-solid fa-history" style={{ color: "var(--primary)" }}></i> Bill History</h2>
             <input className="bill-mgr-input" type="text" placeholder="Search Bills ..." value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "180px", padding: "0.5rem 1rem" }} />
@@ -229,7 +229,7 @@ export default function Billing() {
                       <div key={i} style={{ fontSize: '13px', borderBottom: '1px solid #F1F5F9', padding: '4px 0' }}>
                         - {it.product?.name || it.productName || "Product"} ({it.saleType}) - Qty: {it.quantity} | ₹{it.total}
                       </div>
-                      
+
                     ))}
                   </div>
                   <p style={{ fontSize: '14px', color: '#64748B' }}>SubTotal: ₹{selectedBill.subTotal}</p>
