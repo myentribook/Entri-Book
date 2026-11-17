@@ -96,27 +96,76 @@ export default function Billing() {
     setShowShareModal(true);
   };
 
+  // const handleConfirmShare = async () => {
+  //   if (!selectedBill) return;
+  //   try {
+  //     setSharing(true);
+  //     const backendUrl = "http://16.171.148.56:8000";
+  //     const config = { withCredentials: true };
+
+  //     const requestData = {
+  //       customerMobile: selectedBill.customerMobile
+  //     };
+
+  //     const { data } = await axios.post(`${backendUrl}/api/v1/share-whatsapp/${selectedBill._id}`, requestData, config);
+
+  //     if (data.success) {
+  //       toast.success("WhatsApp message sent successfully!");
+  //       setShowShareModal(false);
+  //       setSelectedBill(null);
+  //     }
+  //   } catch (err) {
+  //     const errorMsg = err.response?.data?.message || "Failed to send WhatsApp message";
+  //     toast.error(errorMsg);
+  //   } finally {
+  //     setSharing(false);
+  //   }
+  // };
+
+
   const handleConfirmShare = async () => {
-    if (!selectedBill) return;
+    if (!selectedBill) {
+      toast.error("Please select a bill");
+      return;
+    }
+
     try {
       setSharing(true);
-      const backendUrl = "http://16.171.148.56:8000";
-      const config = { withCredentials: true };
 
       const requestData = {
         customerMobile: selectedBill.customerMobile
       };
 
-      const { data } = await axios.post(`${backendUrl}/api/v1/share-whatsapp/${selectedBill._id}`, requestData, config);
+      const { data } = await axios.post(
+        `/api/v1/share-whatsapp/${selectedBill._id}`,
+        requestData,
+        {
+          withCredentials: true,
+          timeout: 20000
+        }
+      );
 
       if (data.success) {
-        toast.success("WhatsApp message sent successfully!");
+        toast.success("WhatsApp message accepted by Meta!");
         setShowShareModal(false);
         setSelectedBill(null);
+      } else {
+        toast.error("WhatsApp message could not be sent");
       }
+
     } catch (err) {
-      const errorMsg = err.response?.data?.message || "Failed to send WhatsApp message";
+      console.error(
+        "Share Bill Error:",
+        err.response?.data || err.message
+      );
+
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to send WhatsApp message";
+
       toast.error(errorMsg);
+
     } finally {
       setSharing(false);
     }

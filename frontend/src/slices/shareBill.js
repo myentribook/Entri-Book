@@ -1,41 +1,101 @@
+// import { createSlice } from "@reduxjs/toolkit";
+
+// const shareBillSlice = createSlice({
+
+//     name: "shareBill",
+//     initialState: {
+//         loading: false,
+//         error: null,
+//         message: null
+//     },
+//     reducers: {
+//         shareBillRequest(state, action) {
+//             state.loading = true
+//             state.error = null
+//             state.message = null
+//         },
+//         shareBillSuccess(state, action) {
+//             state.loading = false
+//             state.message = action.payload.message || 'Bill Shared Successfully'
+//         },
+//         shareBillFailure(state, action) {
+//             state.loading = false
+//             state.error = action.payload
+//         },
+//         clearShareBillState(state) {
+//             state.error = null
+//             state.message = null
+//         },
+//         resetBill(state) {
+//             state.loading = false
+//             state.error = null
+//             state.message = null
+//         }
+//     }
+// })
+
+
+
+// export const { shareBillFailure, shareBillRequest, shareBillSuccess, clearShareBillState, resetBill } = shareBillSlice.actions
+
+// export default shareBillSlice.reducer
+
+
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const shareBillSlice = createSlice({
-
     name: "shareBill",
+
     initialState: {
         loading: false,
         error: null,
-        message: null
+        message: null,
+        data: null
     },
+
     reducers: {
-        shareBillRequest(state, action) {
-            state.loading = true
-            state.error = null
-            state.message = null
+        shareBillRequest(state) {
+            state.loading = true;
+            state.error = null;
+            state.message = null;
+            state.data = null;
         },
+
         shareBillSuccess(state, action) {
-            state.loading = false
-            state.message = action.payload.message || 'Bill Shared Successfully'
+            state.loading = false;
+            state.error = null;
+            state.message =
+                action.payload.message || "Bill Shared Successfully";
+            state.data = action.payload.data || null;
         },
+
         shareBillFailure(state, action) {
-            state.loading = false
-            state.error = action.payload
+            state.loading = false;
+            state.error = action.payload;
         },
+
         clearShareBillState(state) {
-            state.error = null
-            state.message = null
+            state.error = null;
+            state.message = null;
+            state.data = null;
         },
+
         resetBill(state) {
-            state.loading = false
-            state.error = null
-            state.message = null
+            state.loading = false;
+            state.error = null;
+            state.message = null;
+            state.data = null;
         }
     }
-})
+});
 
+export const {
+    shareBillFailure,
+    shareBillRequest,
+    shareBillSuccess,
+    clearShareBillState,
+    resetBill
+} = shareBillSlice.actions;
 
-
-export const { shareBillFailure, shareBillRequest, shareBillSuccess, clearShareBillState, resetBill } = shareBillSlice.actions
-
-export default shareBillSlice.reducer
+export default shareBillSlice.reducer;

@@ -476,19 +476,20 @@ exports.updateCreditBills = catchAsyncError(async (req, res, next) => {
 
 
 exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
+    // 1. Find the bill belonging to the logged-in user
     const bill = await billModel
         .findOne({
             _id: req.params.billId,
             user: req.user.id
         })
-        .populate('items.product');
+        .populate("items.product");
 
     if (!bill) {
         return next(new ErrorHandler("Bill not found", 404));
     }
 
-    const { customerMobile } = req.body;
-    const targetMobile = customerMobile || bill.customerMobile;
+    // 2. Get customer mobile number
+    const targetMobile = req.body.customerMobile || bill.customerMobile;
 
     if (!targetMobile) {
         return next(
@@ -496,49 +497,68 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
         );
     }
 
-    const rawNumber = String(targetMobile).replace(/\D/g, '');
+    // 3. Validate and format Indian mobile number
+    const rawNumber = String(targetMobile).replace(/\D/g, "");
 
-    const formattedNumber = rawNumber.startsWith('91')
-        ? rawNumber
-        : `91${rawNumber}`;
+    const cleanNumber = rawNumber.startsWith("91")
+        ? rawNumber.slice(2)
+        : rawNumber;
 
-    // =========================================
-    // PREPARE APPROVED TEMPLATE VALUES
-    // =========================================
+    if (!/^[6-9]\d{9}$/.test(cleanNumber)) {
+        return next(
+            new ErrorHandler("Invalid WhatsApp mobile number", 400)
+        );
+    }
 
+    const formattedNumber = `91${cleanNumber}`;
+
+    // 4. Check WhatsApp configuration
+    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+    const accessToken = process.env.WHATSAPP_TOKEN?.trim();
+    const apiVersion = process.env.WHATSAPP_API_VERSION || "v25.0";
+    const templateName = process.env.WHATSAPP_TEMPLATE_NAME;
+    const templateLanguage = process.env.WHATSAPP_TEMPLATE_LANGUAGE;
+
+    if (!phoneNumberId || !accessToken || !templateName || !templateLanguage) {
+        return next(
+            new ErrorHandler(
+                "WhatsApp configuration is missing. Check backend environment variables.",
+                500
+            )
+        );
+    }
+
+    // 5. Prepare template values
     const customerName = String(bill.customerName || "Customer");
 
     const invoiceDate = new Date(bill.createdAt)
         .toLocaleDateString("en-GB", {
             day: "2-digit",
             month: "2-digit",
-            year: "2-digit"
-        })
-        .replace(/\//g, ".");
+            year: "numeric"
+        });
 
-    const paymentMode = String(
-        bill.paymentType || bill.paymentMode || "Cash"
-    ).toLowerCase();
+    const paymentMode = String(bill.paymentType || "CASH").toUpperCase();
 
-    const itemsPurchased = String(bill.items.length);
+    const itemsPurchased = String(
+        Array.isArray(bill.items) ? bill.items.length : 0
+    );
 
-    const grandTotal = String(bill.grandTotal);
+    const grandTotal = Number(bill.grandTotal || 0).toFixed(2);
 
-    // =========================================
-    // SEND APPROVED WHATSAPP TEMPLATE
-    // =========================================
-
+    // 6. Send approved WhatsApp template
     try {
         const response = await axios.post(
-            `https://graph.facebook.com/v25.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+            `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`,
             {
                 messaging_product: "whatsapp",
+                recipient_type: "individual",
                 to: formattedNumber,
                 type: "template",
                 template: {
-                    name: "entri_book",
+                    name: templateName,
                     language: {
-                        code: "en"
+                        code: templateLanguage
                     },
                     components: [
                         {
@@ -571,29 +591,34 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
             },
             {
                 headers: {
-                    Authorization: `Bearer ${process.env.WHATSAPP_TOKEN?.trim()}`,
+                    Authorization: `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
                 },
-                timeout: 10000
+                timeout: 15000
             }
         );
 
         return res.status(200).json({
             success: true,
-            message: "Invoice sent via WhatsApp successfully",
+            message: "WhatsApp template message accepted by Meta",
             data: response.data
         });
 
     } catch (err) {
-        console.error(
-            "WhatsApp API Error:",
-            err.response?.data || err.message
-        );
+        const metaError = err.response?.data;
+
+        console.error("========== WHATSAPP API ERROR ==========");
+        console.error("HTTP Status:", err.response?.status);
+        console.error("Meta Error:", JSON.stringify(metaError, null, 2));
+        console.error("Error Message:", err.message);
+        console.error("========================================");
 
         const errorMessage =
-            err.response?.data?.error?.message ||
+            metaError?.error?.message ||
             "Failed to send WhatsApp message";
 
-        return next(new ErrorHandler(errorMessage, 502));
+        return next(
+            new ErrorHandler(errorMessage, 502)
+        );
     }
 });
