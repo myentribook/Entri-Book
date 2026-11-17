@@ -46,7 +46,7 @@
 // //     // Now 'jwt' will be defined and this will work
 // //     const decoded = JWT.verify(token, process.env.JWT_SECRET);
 // //     // console.log("Decoded ID from Token:", decoded.id); // Id varutha?
-    
+
 // //     req.user = await userModel.findById(decoded.id);
 // //     // console.log("Found User:", req.user);
 
@@ -147,3 +147,16 @@ exports.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
 
     next();
 });
+
+exports.AuthorizedRoles = (...roles) => {
+    return (req, res, next) => {
+
+        if (!req.user || !roles.includes(req.user.role)) {
+            return next(
+                new ErrorHandler('You are not authorized to access this resource', 403)
+            );
+        }
+
+        next();
+    };
+};

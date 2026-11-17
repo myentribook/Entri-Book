@@ -476,6 +476,11 @@ exports.updateCreditBills = catchAsyncError(async (req, res, next) => {
 
 
 exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
+
+    console.log("========== WHATSAPP CONTROLLER REACHED ==========");
+    console.log("Bill ID:", req.params.billId);
+    console.log("User ID:", req.user?._id);
+
     // 1. Find the bill belonging to the logged-in user
     const bill = await billModel
         .findOne({
