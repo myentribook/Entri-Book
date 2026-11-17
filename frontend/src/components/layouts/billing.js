@@ -178,7 +178,7 @@ export default function Billing() {
         <div className="bill-mgr-wrapper">
           <div className="bill-mgr-header-center">
             <div className="bill-mgr-badge-icon"><i className="fa-solid fa-file-invoice"></i></div>
-            <h2 className="bill-mgr-title">Bill Management</h2>
+            <h2 className="bill-mgr-title">Bill Management.</h2>
             <p className="bill-mgr-subtitle">Create, manage, and share your customer retail invoices seamlessly.</p>
           </div>
 
