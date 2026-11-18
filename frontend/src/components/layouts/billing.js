@@ -204,7 +204,7 @@ export default function Billing() {
               </div>
 
               <div className="bill-mgr-input-group"><label className="bill-mgr-label">Qty</label><input className="bill-mgr-input" type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" /></div>
-              <div className="bill-mgr-input-group"><label className="bill-mgr-label">Price</label><input className="bill-mgr-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="0.00" /></div>
+              <div className="bill-mgr-input-group"><label className="bill-mgr-label">Price - 1 kg or 1 bag </label><input className="bill-mgr-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="0.00" /></div>
               <button className="bill-mgr-btn bill-mgr-btn-primary" onClick={handleAddTemp}><i className="fa-solid fa-plus"></i> Add</button>
             </div>
 
