@@ -338,6 +338,7 @@ exports.getBill = catchAsyncError(async (req, res, next) => {
 //     });
 // });
 
+
 exports.createBill = catchAsyncError(async (req, res, next) => {
     const {
         customerName,
@@ -368,7 +369,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
     for (const item of items) {
         const quantity = Number(item.quantity);
-        const price = Number(item.price);
+        const price = Number(item.price); // Per Bag or Per Kg price
 
         if (quantity <= 0 || price <= 0) throw new ErrorHandler("Invalid quantity or price", 400);
 
@@ -380,17 +381,21 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
         let stockToReduce = 0;
         let itemTotal = 0;
+        // Fallback to 50 if conversionFactor is missing from product document
         const conversion = Number(product.conversionFactor || 50);
 
+        // 🔥 Perfect Stock and Price Calculation for Bag and Kg
         switch (saleTypeLower) {
             case "bag":
-                stockToReduce = quantity;
-                itemTotal = quantity * price;
+                stockToReduce = quantity; // 1 bag = 1 unit of stock reduction (since stock is in bags)
+                itemTotal = quantity * price; // Per bag price
                 break;
+
             case "kg":
-                stockToReduce = conversion > 0 ? quantity / conversion : quantity;
-                itemTotal = quantity * price;
+                stockToReduce = conversion > 0 ? quantity / conversion : quantity; // Converts kg input to fractional bags
+                itemTotal = quantity * price; // Per Kg price
                 break;
+
             default:
                 stockToReduce = quantity;
                 itemTotal = quantity * price;
@@ -405,6 +410,8 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         await product.save();
 
         subTotal += itemTotal;
+
+        // 🔥 Robust HSN Code extraction from Product model variations
         const extractedHsn = product.hsnCode || product.HSNCode || product.hsn || "";
 
         billItems.push({
@@ -419,6 +426,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
 
     subTotal = Number(subTotal.toFixed(2));
 
+    // 🔥 Explicit safe float parsing for tax rates
     const parsedCgstRate = parseFloat(cgstPercent) || 0;
     const parsedSgstRate = parseFloat(sgstPercent) || 0;
 
@@ -430,62 +438,39 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
     const finalPaidAmount = paymentType === "CASH" ? grandTotal : 0;
     const balanceAmount = Number((grandTotal - finalPaidAmount).toFixed(2));
 
+    // 🔥 Robust GSTIN extraction from User model variations
     const currentUser = await userModel.findById(req.user.id);
     const gstin = currentUser?.gstin || currentUser?.GSTIN || currentUser?.gstNumber || "";
 
-    // 🚀 FIXED: Safe Invoice Number Generation with Retry Loop (Handles Race Conditions)
-    let bill;
-    let saved = false;
-    let attempts = 0;
-    const currentYear = new Date().getFullYear();
+    // 🕒 Time-based Invoice Number Generation (INV-YYMMDD-HHMMSS)
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(-2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
 
-    while (!saved && attempts < 5) {
-        attempts++;
-        try {
-            // Find the last invoice created by this specific user
-            const lastBill = await billModel.findOne({ user: req.user.id }).sort({ createdAt: -1 });
+    const invoiceNo = `INV-${yy}${mm}${dd}-${hh}${min}${ss}`;
 
-            let nextSeq = 1;
-            if (lastBill && lastBill.invoiceNo) {
-                // Extract number from format like "INV-2026-0005"
-                const parts = lastBill.invoiceNo.split('-');
-                const lastNum = parseInt(parts[parts.length - 1], 10);
-                if (!isNaN(lastNum)) {
-                    nextSeq = lastNum + 1;
-                }
-            }
-
-            const invoiceNo = `INV-${currentYear}-${String(nextSeq).padStart(4, "0")}`;
-
-            bill = await billModel.create({
-                invoiceNo,
-                gstin,
-                customerName,
-                customerMobile: formattedMobile,
-                items: billItems,
-                subTotal,
-                cgst,
-                sgst,
-                totalTax,
-                grandTotal,
-                paymentType,
-                paidAmount: finalPaidAmount,
-                balanceAmount,
-                status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"),
-                user: req.user.id,
-                paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
-            });
-
-            saved = true;
-        } catch (err) {
-            // If duplicate key error (E11000) occurs on invoiceNo, loop will retry and grab the fresh next number
-            if (err.code === 11000 && attempts < 5) {
-                continue;
-            } else {
-                throw err;
-            }
-        }
-    }
+    const bill = await billModel.create({
+        invoiceNo,
+        gstin,
+        customerName,
+        customerMobile: formattedMobile,
+        items: billItems,
+        subTotal,
+        cgst,
+        sgst,
+        totalTax,
+        grandTotal,
+        paymentType,
+        paidAmount: finalPaidAmount,
+        balanceAmount,
+        status: balanceAmount <= 0 ? "PAID" : (finalPaidAmount > 0 ? "PARTIAL" : "PENDING"),
+        user: req.user.id,
+        paymentHistory: finalPaidAmount > 0 ? [{ amount: finalPaidAmount, date: Date.now() }] : []
+    });
 
     res.status(201).json({
         success: true,
@@ -493,6 +478,7 @@ exports.createBill = catchAsyncError(async (req, res, next) => {
         bill
     });
 });
+
 
 // ===================== GET CREDIT BILLS =====================
 exports.getCreditBills = catchAsyncError(async (req, res, next) => {

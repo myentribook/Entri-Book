@@ -196,7 +196,7 @@ export default function Purchase() {
                                 <input type="number" className="bill-mgr-input" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" />
                             </div>
                             <div className="bill-mgr-input-group">
-                                <label className="bill-mgr-label">Conv. F.</label>
+                                <label className="bill-mgr-label">Bag-Weight</label>
                                 <input type="number" className="bill-mgr-input" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder="1" />
                             </div>
                             <div className="bill-mgr-input-group">
