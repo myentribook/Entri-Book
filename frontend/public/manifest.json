@@ -3,23 +3,22 @@
   "name": "Entri Book",
   "icons": [
     {
-      "src": "/EntriBooks.jpeg",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/jpeg"
+      "src": "/headingLogo.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose":"any"
     },
     {
-      "src": "/EntriBooks.jpeg",
-      "type": "image/jpeg",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/EntriBooks.jpeg",
-      "type": "image/jpeg",
-      "sizes": "512x512"
+      "src": "/headingLogo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose":"any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope":"/",
   "display": "standalone",
-  "theme_color": "#014CB2",
-  "background_color": "#014CB2"
+  "orientation":"portrait",
+  "theme_color": "#F4F7FB",
+  "background_color": "#F4F7FB"
 }
