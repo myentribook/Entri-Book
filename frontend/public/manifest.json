@@ -2,11 +2,23 @@
   "short_name": "Entri Book",
   "name": "Entri Book",
   "icons": [
-    {
-      "src": "/headingLogo.png",
+     {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192/192",
+      "purpose":"any"
+    },
+     {
+      "src": "/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose":"any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose":"maskable"
     }
   ],
   "start_url": "/",
