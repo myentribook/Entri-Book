@@ -130,7 +130,10 @@ export default function Header() {
 
                 <Link to="/subscription" style={{ textDecoration: 'none' }} className="sub-btn-unique" aria-label="Subscribe">
 
-                    <div className='subscription-btn'> <i class="fa-regular fa-bell"></i></div>
+                    <div className='subscription-btn'>
+                        <span className="sub-pill-icon"><i class="fa-solid fa-crown"></i></span>
+                        <span className="sub-pill-text" > Membership</span>
+                    </div>
 
                 </Link>
 
