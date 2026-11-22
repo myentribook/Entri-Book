@@ -59,43 +59,50 @@ export default function Home() {
 
   const dashboardData = [
     {
-      bg: "#ebe4ff",
+      bg: "#d8c4f3",
+      color: "#4a237a",
       title: "Sales",
       icon: "fa-cash-register",
-      text: `Today Sales ₹${report?.todaySales ?? 0}\nMonthly Sales ₹${report?.monthSales ?? 0}`
+      text: `Today Sales ₹${report?.todaySales ?? 0} · Monthly Sales ₹${report?.monthSales ?? 0}`
     },
     {
-      bg: "#e0f2fe",
+      bg: "#bce3f4",
+      color: "#0e4d64",
       title: "Purchase",
       icon: "fa-cart-flatbed",
       text: `Total purchase value ₹${report?.totalPurchase ?? 0}`
     },
     {
-      bg: "#dcfce7",
+      bg: "#bce8cc",
+      color: "#165b33",
       title: "Inventory",
       icon: "fa-box",
       text: `Active products ${report?.totalProducts ?? 0}`
     },
     {
-      bg: "#ffecd9",
+      bg: "#f7d6ba",
+      color: "#8a3b12",
       title: "Finance",
       icon: "fa-book-open",
       text: `Total monthly Dues ₹${report?.monthDueAmount ?? 0}`
     },
     {
-      bg: "#FCE7F3",
+      bg: "#f5c7df",
+      color: "#871b4b",
       title: "previous month",
       icon: "fa-calendar-days",
       text: `Revenue generated last month ${report?.previousMonthSales ?? 0}`
     },
     {
-      bg: "#FEF3C7",
+      bg: "#f8e2a6",
+      color: "#7a4907",
       title: "Growth %",
       icon: "fa-chart-line",
       text: `Growth over previous month ${report?.growthPercentage ?? 0}`
     },
     {
-      bg: "#CFFAFE",
+      bg: "#bae6ee",
+      color: "#0e4f5c",
       title: "Today Bill Count",
       icon: "fa-file-invoice-dollar",
       text: `Bills created today ${report?.todayBillCount ?? 0}`
@@ -142,18 +149,21 @@ export default function Home() {
               <div className="upi-grid">
 
                 <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Search Products">
-                  <div className="icon-circles"><i className="fa-solid fa-magnifying-glass"></i></div>
-                  <span className="upi-label">Search<br />Products</span>
+                  <div className="icon-circles"><i class="fa-solid fa-barcode"></i></div>
+                  <span className="upi-label">Search Products</span>
+                  <span className="upi-sublabel">Find items</span>
                 </Link>
 
-                <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Purchase Management">
-                  <div className="icon-circles"><i className="fa-solid fa-file-contract"></i></div>
-                  <span className="upi-label">Terms & <br />Conditions</span>
+                <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Terms & Conditions">
+                  <div className="icon-circles"><i class="fa-solid fa-clipboard-list"></i></div>
+                  <span className="upi-label">Terms & Conditions</span>
+                  <span className="upi-sublabel">Policies & rules</span>
                 </Link>
 
                 <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Comment and Reviews">
-                  <div className="icon-circles"><i className="fa-solid fa-comments"></i></div>
-                  <span className="upi-label">Comment & <br /> Reviews</span>
+                  <div className="icon-circles"><i class="fa-solid fa-star-half-stroke"></i></div>
+                  <span className="upi-label">Comment & Reviews</span>
+                  <span className="upi-sublabel">User feedback</span>
                 </Link>
 
               </div>
@@ -165,14 +175,12 @@ export default function Home() {
             <div className="dashboard-grid">
               {dashboardData.map((card, index) => (
                 <div key={index} className="card-wrapper">
-                  <div className="card-content" style={{ backgroundColor: card.bg }}>
-                    <p style={{ color: "#333", lineHeight: "1.6", whiteSpace: "pre-line" }}>
-                      {card.text}
-                    </p>
+                  <div className="overview-badge" style={{ backgroundColor: card.bg, color: card.color }}>
+                    <i className={`fa-solid ${card.icon}`}></i>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
-                    <span style={{ fontWeight: 700, fontSize: "1.05rem", color: "#0c1a30" }}>{card.title}</span>
-                    <i className={`fa-solid ${card.icon}`} style={{ fontSize: "22px", color: "#0d4b82" }}></i>
+                  <div className="overview-row-content">
+                    <span className="overview-row-title">{card.title}</span>
+                    <p className="overview-row-subtitle">{card.text}</p>
                   </div>
                 </div>
               ))}
@@ -180,16 +188,96 @@ export default function Home() {
           </div>
 
           <div className="refer-section">
-            <div className="refer-title">
-              Love <span style={{ color: "#ff4d4d" }}>❤</span> Entri Book ?
+            <div className="footer-hero-banner">
+              <div className="footer-hero-copy">
+                <div className="refer-title">
+                  Love <span style={{ color: "#ff6b81" }}>❤</span> Entri Book ?
+                </div>
+                <div className="refer-desc">Install Entri Book app on your device for quick & offline access.</div>
+
+                {/* Refer Link replaced with App Download Button */}
+                <button onClick={handleInstallClick} className="refer-link" style={{ border: 'none', cursor: 'pointer' }}>
+                  <i className="fa-solid fa-download" style={{ marginRight: "8px" }}></i>
+                  Download App
+                </button>
+              </div>
+
+              <div className="footer-hero-visual">
+                <div className="footer-preview-card">
+                  <div className="footer-preview-label">Today Sales</div>
+                  <div className="footer-preview-value">₹{report?.todaySales ?? 0}</div>
+                </div>
+                <div className="footer-preview-card">
+                  <div className="footer-preview-label">Monthly Sales</div>
+                  <div className="footer-preview-value">₹{report?.monthSales ?? 0}</div>
+                </div>
+              </div>
             </div>
-            <div className="refer-desc">Install Entri Book app on your device for quick & offline access.</div>
-            
-            {/* Refer Link replaced with App Download Button */}
-            <button onClick={handleInstallClick} className="refer-link" style={{ border: 'none', cursor: 'pointer' }}>
-              <i className="fa-solid fa-download" style={{ marginRight: "8px" }}></i>
-              Download App
-            </button>
+
+            <div className="footer-bottom-grid">
+              <div className="footer-brand-col">
+                <div>
+                  <div className="footer-brand-name">
+                    <i className="fa-solid fa-book-bookmark" style={{ color: "#0d4b82" }}></i>
+                    <span>Entri Book</span>
+                  </div>
+                  <img
+                    src="/headingLogo.png"
+                    alt="Entri Book"
+                    className="footer-heading-logo"
+                  />
+                </div>
+                <div className="footer-meta-text">
+                  © Entri Book. All rights reserved.<br />
+                  Billing, Stock & Credit Ledger
+                </div>
+              </div>
+
+              <div>
+                <div className="footer-col-title">Business Suite</div>
+                <ul className="footer-link-list">
+                  <li><Link to="/billing" className="footer-link-item">Sales & Billing</Link></li>
+                  <li><Link to="/product" className="footer-link-item">Products & Stock</Link></li>
+                  <li><Link to="/credit" className="footer-link-item">Credit Ledger</Link></li>
+                  <li><Link to="/purchase" className="footer-link-item">Purchase</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <div className="footer-col-title">Explore</div>
+                <ul className="footer-link-list">
+                  <li><Link to="/search/product" className="footer-link-item">Search Products</Link></li>
+                  <li><Link to="/review" className="footer-link-item">Comment & Reviews</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <div className="footer-col-title">Guidelines</div>
+                <ul className="footer-link-list">
+                  <li><Link to="/privacy" className="footer-link-item">Terms & Conditions</Link></li>
+                  <li><Link to="/privacy" className="footer-link-item">Privacy Policy</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <div className="footer-col-title">Get in touch</div>
+                <div className="footer-meta-text">
+                  Questions or feedback?<br />
+                  We&apos;d love to hear from you
+                </div>
+                <div className="footer-social-row">
+                  <a
+                    href="https://wa.me/919626992320?text=Hello%20entri"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-social-icon"
+                    aria-label="WhatsApp"
+                  >
+                    <i className="fa-brands fa-whatsapp"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </Fragment>
       </div>

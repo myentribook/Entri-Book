@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-* {
+*{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -21,7 +21,7 @@ body {
 
 .home-wrapper {
     /* Mobile & Desktop-ku left/right edges-la nalla space irukkurathukku padding-ai 16px-a adjust pannirukku */
-    padding: 32px 16px 60px 16px;
+    padding: 36px 16px 64px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,7 +34,7 @@ body {
 .section-wrapper {
     width: 100%;
     max-width: 820px;
-    margin-bottom: 36px;
+    margin-bottom: 40px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 4px;
@@ -46,9 +46,14 @@ body {
     font-size: 1.35rem;
     font-weight: 800;
     color: #0c1a30;
-    margin-bottom: 20px;
+    margin-top: 4px;
+    margin-bottom: 22px;
+    padding: 2px 0;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 /* Section 1: Business Suite Icons */
@@ -62,7 +67,7 @@ body {
 .upi-btn {
     background: none;
     border: none;
-    padding: 0;
+    padding: 6px 4px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -80,25 +85,43 @@ body {
     transform: scale(0.95);
 }
 
-/* Dark Blue Circle Buttons for Business Suite */
+/* Soft Blue Circle Buttons with Dashed Outer Ring for Business Suite */
 .icon-circle {
-    width: 68px;
-    height: 68px;
-    background-color: #0d4b82;
-    color: #ffffff;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background-color: #dce8fc;
+    color: #0d4b82;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.55rem;
     margin-bottom: 12px;
-    box-shadow: 0 8px 18px rgba(13, 75, 130, 0.25);
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.icon-circle::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border: 2px dashed #b9c5d6;
+    border-radius: 50%;
+    pointer-events: none;
     transition: all 0.2s ease;
 }
 
 .upi-btn:hover .icon-circle {
-    background-color: #08345c;
-    box-shadow: 0 10px 22px rgba(13, 75, 130, 0.35);
+    background-color: #cde0fb;
+    box-shadow: none;
+}
+
+.upi-btn:hover .icon-circle::before {
+    border-color: #93a7c2;
 }
 
 .upi-label {
@@ -106,152 +129,325 @@ body {
     font-weight: 700;
     color: #1e293b;
     text-align: center;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
 /* Section 2: Explore Guidelines Box */
 .Explore-guidelines {
     background: #ffffff;
     border-radius: 24px;
-    padding: 36px 24px;
+    padding: 28px 22px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    border: 1px solid #ffffff;
+    border: 1px solid #eef2f6;
 }
 
 .Explore-guidelines .upi-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: start;
 }
 
-.upi-btns {
+.Explore-guidelines .upi-btns {
     background: none;
     border: none;
-    padding: 0;
+    padding: 10px 8px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.2s ease;
+    text-align: center;
     -webkit-tap-highlight-color: transparent;
     text-decoration: none;
 }
 
-.upi-btns:hover {
-    transform: translateY(-2px);
-}
-
-/* Outline Icons for Explore Guidelines */
-.icon-circles {
-    width: 50px;
-    height: 50px;
+.Explore-guidelines .icon-circles {
+    width: auto;
+    height: 40px;
     color: #0d4b82;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.75rem;
     margin-bottom: 10px;
-    transition: all 0.2s ease;
 }
 
-.upi-btns:hover .icon-circles {
-    color: #08345c;
-    transform: scale(1.08);
+.Explore-guidelines .upi-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.35;
+    margin-bottom: 4px;
 }
 
-/* Section 3: Business Overview Cards Grid */
+.Explore-guidelines .upi-sublabel {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.3;
+}
+
+/* Section 3: Business Overview Cards Grid (4 columns per row, matching reference box style) */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 16px;
     width: 100%;
 }
 
 .card-wrapper {
     background: #ffffff;
-    padding: 16px;
-    border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
-    border: 1px solid #ffffff;
+    padding: 16px 18px;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eef2f6;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 140px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    min-height: 78px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-wrapper:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-.card-content {
-    padding: 16px;
-    border-radius: 14px;
-    margin-bottom: 12px;
-    min-height: 70px;
+.overview-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-}
-
-.card-content p {
-    font-size: 0.88rem;
-    color: #475569;
-    line-height: 1.5;
-    font-weight: 500;
-}
-
-.card-content strong,
-.card-content b {
-    font-weight: 800;
-    color: #0f172a;
+    justify-content: center;
     font-size: 1rem;
+    flex-shrink: 0;
 }
 
-/* Section 4: Refer Banner */
+.overview-row-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+}
+
+.overview-row-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+}
+
+.overview-row-subtitle {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    line-height: 1.4;
+    white-space: pre-line;
+}
+
+/* Section 4: Footer Banner & Multi-Column Footer */
 .refer-section {
     background: #ffffff;
-    padding: 32px 24px;
-    border-radius: 24px;
-    text-align: center;
+    padding: 32px;
+    border-radius: 28px;
+    text-align: left;
     width: 100%;
     max-width: 820px;
-    margin: 10px auto;
+    margin: 8px auto 0 auto;
+    border: 1px solid #eef2f6;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
+.footer-hero-banner {
+    background: linear-gradient(120deg, #0d4b82 0%, #1d6fb8 65%, #3898ec 100%);
+    border-radius: 22px;
+    padding: 28px 30px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 34px;
+}
+
+.footer-hero-copy {
+    max-width: 430px;
+}
+
 .refer-title {
-    font-size: 1.35rem;
+    font-size: 1.45rem;
     font-weight: 800;
-    color: #0c1a30;
-    margin-bottom: 8px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    line-height: 1.3;
 }
 
 .refer-desc {
-    color: #64748b;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    max-width: 600px;
-    margin: 0 auto 16px auto;
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin: 0 0 20px 0;
+    font-weight: 400;
 }
 
 .refer-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 24px;
-    background-color: #0d4b82;
+    padding: 11px 22px;
+    background-color: #0c1a30;
     color: #ffffff;
-    border-radius: 50px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(13, 75, 130, 0.2);
+    box-shadow: 0 4px 12px rgba(12, 26, 48, 0.25);
 }
 
 .refer-link:hover {
-    background-color: #08345c;
+    background-color: #162b4d;
     color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.footer-hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.footer-preview-card {
+    background: #ffffff;
+    color: #0c1a30;
+    border-radius: 16px;
+    padding: 16px 18px;
+    min-width: 136px;
+    box-shadow: 0 10px 24px rgba(12, 26, 48, 0.16);
+}
+
+.footer-preview-label {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 6px;
+    line-height: 1.25;
+}
+
+.footer-preview-value {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: #0d4b82;
+    line-height: 1.25;
+}
+
+.footer-bottom-grid {
+    display: grid;
+    grid-template-columns: 1.45fr 1.1fr 0.95fr 1.05fr 1.25fr;
+    column-gap: 24px;
+    row-gap: 28px;
+    align-items: start;
+    padding: 6px 4px 2px 4px;
+}
+
+.footer-brand-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+.footer-brand-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.footer-brand-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0c1a30;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.3;
+    padding: 2px 0;
+}
+
+.footer-heading-logo {
+    max-height: 36px;
+    width: auto;
+    max-width: 128px;
+    object-fit: contain;
+    display: block;
+    margin-top: 2px;
+}
+
+.footer-meta-text {
+    font-size: 0.76rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.footer-col-title {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 14px;
+    padding: 2px 0;
+    line-height: 1.35;
+}
+
+.footer-link-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-link-item {
+    font-size: 0.78rem;
+    color: #64748b;
+    text-decoration: none;
+    line-height: 1.45;
+    padding: 1px 0;
+    display: inline-block;
+    transition: color 0.2s ease;
+}
+
+.footer-link-item:hover {
+    color: #0d4b82;
+}
+
+.footer-social-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.footer-social-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #25D366;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-social-icon:hover {
+    background-color: #5FE39A;
     transform: translateY(-1px);
 }
 
@@ -309,17 +505,29 @@ body {
     .dashboard-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .footer-bottom-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
 }
 
 @media (max-width: 640px) {
     .home-wrapper {
         /* Mobile-la left & right edges romba ottikkitu irukkamalae irukkave 16px padding tharappattulladhu */
-        padding: 24px 16px 50px 16px; 
+        padding: 26px 16px 52px 16px; 
     }
 
     .section-wrapper {
+        margin-bottom: 32px;
         padding-left: 6px;
         padding-right: 6px;
+    }
+
+    .upi-title {
+        font-size: 1.22rem;
+        margin-bottom: 16px;
+        padding: 2px 0;
     }
 
     .upi-grid {
@@ -328,12 +536,12 @@ body {
     }
 
     .Explore-guidelines {
-        padding: 24px 16px;
+        padding: 22px 14px;
     }
 
     .Explore-guidelines .upi-grid {
         grid-template-columns: repeat(3, 1fr) !important;
-        gap: 8px !important;
+        gap: 10px !important;
     }
 
     .icon-circle {
@@ -343,16 +551,30 @@ body {
         margin-bottom: 8px;
     }
 
-    .icon-circles {
-        width: 38px;
-        height: 38px;
-        font-size: 1.3rem;
-        margin-bottom: 6px;
+    .icon-circle::before {
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+    }
+
+    .Explore-guidelines .icon-circles {
+        height: 32px;
+        font-size: 1.35rem;
+        margin-bottom: 8px;
     }
 
     .upi-label {
         font-size: 0.72rem;
-        line-height: 1.2;
+        line-height: 1.25;
+    }
+
+    .Explore-guidelines .upi-label {
+        font-size: 0.76rem;
+    }
+
+    .Explore-guidelines .upi-sublabel {
+        font-size: 0.68rem;
     }
 
     .dashboard-grid {
@@ -361,17 +583,61 @@ body {
     }
 
     .card-wrapper {
-        padding: 12px;
+        padding: 14px 14px;
         border-radius: 16px;
+        gap: 10px;
+        min-height: 68px;
     }
 
-    .card-content {
-        padding: 12px 10px;
-        margin-bottom: 8px;
+    .overview-badge {
+        width: 34px;
+        height: 34px;
+        font-size: 0.88rem;
     }
 
-    .card-content p {
-        font-size: 0.8rem;
+    .overview-row-title {
+        font-size: 0.84rem;
+    }
+
+    .overview-row-subtitle {
+        font-size: 0.7rem;
+    }
+
+    .refer-section {
+        padding: 22px 18px;
+        border-radius: 22px;
+    }
+
+    .footer-hero-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px 18px;
+        gap: 18px;
+        margin-bottom: 26px;
+    }
+
+    .footer-hero-visual {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .footer-preview-card {
+        flex: 1 1 130px;
+        min-width: 0;
+    }
+
+    .footer-bottom-grid {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 18px;
+        row-gap: 22px;
+        padding: 4px 2px;
+    }
+
+    .footer-brand-col {
+        grid-column: 1 / -1;
+        gap: 12px;
     }
 }
 
@@ -392,7 +658,18 @@ body {
         font-size: 1.1rem;
     }
 
+    .icon-circle::before {
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+    }
+
     .upi-label {
         font-size: 0.68rem;
+    }
+
+    .footer-bottom-grid {
+        grid-template-columns: 1fr;
     }
 }
