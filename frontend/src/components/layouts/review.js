@@ -179,34 +179,42 @@ export default function Reviews() {
     return (
         <Fragment>
             <Toaster position="top-center" />
-            {loading ? <Loader /> : (
-                <div className="eb-rev-page-wrapper">
-                    <div className="eb-rev-dots eb-rev-dots-tl"></div>
-                    <div className="eb-rev-dots eb-rev-dots-tr"></div>
-                    <div className="eb-rev-dots eb-rev-dots-bl"></div>
-                    <div className="eb-rev-dots eb-rev-dots-br"></div>
+            <div className="eb-rev-workspace-container">
+                {/* Decorative Background Dots */}
+                <div className="eb-rev-dots eb-rev-dots-tl"></div>
+                <div className="eb-rev-dots eb-rev-dots-tr"></div>
+                <div className="eb-rev-dots eb-rev-dots-bl"></div>
+                <div className="eb-rev-dots eb-rev-dots-br"></div>
 
-                    {/* Right Corner "Post" Button */}
-                    <button
-                        type="button"
-                        className="eb-rev-top-post-btn"
-                        onClick={() => setIsModalOpen(true)}
-                    >
-                        Post
-                    </button>
-
-                    <div className="eb-rev-center-stage">
-                        <header className="eb-rev-hero-header">
+                {/* Header Pattern matching Dashboard (Centered Heading + Right Corner Post Button) */}
+                <header className="eb-rev-workspace-header">
+                    <div className="eb-rev-top-bar">
+                        <div className="eb-rev-heading-center">
                             <div className="eb-rev-script-row">
                                 <span className="eb-rev-speech-bubble">💬</span>
                                 <span className="eb-rev-script-title">What Our Customers Say</span>
                             </div>
                             <div className="eb-rev-bold-row">
                                 <span className="eb-rev-big-star">★</span>
-                                <h1>Real Reviews, Real Love</h1>
+                                <h1 className="eb-rev-workspace-title">Real Reviews, Real Love</h1>
                             </div>
-                        </header>
+                        </div>
 
+                        <button
+                            type="button"
+                            className={`eb-rev-post-toggle-btn ${isModalOpen ? 'is-active' : ''}`}
+                            onClick={() => setIsModalOpen(true)}
+                            title="Post a Review"
+                        >
+                            <i className="fa-solid fa-pen-to-square"></i>
+                            <span>Post</span>
+                        </button>
+                    </div>
+                </header>
+
+                {/* Main Content Section matching Dashboard's 780px width */}
+                {loading ? <Loader /> : (
+                    <section className="eb-rev-feed-section">
                         <div className="eb-rev-feed-viewport" ref={viewportRef}>
                             <div className="eb-rev-feed-track" ref={trackRef}>
                                 {comments && comments.length > 0 ? (
@@ -221,63 +229,64 @@ export default function Reviews() {
                         </div>
 
                         <div className="eb-rev-footer-tag">@EntriBook</div>
-                    </div>
+                    </section>
+                )}
 
-                    {/* Center Popup Window for Posting Reviews */}
-                    {isModalOpen && (
-                        <div className="eb-rev-modal-backdrop" onClick={() => setIsModalOpen(false)}>
-                            <div className="eb-rev-modal-box" onClick={(e) => e.stopPropagation()}>
-                                <button
-                                    type="button"
-                                    className="eb-rev-modal-close"
-                                    onClick={() => setIsModalOpen(false)}
-                                    aria-label="Close"
-                                >
-                                    ✕
-                                </button>
+                {/* Center Popup Modal for Posting Reviews */}
+                {isModalOpen && (
+                    <div className="eb-rev-modal-backdrop" onClick={() => setIsModalOpen(false)}>
+                        <div className="eb-rev-modal-box" onClick={(e) => e.stopPropagation()}>
+                            <button
+                                type="button"
+                                className="eb-rev-modal-close"
+                                onClick={() => setIsModalOpen(false)}
+                                aria-label="Close"
+                            >
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
 
-                                <div className="eb-rev-modal-header">
-                                    <h2>Customer Reviews</h2>
+                            <div className="eb-rev-modal-header">
+                                <span className="eb-rev-modal-badge">★ Customer Feedback</span>
+                                <h2>Share Your Review</h2>
+                            </div>
+
+                            <form onSubmit={handleFormSubmit} className="eb-rev-modal-form">
+                                <div className="eb-rev-input-group">
+                                    <label htmlFor="ebRevName">Name</label>
+                                    <input
+                                        type="text"
+                                        id="ebRevName"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Enter your name"
+                                        autoFocus
+                                    />
                                 </div>
 
-                                <form onSubmit={handleFormSubmit} className="eb-rev-modal-form">
-                                    <div className="eb-rev-input-group">
-                                        <label htmlFor="ebRevName">Name</label>
-                                        <input
-                                            type="text"
-                                            id="ebRevName"
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            placeholder="Enter your name"
-                                            autoFocus
-                                        />
-                                    </div>
+                                <div className="eb-rev-input-group">
+                                    <label htmlFor="ebRevComment">Comment</label>
+                                    <textarea
+                                        id="ebRevComment"
+                                        rows="4"
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        placeholder="Write your review..."
+                                        required
+                                    ></textarea>
+                                </div>
 
-                                    <div className="eb-rev-input-group">
-                                        <label htmlFor="ebRevComment">Comment</label>
-                                        <textarea
-                                            id="ebRevComment"
-                                            rows="4"
-                                            value={comment}
-                                            onChange={(e) => setComment(e.target.value)}
-                                            placeholder="Write your review..."
-                                            required
-                                        ></textarea>
-                                    </div>
-
-                                    <button
-                                        type="submit"
-                                        className="eb-rev-modal-submit-btn"
-                                        disabled={loading}
-                                    >
-                                        {loading ? 'Submitting...' : 'Submit Review'}
-                                    </button>
-                                </form>
-                            </div>
+                                <button
+                                    type="submit"
+                                    className="eb-rev-modal-submit-btn"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Submitting...' : 'Submit Review'}
+                                </button>
+                            </form>
                         </div>
-                    )}
-                </div>
-            )}
+                    </div>
+                )}
+            </div>
         </Fragment>
     );
 }
