@@ -1,263 +1,18 @@
-// import React, { Fragment, useEffect, useRef, useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getComments, addComment } from '../../actions/commentAction';
-// import { clearCommentError, clearCommentCreated } from '../../slices/commentSlice';
-// import toast, { Toaster } from "react-hot-toast";
-// import Loader from '../layouts/loader';
-// import '../styles/reviews.css';
-
-// export default function Reviews() {
-//     const [name, setName] = useState('');
-//     const [comment, setComment] = useState('');
-//     const dispatch = useDispatch();
-
-//     const { comments = [], loading, error, isCreated } = useSelector((state) => state.commentState || {});
-
-//     const trackRef = useRef(null);
-//     const viewportRef = useRef(null);
-
-//     useEffect(() => {
-//         dispatch(getComments());
-
-//         if (error) {
-//             toast.error(error);
-//             dispatch(clearCommentError());
-//         }
-
-//         if (isCreated) {
-//             toast.success('Thank you for your feedback!');
-//             setName('');
-//             setComment('');
-//             dispatch(clearCommentCreated());
-//             dispatch(getComments());
-//         }
-//     }, [dispatch, error, isCreated]);
-
-//     useEffect(() => {
-//         const track = trackRef.current;
-//         const viewport = viewportRef.current;
-//         if (!track || !viewport) return;
-
-//         let currentScrollY = 0;
-//         const speed = 0.6;
-//         let isPaused = false;
-//         let animationFrameId = null;
-
-//         // Calculate exact original content block height including gap (16px)
-//         const getOriginalHeight = () => {
-//             let height = 0;
-//             const originalItems = track.querySelectorAll('.eb-rev-comment-item-original');
-//             originalItems.forEach(item => {
-//                 height += item.offsetHeight + 16;
-//             });
-//             return height;
-//         };
-
-//         let contentHeight = getOriginalHeight();
-
-//         const step = () => {
-//             if (!isPaused) {
-//                 currentScrollY += speed;
-//                 // Seamless reset loop back to top without visual flicker
-//                 if (currentScrollY >= contentHeight) {
-//                     currentScrollY -= contentHeight;
-//                 }
-//                 track.style.transform = `translate3d(0, -${currentScrollY}px, 0)`;
-//             }
-//             animationFrameId = requestAnimationFrame(step);
-//         };
-
-//         animationFrameId = requestAnimationFrame(step);
-
-//         // Hover events
-//         const handleMouseEnter = () => { isPaused = true; };
-//         const handleMouseLeave = () => { isPaused = false; };
-
-//         viewport.addEventListener('mouseenter', handleMouseEnter);
-//         viewport.addEventListener('mouseleave', handleMouseLeave);
-
-//         // Touch swipe variables
-//         let startY = 0;
-//         let initialYOffset = 0;
-
-//         const handleTouchStart = (e) => {
-//             isPaused = true;
-//             startY = e.touches[0].clientY;
-//             initialYOffset = currentScrollY;
-//         };
-
-//         const handleTouchMove = (e) => {
-//             const currentY = e.touches[0].clientY;
-//             const deltaY = startY - currentY;
-//             currentScrollY = initialYOffset + deltaY;
-
-//             if (currentScrollY >= contentHeight) {
-//                 currentScrollY -= contentHeight;
-//                 initialYOffset -= contentHeight;
-//             } else if (currentScrollY < 0) {
-//                 currentScrollY += contentHeight;
-//                 initialYOffset += contentHeight;
-//             }
-//             track.style.transform = `translate3d(0, -${currentScrollY}px, 0)`;
-//         };
-
-//         const handleTouchEnd = () => {
-//             isPaused = false;
-//         };
-
-//         viewport.addEventListener('touchstart', handleTouchStart, { passive: true });
-//         viewport.addEventListener('touchmove', handleTouchMove, { passive: true });
-//         viewport.addEventListener('touchend', handleTouchEnd);
-
-//         return () => {
-//             cancelAnimationFrame(animationFrameId);
-//             viewport.removeEventListener('mouseenter', handleMouseEnter);
-//             viewport.removeEventListener('mouseleave', handleMouseLeave);
-//             viewport.removeEventListener('touchstart', handleTouchStart);
-//             viewport.removeEventListener('touchmove', handleTouchMove);
-//             viewport.removeEventListener('touchend', handleTouchEnd);
-//         };
-//     }, [comments]);
-
-//     const handleFormSubmit = (e) => {
-//         e.preventDefault();
-//         const trimmedName = name.trim();
-//         const trimmedComment = comment.trim();
-//         if (!trimmedComment) return;
-
-//         // Confetti burst animation trigger
-//         const container = document.getElementById('ebRevBtnContainer');
-//         const colors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
-//         for (let i = 0; i < 24; i++) {
-//             const particle = document.createElement('div');
-//             particle.classList.add('eb-rev-confetti-particle');
-//             particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-//             const angle = Math.random() * Math.PI * 2;
-//             const distance = 60 + Math.random() * 80;
-//             particle.style.setProperty('--end-x', `${Math.cos(angle) * distance}px`);
-//             particle.style.setProperty('--end-y', `${Math.sin(angle) * distance}px`);
-//             particle.style.setProperty('--end-rot', `${Math.random() * 360}deg`);
-//             container.appendChild(particle);
-//             particle.classList.add('eb-rev-burst-active');
-//             setTimeout(() => particle.remove(), 700);
-//         }
-
-//         dispatch(addComment({ name: trimmedName || 'Anonymous', comment: trimmedComment }));
-//     };
-
-//     return (
-//         <Fragment>
-//             <Toaster />
-//             {loading ? <Loader /> : (
-//                 <div className="eb-rev-root-box">
-//                     <div className="eb-rev-main-container">
-//                         <div className="eb-rev-inner-wrapper">
-//                             {/* Page Header */}
-//                             <header className="eb-rev-page-heading-block">
-//                                 <h1>Community Feedback & Reviews</h1>
-//                                 <p>See what shop owners are saying about Entri Book</p>
-//                             </header>
-
-//                             {/* Main Content Grid */}
-//                             <div className="eb-rev-content-grid">
-
-//                                 {/* Card 1: Leave a Comment Form */}
-//                                 <div className="eb-rev-custom-card">
-//                                     <div>
-//                                         <h2> Leave Your Feedback</h2>
-//                                         <form id="ebRevCommentForm" onSubmit={handleFormSubmit}>
-//                                             <div className="eb-rev-form-control-group">
-//                                                 <label htmlFor="ebRevAuthorNameInput">Your Name & Shop</label>
-//                                                 <input
-//                                                     type="text"
-//                                                     id="ebRevAuthorNameInput"
-//                                                     value={name}
-//                                                     onChange={(e) => setName(e.target.value)}
-//                                                     placeholder="e.g. VetriVel (Velan Stores)"
-//                                                 />
-//                                             </div>
-//                                             <div className="eb-rev-form-control-group">
-//                                                 <label htmlFor="ebRevMessageInput">Your Comment / Review</label>
-//                                                 <textarea
-//                                                     id="ebRevMessageInput"
-//                                                     rows="5"
-//                                                     value={comment}
-//                                                     onChange={(e) => setComment(e.target.value)}
-//                                                     placeholder="Share your experience using the app..."
-//                                                 ></textarea>
-//                                             </div>
-//                                         </form>
-//                                     </div>
-//                                     <div className="eb-rev-btn-action-wrapper" id="ebRevBtnContainer">
-//                                         <button type="submit" form="ebRevCommentForm" className="eb-rev-submit-trigger-btn" disabled={loading}>
-//                                             {loading ? 'Posting...' : 'Post Feedback Now'}
-//                                         </button>
-//                                     </div>
-//                                 </div>
-
-//                                 {/* Card 2: SaaS Vertical Infinite Testimonial Slider */}
-//                                 <div className="eb-rev-custom-card">
-//                                     <h2> Recent Comments</h2>
-//                                     <div className="eb-rev-comments-viewport-pane" ref={viewportRef}>
-//                                         <div className="eb-rev-comments-scroll-track" ref={trackRef}>
-//                                             {/* Original Set */}
-//                                             {comments && comments.map((item) => (
-//                                                 <div className="eb-rev-comment-single-item eb-rev-comment-item-original" key={`orig-${item._id || item.id}`}>
-//                                                     <div className="eb-rev-comment-header-row">
-//                                                         <div className="eb-rev-author-details-wrap">
-//                                                             <div className="eb-rev-avatar-initial-circle">{(item.name || 'Anonymous').charAt(0).toUpperCase()}</div>
-//                                                             <span className="eb-rev-author-name-text">{item.name || 'Anonymous'}</span>
-//                                                         </div>
-//                                                         <span className="eb-rev-comment-date-stamp">
-//                                                             {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : item.date}
-//                                                         </span>
-//                                                     </div>
-//                                                     <p className="eb-rev-comment-body-text">{item.comment || item.text}</p>
-//                                                 </div>
-//                                             ))}
-
-//                                             {/* Cloned Set for Seamless Infinite Loop */}
-//                                             {comments && comments.map((item) => (
-//                                                 <div className="eb-rev-comment-single-item eb-rev-comment-item-clone" key={`clone-${item._id || item.id}`}>
-//                                                     <div className="eb-rev-comment-header-row">
-//                                                         <div className="eb-rev-author-details-wrap">
-//                                                             <div className="eb-rev-avatar-initial-circle">{(item.name || 'Anonymous').charAt(0).toUpperCase()}</div>
-//                                                             <span className="eb-rev-author-name-text">{item.name || 'Anonymous'}</span>
-//                                                         </div>
-//                                                         <span className="eb-rev-comment-date-stamp">
-//                                                             {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : item.date}
-//                                                         </span>
-//                                                     </div>
-//                                                     <p className="eb-rev-comment-body-text">{item.comment || item.text}</p>
-//                                                 </div>
-//                                             ))}
-//                                         </div>
-//                                     </div>
-//                                 </div>
-
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             )}
-//         </Fragment>
-//     );
-// }
-
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getComments, addComment } from '../../actions/commentAction';
 import { clearCommentError, clearCommentCreated } from '../../slices/commentSlice';
 import toast, { Toaster } from "react-hot-toast";
-import confetti from 'canvas-confetti'; // 1. Confetti import panniyaachu
+import confetti from 'canvas-confetti';
 import Loader from '../layouts/loader';
 import '../styles/reviews.css';
 
 export default function Reviews() {
     const [name, setName] = useState('');
     const [comment, setComment] = useState('');
-    const dispatch = useDispatch();
+    const [isModalOpen, setIsModalOpen] = useState(false); // Popup modal state
 
+    const dispatch = useDispatch();
     const { comments = [], loading, error, isCreated } = useSelector((state) => state.commentState || {});
 
     const trackRef = useRef(null);
@@ -275,11 +30,13 @@ export default function Reviews() {
             toast.success('Thank you for your feedback!');
             setName('');
             setComment('');
+            setIsModalOpen(false); // Submit aanadhum popup close aagum
             dispatch(clearCommentCreated());
             dispatch(getComments());
         }
     }, [dispatch, error, isCreated]);
 
+    // Infinite Vertical Auto-Scroll Logic (Preserved)
     useEffect(() => {
         const track = trackRef.current;
         const viewport = viewportRef.current;
@@ -292,9 +49,9 @@ export default function Reviews() {
 
         const getOriginalHeight = () => {
             let height = 0;
-            const originalItems = track.querySelectorAll('.eb-rev-comment-item-original');
+            const originalItems = track.querySelectorAll('.eb-rev-card-original');
             originalItems.forEach(item => {
-                height += item.offsetHeight + 16;
+                height += item.offsetHeight + 22; // Card height + gap
             });
             return height;
         };
@@ -302,7 +59,7 @@ export default function Reviews() {
         let contentHeight = getOriginalHeight();
 
         const step = () => {
-            if (!isPaused) {
+            if (!isPaused && contentHeight > 0) {
                 currentScrollY += speed;
                 if (currentScrollY >= contentHeight) {
                     currentScrollY -= contentHeight;
@@ -366,104 +123,168 @@ export default function Reviews() {
         e.preventDefault();
         const trimmedName = name.trim();
         const trimmedComment = comment.trim();
-        if (!trimmedComment) return;
+        if (!trimmedComment) {
+            toast.error("Please enter your review!");
+            return;
+        }
 
-        // 2. Button click pannum pothu alagaana confetti burst trigger aagum
+        // Confetti burst
         confetti({
-            particleCount: 80,
-            spread: 70,
-            origin: { y: 0.7 }
+            particleCount: 90,
+            spread: 75,
+            origin: { y: 0.6 },
+            zIndex: 9999
         });
 
         dispatch(addComment({ name: trimmedName || 'Anonymous', comment: trimmedComment }));
     };
 
-    return (
-        <Fragment>
-            <Toaster />
-            {loading ? <Loader /> : (
-                <div className="eb-rev-root-box">
-                    <div className="eb-rev-main-container">
-                        <div className="eb-rev-inner-wrapper">
-                            <header className="eb-rev-page-heading-block">
-                                <h1>Community Feedback & Reviews</h1>
-                                <p>See what shop owners are saying about Entri Book</p>
-                            </header>
+    // Helper function to render each review card exactly like the reference image
+    const renderReviewCard = (item, index, type) => {
+        const isYellow = index % 2 === 0; // Alternating Yellow & White cards
+        const avatarColors = ['#B8D4E3', '#F5B041', '#F7DC6F', '#D7BDE2'];
+        const avatarBg = avatarColors[index % avatarColors.length];
 
-                            <div className="eb-rev-content-grid">
-                                <div className="eb-rev-custom-card">
-                                    <div>
-                                        <h2>Leave Your Feedback</h2>
-                                        <form id="ebRevCommentForm" onSubmit={handleFormSubmit}>
-                                            <div className="eb-rev-form-control-group">
-                                                <label htmlFor="ebRevAuthorNameInput">Your Name & Shop</label>
-                                                <input
-                                                    type="text"
-                                                    id="ebRevAuthorNameInput"
-                                                    value={name}
-                                                    onChange={(e) => setName(e.target.value)}
-                                                    placeholder="e.g. VetriVel (Velan Stores)"
-                                                />
-                                            </div>
-                                            <div className="eb-rev-form-control-group">
-                                                <label htmlFor="ebRevMessageInput">Your Comment / Review</label>
-                                                <textarea
-                                                    id="ebRevMessageInput"
-                                                    rows="5"
-                                                    value={comment}
-                                                    onChange={(e) => setComment(e.target.value)}
-                                                    placeholder="Share your experience using the app..."
-                                                ></textarea>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div className="eb-rev-btn-action-wrapper">
-                                        <button type="submit" form="ebRevCommentForm" className="eb-rev-submit-trigger-btn" disabled={loading}>
-                                            {loading ? 'Posting...' : 'Post Feedback Now'}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="eb-rev-custom-card">
-                                    <h2>Recent Comments</h2>
-                                    <div className="eb-rev-comments-viewport-pane" ref={viewportRef}>
-                                        <div className="eb-rev-comments-scroll-track" ref={trackRef}>
-                                            {comments && comments.map((item) => (
-                                                <div className="eb-rev-comment-single-item eb-rev-comment-item-original" key={`orig-${item._id || item.id}`}>
-                                                    <div className="eb-rev-comment-header-row">
-                                                        <div className="eb-rev-author-details-wrap">
-                                                            <div className="eb-rev-avatar-initial-circle">{(item.name || 'Anonymous').charAt(0).toUpperCase()}</div>
-                                                            <span className="eb-rev-author-name-text">{item.name || 'Anonymous'}</span>
-                                                        </div>
-                                                        <span className="eb-rev-comment-date-stamp">
-                                                            {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : item.date}
-                                                        </span>
-                                                    </div>
-                                                    <p className="eb-rev-comment-body-text">{item.comment || item.text}</p>
-                                                </div>
-                                            ))}
-
-                                            {comments && comments.map((item) => (
-                                                <div className="eb-rev-comment-single-item eb-rev-comment-item-clone" key={`clone-${item._id || item.id}`}>
-                                                    <div className="eb-rev-comment-header-row">
-                                                        <div className="eb-rev-author-details-wrap">
-                                                            <div className="eb-rev-avatar-initial-circle">{(item.name || 'Anonymous').charAt(0).toUpperCase()}</div>
-                                                            <span className="eb-rev-author-name-text">{item.name || 'Anonymous'}</span>
-                                                        </div>
-                                                        <span className="eb-rev-comment-date-stamp">
-                                                            {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : item.date}
-                                                        </span>
-                                                    </div>
-                                                    <p className="eb-rev-comment-body-text">{item.comment || item.text}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+        return (
+            <div
+                className={`eb-rev-showcase-card ${isYellow ? 'eb-rev-card-yellow' : 'eb-rev-card-white'} ${type === 'orig' ? 'eb-rev-card-original' : 'eb-rev-card-clone'}`}
+                key={`${type}-${item._id || item.id || index}`}
+            >
+                <div className="eb-rev-card-top">
+                    <div className="eb-rev-user-meta">
+                        <div className="eb-rev-user-avatar" style={{ backgroundColor: avatarBg }}>
+                            <span>{(item.name || 'C').charAt(0).toUpperCase()}</span>
+                        </div>
+                        <div className="eb-rev-user-info">
+                            <h4>{item.name || 'Anonymous'}</h4>
+                            <span className="eb-rev-user-role">
+                                {item.createdAt
+                                    ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                                    : 'Customers'}
+                            </span>
                         </div>
                     </div>
+
+                    {/* 5-Star Pill Badge */}
+                    <div className="eb-rev-stars-pill">
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                    </div>
+                </div>
+
+                <p className="eb-rev-card-message">{item.comment || item.text}</p>
+            </div>
+        );
+    };
+
+    return (
+        <Fragment>
+            <Toaster position="top-center" />
+            {loading ? <Loader /> : (
+                <div className="eb-rev-page-wrapper">
+                    {/* Decorative Background Dots (Matching Image Corners) */}
+                    <div className="eb-rev-dots eb-rev-dots-tl"></div>
+                    <div className="eb-rev-dots eb-rev-dots-tr"></div>
+                    <div className="eb-rev-dots eb-rev-dots-bl"></div>
+                    <div className="eb-rev-dots eb-rev-dots-br"></div>
+
+                    {/* Top Right Corner "Post" Button */}
+                    <button
+                        type="button"
+                        className="eb-rev-top-post-btn"
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        <span className="eb-rev-plus-icon">+</span> Post
+                    </button>
+
+                    <div className="eb-rev-center-stage">
+                        {/* Exact Header Design from Image */}
+                        <header className="eb-rev-hero-header">
+                            <div className="eb-rev-script-row">
+                                <span className="eb-rev-speech-bubble">💬</span>
+                                <span className="eb-rev-script-title">What Our Customers Say</span>
+                            </div>
+                            <div className="eb-rev-bold-row">
+                                <span className="eb-rev-big-star">★</span>
+                                <h1>Real Reviews, Real Love</h1>
+                            </div>
+                        </header>
+
+                        {/* Tilted Cards Scrolling Feed */}
+                        <div className="eb-rev-feed-viewport" ref={viewportRef}>
+                            <div className="eb-rev-feed-track" ref={trackRef}>
+                                {comments && comments.length > 0 ? (
+                                    <>
+                                        {comments.map((item, idx) => renderReviewCard(item, idx, 'orig'))}
+                                        {comments.map((item, idx) => renderReviewCard(item, idx, 'clone'))}
+                                    </>
+                                ) : (
+                                    <p className="eb-rev-empty-msg">No reviews yet. Click "Post" to be the first!</p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Bottom Handle Tag (Optional like image) */}
+                        <div className="eb-rev-footer-tag">@EntriBook</div>
+                    </div>
+
+                    {/* Center Popup Modal for Posting Review */}
+                    {isModalOpen && (
+                        <div className="eb-rev-modal-backdrop" onClick={() => setIsModalOpen(false)}>
+                            <div className="eb-rev-modal-box" onClick={(e) => e.stopPropagation()}>
+                                <button
+                                    type="button"
+                                    className="eb-rev-modal-close"
+                                    onClick={() => setIsModalOpen(false)}
+                                    aria-label="Close"
+                                >
+                                    ✕
+                                </button>
+
+                                <div className="eb-rev-modal-header">
+                                    <span className="eb-rev-modal-badge">★ Share Your Experience</span>
+                                    <h2>Write a Review</h2>
+                                </div>
+
+                                <form onSubmit={handleFormSubmit} className="eb-rev-modal-form">
+                                    <div className="eb-rev-input-group">
+                                        <label htmlFor="ebRevName">Your Name</label>
+                                        <input
+                                            type="text"
+                                            id="ebRevName"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder="e.g. VetriVel (Velan Stores)"
+                                            autoFocus
+                                        />
+                                    </div>
+
+                                    <div className="eb-rev-input-group">
+                                        <label htmlFor="ebRevComment">Your Comment</label>
+                                        <textarea
+                                            id="ebRevComment"
+                                            rows="4"
+                                            value={comment}
+                                            onChange={(e) => setComment(e.target.value)}
+                                            placeholder="Tell us what you love about the app..."
+                                            required
+                                        ></textarea>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="eb-rev-modal-submit-btn"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Submitting...' : 'Submit Review'}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </Fragment>

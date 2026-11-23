@@ -31,6 +31,7 @@ function shuffleArray(array) {
 export default function SearchProduct() {
     const dispatch = useDispatch();
     const [keyword, setKeyword] = useState('');
+    const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
     const searchState = useSelector((state) => state.searchState || state.search);
     const products = searchState?.products || searchState?.searchProduct || (Array.isArray(searchState) ? searchState : []);
@@ -66,46 +67,65 @@ export default function SearchProduct() {
     return (
         <div className="workspace-container">
             <header className="workspace-header">
-                <h1 className="workspace-title" style={{ marginBottom: '20px' }}>
-                    <i className="fa-solid fa-boxes-stacked" style={{ color: '#0056B3' }}></i> Your Complete Product Catalog
-                </h1>
-
-
-                <form onSubmit={handleSearchSubmit} className="command-box">
-                    <input
-                        type="text"
-                        className="command-input"
-                        placeholder="Search products by name..."
-                        value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
-                    />
-
-                    <div className="command-footer">
-                        <div className="command-badges">
-                            <div className="badge">
-                                <svg className="badge-icon" viewBox="0 0 24 24">
-                                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14h-2v-2h2zm0-4h-2V7h2z" />
-                                </svg>
-                                Memory Center
-                            </div>
-                            <div className="badge">
-                                <svg className="badge-icon" viewBox="0 0 24 24" style={{ fill: '#3B82F6' }}>
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                </svg>
-                                search
-                            </div>
-                        </div>
-
-                        <div className="command-actions">
-                            <div className="action-pill">
-                                ✦ Best
-                            </div>
-                            <button type="submit" className="submit-btn" title="Send">
-                                <i className="fa-solid fa-trophy"></i>
-                            </button>
-                        </div>
+                <div className="workspace-top-bar">
+                    <div className="workspace-heading-center">
+                        <h1 className="workspace-title" style={{ marginBottom: 0, paddingBottom: 0 }}>
+                            <i className="fa-solid fa-boxes-stacked" style={{ color: '#082f5c' }}></i> Your Complete Product Catalog
+                        </h1>
+                        <p className="workspace-subtitle">
+                            Browse, search, and track product stock and contact details in one place.
+                        </p>
                     </div>
-                </form>
+
+                    <button
+                        type="button"
+                        className={`search-toggle-btn ${isSearchExpanded ? 'is-active' : ''}`}
+                        onClick={() => setIsSearchExpanded((prev) => !prev)}
+                        title={isSearchExpanded ? 'Close Search' : 'Search Products'}
+                        aria-expanded={isSearchExpanded}
+                    >
+                        <i className={`fa-solid ${isSearchExpanded ? 'fa-xmark' : 'fa-magnifying-glass'}`}></i>
+                    </button>
+                </div>
+
+                {isSearchExpanded && (
+                    <form onSubmit={handleSearchSubmit} className="command-box command-box-expanded">
+                        <input
+                            type="text"
+                            className="command-input"
+                            placeholder="Search products by name..."
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            autoFocus
+                        />
+
+                        <div className="command-footer">
+                            <div className="command-badges">
+                                <div className="badge">
+                                    <svg className="badge-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14h-2v-2h2zm0-4h-2V7h2z" />
+                                    </svg>
+                                    Memory Center
+                                </div>
+                                <div className="badge">
+                                    <svg className="badge-icon" viewBox="0 0 24 24" style={{ fill: '#3B82F6' }}>
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                    </svg>
+                                    search
+                                </div>
+                            </div>
+
+                            <div className="command-actions">
+                                <div className="action-pill">
+                                    ✦ Best
+                                </div>
+                                <button type="submit" className="submit-btn" title="Send">
+                                    <i className="fa-solid fa-trophy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                )}
             </header>
 
             {loading ? <Loader /> : (
@@ -123,19 +143,25 @@ export default function SearchProduct() {
                             const appCity = app.city || app.user?.city || 'N/A';
                             const appPhone = app.phone || app.user?.phone || 'N/A';
                             const userName = app.user?.name || '';
+                            const cardIndexNum = String(index + 1).padStart(2, '0');
 
                             return (
-                                <div className="app-card" key={app._id || index}>
-                                    <div className="card-banner" style={{ background: theme.bannerBg }}>
-                                        <div className="app-icon" style={{ backgroundColor: theme.iconBg }}>
-                                            <i class="fa-solid fa-box-open"></i>
-                                        </div>
-                                    </div>
-                                    <div className="card-content">
+                                <div
+                                    className={`app-card ${index % 2 === 1 ? 'is-right' : 'is-left'}`}
+                                    key={app._id || index}
+                                    style={{ '--pin-color': theme.iconBg }}
+                                >
+                                    <span className="pin-head" aria-hidden="true"></span>
+                                    <span className="pin-needle" aria-hidden="true"></span>
+
+                                    <div className="card-inner-sheet" style={{ background: theme.bannerBg }}>
+                                        <span className="card-step-num" style={{ color: theme.iconBg }}>
+                                            {cardIndexNum}
+                                        </span>
                                         <span className="app-name">{appName}</span>
                                         <span className="app-desc">Stock : {appStock}</span>
 
-                                        <div style={{ marginTop: '8px', borderTop: '1px solid #eee', paddingTop: '6px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                        <div style={{ marginTop: '8px', borderTop: '1px solid rgba(15, 23, 42, 0.08)', paddingTop: '6px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
                                             {userName && (
                                                 <span style={{ fontSize: '12px', color: '#333', fontWeight: 'bold' }}> {userName}</span>
                                             )}

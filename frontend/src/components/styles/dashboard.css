@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-* {
+*{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -8,13 +8,13 @@
 
 .workspace-container {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #f8fafc;
-    color: #1E293B;
+    background-color: #f4f7fa;
+    color: #0f172a;
     min-height: 100vh;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 40px 24px;
+    padding: 40px 24px 56px;
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
@@ -25,30 +25,115 @@
 .workspace-header {
     width: 100%;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
+}
+
+.workspace-top-bar {
+    position: relative;
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 56px;
+    min-height: 52px;
+}
+
+.workspace-heading-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
 }
 
 .workspace-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #111827;
+    font-size: 25px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
     margin-bottom: 20px;
     padding-bottom: 30px;
-    
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.workspace-subtitle {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.5;
+    max-width: 520px;
+    margin: 0;
+}
+
+.search-toggle-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #082f5c;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.search-toggle-btn:hover {
+    transform: translateY(calc(-50% - 2px));
+    border-color: #cbd5e1;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
+}
+
+.search-toggle-btn.is-active {
+    background: #082f5c;
+    color: #ffffff;
+    border-color: #082f5c;
+    box-shadow: 0 10px 24px rgba(0, 86, 179, 0.22);
 }
 
 .command-box {
     width: 100%;
     max-width: 720px;
-    background: #FFFFFF;
-    border-radius: 24px;
-    padding: 16px 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-    border: 1px solid #F3F4F6;
-    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 18px 22px;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+    border: 1px solid #e2e8f0;
+    margin: 22px auto 0;
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.command-box-expanded {
+    animation: searchBarExpand 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: top center;
+}
+
+@keyframes searchBarExpand {
+    from {
+        opacity: 0;
+        transform: scaleY(0.84) translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1) translateY(0);
+    }
 }
 
 .command-input {
@@ -57,18 +142,21 @@
     outline: none;
     font-family: inherit;
     font-size: 15px;
-    color: #4B5563;
+    font-weight: 500;
+    color: #1e293b;
     background: transparent;
 }
 
 .command-input::placeholder {
-    color: #9CA3AF;
+    color: #94a3b8;
 }
 
 .command-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 4px;
+    border-top: 1px solid #f1f5f9;
 }
 
 .command-badges {
@@ -83,19 +171,25 @@
     align-items: center;
     gap: 6px;
     padding: 6px 14px;
-    background: #F9FAFB;
-    border: 1px solid #E5E7EB;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    color: #4B5563;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #475569;
     cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.badge:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
 }
 
 .badge-icon {
     width: 14px;
     height: 14px;
-    fill: #8B5CF6;
+    fill: #8b5cf6;
 }
 
 .command-actions {
@@ -108,23 +202,34 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #3B82F6;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #082f5c;
+    background: #eff6ff;
+    padding: 6px 12px;
+    border-radius: 999px;
 }
 
 .submit-btn {
-    background: #0056B3;
+    background: #082f5c;
     border: none;
     width: 42px;
     height: 42px;
-    margin-left: 20px;
+    margin-left: 12px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #FFFFFF;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(0, 86, 179, 0.24);
+    transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: #082f5c;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 86, 179, 0.3);
 }
 
 .submit-btn svg {
@@ -133,126 +238,209 @@
     fill: currentColor;
 }
 
-/* --- APPS SECTION --- */
+/* --- SKALE PINNED STAGGERED CARDS SECTION --- */
 .apps-section {
     width: 100%;
-    max-width: 1100px;
+    max-width: 780px;
+    margin: 0 auto;
 }
 
 .section-label {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
-    color: #111827;
-    margin-bottom: 20px;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+    margin-bottom: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .apps-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 300px));
+    justify-content: space-between;
+    row-gap: 48px;
+    column-gap: 34px;
+    padding: 14px 12px 24px;
 }
 
 .app-card {
-    background: #FFFFFF;
-    border-radius: 20px;
-    border: 1px solid #F1F5F9;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.app-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-}
-
-.card-banner {
-    padding: 18px 16px 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     position: relative;
-}
-
-.app-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4);
-    color: #FFFFFF;
-}
-
-.app-icon svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
-}
-
-.notification-badge {
-    background: #EF4444;
-    color: #FFFFFF;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 10px;
-}
-
-.card-content {
-    padding: 12px 16px 18px 16px;
-    background: #FFFFFF;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.07), 0 2px 6px rgba(15, 23, 42, 0.03);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    cursor: pointer;
+    transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.app-card.is-left {
+    transform: rotate(-5.5deg);
+    justify-self: start;
+}
+
+.app-card.is-right {
+    transform: rotate(5.5deg);
+    margin-top: 56px;
+    justify-self: end;
+}
+
+.app-card.is-left:hover {
+    transform: rotate(-2.5deg) translateY(-5px);
+    border-color: #cbd5e1;
+    box-shadow: 0 24px 44px rgba(15, 23, 42, 0.12);
+}
+
+.app-card.is-right:hover {
+    transform: rotate(2.5deg) translateY(-5px);
+    border-color: #cbd5e1;
+    box-shadow: 0 24px 44px rgba(15, 23, 42, 0.12);
+}
+
+/* 3D Push-Pin Top Center */
+.pin-head {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.18) 38%, transparent 64%), var(--pin-color, #FF5A1F);
+    box-shadow: 0 8px 14px rgba(15, 23, 42, 0.24), inset 0 -2px 5px rgba(0, 0, 0, 0.24);
+    z-index: 4;
+}
+
+.pin-needle {
+    position: absolute;
+    top: 9px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 9px;
+    border-radius: 0 0 4px 4px;
+    background: rgba(15, 23, 42, 0.22);
+    z-index: 3;
+}
+
+.card-inner-sheet {
+    border-radius: 12px;
+    padding: 20px 18px 18px;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.card-step-num {
+    font-size: 16px;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    margin-bottom: 2px;
 }
 
 .app-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: #111827;
+    font-size: 16.5px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
 }
 
 .app-desc {
-    font-size: 11px;
-    font-weight: 400;
-    color: #6B7280;
-    line-height: 1.4;
-    overflow: hidden;
-    display: block;
-    line-clamp: 2;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #334155;
+    line-height: 1.45;
 }
-
-/* .app-desc {
-    font-size: 11px;
-    font-weight: 400;
-    color: #6B7280;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-} */
 
 /* Responsive Breakpoints */
-@media (max-width: 1024px) {
-    .apps-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 640px) {
+@media (max-width: 720px) {
     .workspace-container {
-        padding: 20px 8px;
+        padding: 28px 14px 44px;
+    }
+
+    .workspace-top-bar {
+        padding: 0 44px;
+    }
+
+    .workspace-title {
+        font-size: 19px;
+    }
+
+    .workspace-subtitle {
+        font-size: 12px;
+    }
+
+    .search-toggle-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .command-box {
+        padding: 16px;
+        border-radius: 18px;
     }
 
     .apps-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px 14px;
+        padding: 12px 4px 18px;
+    }
+
+    .app-card {
+        padding: 9px;
+        border-radius: 14px;
+    }
+
+    .app-card.is-left {
+        transform: rotate(-4deg);
+    }
+
+    .app-card.is-right {
+        transform: rotate(4deg);
+        margin-top: 34px;
+    }
+
+    .app-card.is-left:hover {
+        transform: rotate(-2deg) translateY(-3px);
+    }
+
+    .app-card.is-right:hover {
+        transform: rotate(2deg) translateY(-3px);
+    }
+
+    .pin-head {
+        width: 19px;
+        height: 19px;
+        top: -9px;
+    }
+
+    .card-inner-sheet {
+        padding: 15px 12px 13px;
+        border-radius: 10px;
+    }
+
+    .card-step-num {
+        font-size: 14px;
+    }
+
+    .app-name {
+        font-size: 14px;
+    }
+
+    .app-desc {
+        font-size: 11px;
     }
 
     .command-footer {
@@ -266,29 +454,7 @@
         justify-content: space-between;
     }
 
-    .app-name {
-        font-size: 13px;
-    }
-
-    .app-desc {
-        font-size: 10px;
-    }
-
-    .card-banner {
-        padding: 12px 10px 8px 10px;
-    }
-
-    .card-content {
-        padding: 8px 10px 12px 10px;
-    }
-
-    .app-icon {
-        width: 32px;
-        height: 32px;
-    }
-
-    .app-icon svg {
-        width: 16px;
-        height: 16px;
+    .submit-btn {
+        margin-left: 0;
     }
 }
