@@ -193,7 +193,7 @@ export default function Home() {
                 <div className="refer-title">
                   Love <span style={{ color: "#ff6b81" }}>❤</span> Entri Book ?
                 </div>
-                <div className="refer-desc">Install Entri Book app on your device for quick & offline access.</div>
+                <div className="refer-desc">Install Entri Book app on your device.</div>
 
                 {/* Refer Link replaced with App Download Button */}
                 <button onClick={handleInstallClick} className="refer-link" style={{ border: 'none', cursor: 'pointer' }}>
@@ -262,8 +262,8 @@ export default function Home() {
               <div>
                 <div className="footer-col-title">Get in touch</div>
                 <div className="footer-meta-text">
-                  Questions or feedback?<br />
-                  We&apos;d love to hear from you
+                  For any queries or issues, contact us via<br />
+                  What&apos;s app
                 </div>
                 <div className="footer-social-row">
                   <a

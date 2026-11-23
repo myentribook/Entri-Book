@@ -132,7 +132,7 @@ export default function Header() {
 
                     <div className='subscription-btn'>
                         <span className="sub-pill-icon"><i class="fa-solid fa-crown"></i></span>
-                        <span className="sub-pill-text" ></span>
+                        <span className="sub-pill-text" >Upgrade</span>
                     </div>
 
                 </Link>
