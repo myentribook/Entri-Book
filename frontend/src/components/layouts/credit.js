@@ -49,7 +49,7 @@ export default function Credit() {
                     <div className="credit-header-row">
                         <div className="credit-title-wrapper">
                             <div className="credit-icon-box">
-                                <i className="fa-solid fa-book" style={{ color: '#0056B3' }}></i>
+                                <i className="fa-solid fa-book"></i>
                             </div>
                             <div>
                                 <h2 className="credit-title-heading">Credits</h2>
@@ -58,75 +58,97 @@ export default function Credit() {
                                 </p>
                             </div>
                         </div>
-                        <input 
-                            type="text" 
-                            className="credit-search-bar" 
-                            placeholder="Search Credits ..." 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
                     </div>
 
                     <div className="credit-main-card">
-                        <table className="credit-info-table">
-                            <thead>
-                                <tr>
-                                    <th>Customer</th>
-                                    <th>Contact</th>
-                                    <th>Total</th>
-                                    <th>Paid</th>
-                                    <th>Due</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredBills.length > 0 ? (
-                                    filteredBills.map((bill) => {
-                                        const isPaid = bill.status?.toLowerCase() === 'paid';
-                                        return (
-                                            <tr key={bill._id}>
-                                                <td data-label="Customer">{bill.customerName}</td>
-                                                <td data-label="Contact">{bill.customerMobile}</td>
-                                                <td data-label="Total">{bill.grandTotal}</td>
-                                                <td data-label="Paid">{bill.paidAmount}</td>
-                                                <td data-label="Due">{bill.balanceAmount}</td>
-                                                <td data-label="Status">{bill.status}</td>
-                                                <td data-label="Action">
-                                                    <button 
-                                                        className="credit-pay-button" 
-                                                        onClick={() => openModal(bill._id, bill.customerName, bill.balanceAmount)}
-                                                        disabled={isPaid}
-                                                        style={{
-                                                            opacity: isPaid ? 0.6 : 1,
-                                                            cursor: isPaid ? 'not-allowed' : 'pointer'
-                                                        }}
-                                                    >
-                                                        <i className="fa-solid fa-wallet"></i> settle
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })
-                                ) : (
+                        <div className="credit-card-top-bar">
+                            <div className="credit-section-header">
+                                <span className="credit-section-icon">
+                                    <i className="fa-solid fa-clock-rotate-left"></i>
+                                </span>
+                                <span>Credit Bills</span>
+                            </div>
+                            <div className="credit-search-box">
+                                <i className="fa-solid fa-magnifying-glass credit-search-icon"></i>
+                                <input 
+                                    type="text" 
+                                    className="credit-search-bar" 
+                                    placeholder="Search Credits ..." 
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="credit-table-scroll">
+                            <table className="credit-info-table">
+                                <thead>
                                     <tr>
-                                        <td colSpan="7" style={{ textAlign: "center" }}>No credit bills found</td>
+                                        <th>CUSTOMER</th>
+                                        <th>CONTACT</th>
+                                        <th>TOTAL</th>
+                                        <th>PAID</th>
+                                        <th>DUE</th>
+                                        <th>STATUS</th>
+                                        <th>ACTION</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {filteredBills.length > 0 ? (
+                                        filteredBills.map((bill) => {
+                                            const isPaid = bill.status?.toLowerCase() === 'paid';
+                                            return (
+                                                <tr key={bill._id}>
+                                                    <td data-label="Customer">{bill.customerName}</td>
+                                                    <td data-label="Contact">{bill.customerMobile}</td>
+                                                    <td data-label="Total">{bill.grandTotal}</td>
+                                                    <td data-label="Paid">{bill.paidAmount}</td>
+                                                    <td data-label="Due">{bill.balanceAmount}</td>
+                                                    <td data-label="Status">{bill.status}</td>
+                                                    <td data-label="Action">
+                                                        <button 
+                                                            className="credit-pay-button" 
+                                                            onClick={() => openModal(bill._id, bill.customerName, bill.balanceAmount)}
+                                                            disabled={isPaid}
+                                                            style={{
+                                                                opacity: isPaid ? 0.6 : 1,
+                                                                cursor: isPaid ? 'not-allowed' : 'pointer'
+                                                            }}
+                                                        >
+                                                            <i className="fa-solid fa-wallet"></i> settle
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="7" className="credit-empty-cell">
+                                                <div className="credit-empty-state">
+                                                    <i className="fa-regular fa-file-lines"></i>
+                                                    <span>No credit bills found</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div id="payModal" className="credit-modal-overlay" style={{ display: 'none' }}>
                         <div className="credit-modal-window">
                             <h2>{modalData.name}</h2>
                             <p>Due Amount: ₹{modalData.amount}</p>
-                            <input 
-                                type="number" 
-                                value={payAmount}
-                                onChange={(e) => setPayAmount(e.target.value)}
-                                placeholder="Enter amount" 
-                            />
+                            <div className="credit-modal-input-group">
+                                <input 
+                                    type="number" 
+                                    value={payAmount}
+                                    onChange={(e) => setPayAmount(e.target.value)}
+                                    placeholder=" " 
+                                />
+                                <label className="credit-modal-label">Enter Amount</label>
+                            </div>
                             <div className="credit-modal-footer">
                                 <button
                                     className="credit-modal-action-btn"
@@ -137,7 +159,7 @@ export default function Credit() {
                                 </button>
                                 <button
                                     className="credit-modal-action-btn"
-                                    style={{ background: '#09233f', color: 'white' }}
+                                    style={{ background: '#062c54', color: 'white' }}
                                     onClick={handleConfirm}
                                 >
                                     Confirm

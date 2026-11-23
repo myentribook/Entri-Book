@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getPurchase, createPurchase } from '../../actions/purchaseActions';
 import { clearPurchaseState } from '../../slices/purchaseSlices';
 import { getProducts } from '../../actions/productAction';
@@ -32,6 +32,18 @@ export default function Purchase() {
     const [tempItems, setTempItems] = useState([]);
     const [keyword, setKeyword] = useState('');
     const [selectedView, setSelectedView] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     useEffect(() => {
         dispatch(getPurchase());
@@ -99,15 +111,19 @@ export default function Purchase() {
         setSupplierBillNo('');
     };
 
+    const computedAmount = quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00";
+    const hasActiveAmount = Boolean(quantity && purchasePrice && Number(quantity) * Number(purchasePrice) > 0);
+    const selectedProductObj = products.find(p => String(p._id) === String(selectedProductId));
+
     return (
         <div className="bill-mgr-wrapper">
             <Toaster />
 
             {/* Modal Setup - Controlled via selectedView state */}
             {selectedView && (
-                <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                    <div style={{ background: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
-                        <h3 style={{ marginTop: 0 }}>Purchase Details</h3>
+                <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(4px)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+                    <div style={{ background: 'white', padding: '24px', borderRadius: '18px', width: '90%', maxWidth: '400px', boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}>
+                        <h3 style={{ marginTop: 0, color: '#0f172a', fontWeight: 700 }}>Purchase Details</h3>
                         <>
                             <p><strong>Supplier:</strong> {selectedView.supplierName}</p>
                             <p><strong>Bill No:</strong> {selectedView.supplierBillNo}</p>
@@ -130,7 +146,7 @@ export default function Purchase() {
                                 })}
                             </ul>
                             <p style={{ marginTop: "15px" }}>
-                                <strong>Grand Total: ${selectedView.items?.reduce((acc, item) => acc + (Number(item.quantity) * Number(item.purchasePrice)), 0).toFixed(2)}</strong>
+                                <strong>Grand Total: ₹{selectedView.items?.reduce((acc, item) => acc + (Number(item.quantity) * Number(item.purchasePrice)), 0).toFixed(2)}</strong>
                             </p>
                         </>
                         <button 
@@ -146,66 +162,106 @@ export default function Purchase() {
 
             {loading ? <Loader /> : (
                 <>
-                    {/* Header Section */}
-                    <div className="bill-mgr-header-center">
+                    {/* Left-Aligned Header Section */}
+                    <div className="bill-mgr-header-left">
                         <div className="bill-mgr-badge-icon">
                             <i className="fa-solid fa-file-invoice"></i>
                         </div>
-                        <h1 className="bill-mgr-title">Purchase Management</h1>
-                        <p className="bill-mgr-subtitle">
-                            Create, manage, and track your supplier purchases and stock inventories seamlessly.
-                        </p>
+                        <div className="bill-mgr-title-group">
+                            <h1 className="bill-mgr-title">Purchase Management</h1>
+                            <p className="bill-mgr-subtitle">
+                                Create, manage, and track your supplier purchases and stock inventories seamlessly.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Main Card */}
                     <div className="bill-mgr-card">
                         <div className="bill-mgr-grid-form">
                             <div className="bill-mgr-input-group">
-                                <label className="bill-mgr-label">Supplier Name</label>
                                 <input 
                                     type="text" 
                                     className="bill-mgr-input" 
                                     value={supplierName} 
                                     onChange={(e) => setSupplierName(e.target.value)} 
-                                    placeholder="Enter name" 
+                                    placeholder=" " 
                                 />
+                                <label className="bill-mgr-label">Supplier Name</label>
                             </div>
                             <div className="bill-mgr-input-group">
-                                <label className="bill-mgr-label">Supplier Bill No</label>
                                 <input 
                                     type="text" 
                                     className="bill-mgr-input" 
                                     value={supplierBillNo} 
                                     onChange={(e) => setSupplierBillNo(e.target.value)} 
-                                    placeholder="BILL-2026-001" 
+                                    placeholder=" " 
                                 />
+                                <label className="bill-mgr-label">Supplier Bill No</label>
                             </div>
                         </div>
 
                         {/* Entry Box */}
                         <div className="bill-mgr-entry-box">
-                            <div className="bill-mgr-input-group">
-                                <label className="bill-mgr-label">Product</label>
-                                <select className="bill-mgr-select" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}>
-                                    <option value="">Select Item</option>
-                                    {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
-                                </select>
+                            <div className="bill-mgr-input-group bill-mgr-product-group" ref={dropdownRef}>
+                                <button
+                                    type="button"
+                                    className={`bill-mgr-custom-select-btn ${dropdownOpen ? 'is-open' : ''}`}
+                                    onClick={() => setDropdownOpen(prev => !prev)}
+                                >
+                                    <span className={selectedProductObj ? 'selected-text' : 'placeholder-text'}>
+                                        {selectedProductObj ? selectedProductObj.name : 'Select Item'}
+                                    </span>
+                                    <i className={`fa-solid ${dropdownOpen ? 'fa-chevron-up' : 'fa-chevron-down'} bill-mgr-chevron`}></i>
+                                </button>
+                                <label className={`bill-mgr-label bill-mgr-label-static ${dropdownOpen ? 'is-focused' : ''}`}>Product</label>
+
+                                {dropdownOpen && (
+                                    <div className="bill-mgr-custom-menu">
+                                        <div
+                                            className={`bill-mgr-custom-option ${selectedProductId === '' ? 'is-active' : ''}`}
+                                            onClick={() => {
+                                                setSelectedProductId('');
+                                                setDropdownOpen(false);
+                                            }}
+                                        >
+                                            Select Item
+                                        </div>
+                                        {products.map(p => (
+                                            <div
+                                                key={p._id}
+                                                className={`bill-mgr-custom-option ${String(selectedProductId) === String(p._id) ? 'is-active' : ''}`}
+                                                onClick={() => {
+                                                    setSelectedProductId(p._id);
+                                                    setDropdownOpen(false);
+                                                }}
+                                            >
+                                                {p.name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                             <div className="bill-mgr-input-group">
+                                <input type="number" className="bill-mgr-input" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder=" " />
                                 <label className="bill-mgr-label">Qty</label>
-                                <input type="number" className="bill-mgr-input" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="0" />
                             </div>
                             <div className="bill-mgr-input-group">
-                                <label className="bill-mgr-label">Bag-Weight</label>
-                                <input type="number" className="bill-mgr-input" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder="1" />
+                                <input type="number" className="bill-mgr-input" value={conversionFactor} onChange={(e) => setConversionFactor(e.target.value)} placeholder=" " />
+                                <label className="bill-mgr-label">Bag Weight</label>
                             </div>
                             <div className="bill-mgr-input-group">
+                                <input type="number" className="bill-mgr-input" value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} placeholder=" " />
                                 <label className="bill-mgr-label">Price</label>
-                                <input type="number" className="bill-mgr-input" value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} placeholder="0.00" />
                             </div>
                             <div className="bill-mgr-input-group">
+                                <input 
+                                    type="text" 
+                                    className="bill-mgr-input bill-mgr-amount-input" 
+                                    readOnly 
+                                    value={hasActiveAmount ? computedAmount : ""} 
+                                    placeholder={hasActiveAmount ? "" : "0.00"} 
+                                />
                                 <label className="bill-mgr-label">Amount</label>
-                                <input type="number" className="bill-mgr-input" readOnly value={quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00"} />
                             </div>
                             <button className="bill-mgr-btn bill-mgr-btn-primary" onClick={handleAddTemp}>
                                 <i className="fa-solid fa-plus"></i> Add
@@ -217,11 +273,11 @@ export default function Purchase() {
                             <table className="bill-mgr-table">
                                 <thead>
                                     <tr>
-                                        <th className="bill-mgr-th">Product</th>
-                                        <th className="bill-mgr-th">Qty</th>
-                                        <th className="bill-mgr-th">Conv. F.</th>
-                                        <th className="bill-mgr-th">Price</th>
-                                        <th className="bill-mgr-th">Total</th>
+                                        <th className="bill-mgr-th">PRODUCT</th>
+                                        <th className="bill-mgr-th">QTY</th>
+                                        <th className="bill-mgr-th">CONV. F.</th>
+                                        <th className="bill-mgr-th">PRICE</th>
+                                        <th className="bill-mgr-th">TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -236,10 +292,8 @@ export default function Purchase() {
                                     )) : (
                                         <tr>
                                             <td colSpan="5" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
-                                                    <div style={{ width: '40px', height: '40px', background: '#EFF6FF', color: 'var(--primary)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                        <i className="fa-solid fa-folder-open"></i>
-                                                    </div>
+                                                <div className="bill-mgr-empty-state">
+                                                    <i className="fa-regular fa-file-lines"></i>
                                                     <span>No items added yet</span>
                                                 </div>
                                             </td>
@@ -257,44 +311,39 @@ export default function Purchase() {
                         </div>
                     </div>
 
-                    {/* Section Header */}
-                    <div className="bill-mgr-section-header">
-                        <h2 style={{ fontSize: '20px', fontWeight: '800', margin: 0, color: 'var(--text-main)' }}>History</h2>
-                        <input 
-                            type="text" 
-                            placeholder="Search purchase..." 
-                            value={keyword} 
-                            onChange={(e) => setKeyword(e.target.value)} 
-                            className="bill-mgr-input"
-                            style={{ width: '220px' }}
-                        />
-                    </div>
-
-                    {/* History Card */}
+                    {/* Integrated History & Search Card */}
                     <div className="bill-mgr-card">
+                        <div className="bill-mgr-card-top-bar">
+                            <div className="bill-mgr-section-header">
+                                <span className="bill-mgr-section-icon">
+                                    <i className="fa-solid fa-clock-rotate-left"></i>
+                                </span>
+                                <span>History</span>
+                            </div>
+                            <div className="bill-mgr-search-box">
+                                <i className="fa-solid fa-magnifying-glass bill-mgr-search-icon"></i>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search purchase..." 
+                                    value={keyword} 
+                                    onChange={(e) => setKeyword(e.target.value)} 
+                                    className="bill-mgr-search-input"
+                                />
+                            </div>
+                        </div>
+
                         <div className="bill-mgr-table-wrapper" style={{ margin: 0 }}>
                             <table className="bill-mgr-table">
                                 <thead>
                                     <tr>
-                                        <th className="bill-mgr-th">Supplier</th>
-                                        <th className="bill-mgr-th">Bill No</th>
-                                        <th className="bill-mgr-th">Items</th>
-                                        <th className="bill-mgr-th" style={{ textAlign: "right" }}>Actions</th>
+                                        <th className="bill-mgr-th">SUPPLIER</th>
+                                        <th className="bill-mgr-th">BILL NO</th>
+                                        <th className="bill-mgr-th">ITEMS</th>
+                                        <th className="bill-mgr-th" style={{ textAlign: "right" }}>ACTIONS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {error ? (
-                                        <tr>
-                                            <td colSpan="4" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
-                                                    <div style={{ width: '40px', height: '40px', background: '#FEE2E2', color: '#EF4444', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                        <i className="fa-solid fa-circle-exclamation"></i>
-                                                    </div>
-                                                    <span>{error}</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ) : purchase && purchase.length > 0 ? purchase
+                                    {purchase && purchase.length > 0 ? purchase
                                         .filter(item => (item?.supplierName ?? "").toLowerCase().includes(keyword.toLowerCase()))
                                         .map((item) => (
                                             <tr key={item._id}>
@@ -310,10 +359,8 @@ export default function Purchase() {
                                         )) : (
                                             <tr>
                                                 <td colSpan="4" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
-                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', color: 'var(--text-sub)' }}>
-                                                        <div style={{ width: '40px', height: '40px', background: '#EFF6FF', color: 'var(--primary)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                            <i className="fa-solid fa-folder-open"></i>
-                                                        </div>
+                                                    <div className="bill-mgr-empty-state">
+                                                        <i className="fa-regular fa-file-lines"></i>
                                                         <span>No purchase found</span>
                                                     </div>
                                                 </td>
