@@ -186,10 +186,10 @@ export default function Reviews() {
                 <div className="eb-rev-dots eb-rev-dots-bl"></div>
                 <div className="eb-rev-dots eb-rev-dots-br"></div>
 
-                {/* Header Pattern matching Dashboard (Centered Heading + Right Corner Post Button) */}
+                {/* Header with Left-Aligned Headings + Right Corner Post Button */}
                 <header className="eb-rev-workspace-header">
                     <div className="eb-rev-top-bar">
-                        <div className="eb-rev-heading-center">
+                        <div className="eb-rev-heading-left">
                             <div className="eb-rev-script-row">
                                 <span className="eb-rev-speech-bubble">💬</span>
                                 <span className="eb-rev-script-title">What Our Customers Say</span>
@@ -212,7 +212,7 @@ export default function Reviews() {
                     </div>
                 </header>
 
-                {/* Main Content Section matching Dashboard's 780px width */}
+                {/* Main Content Section */}
                 {loading ? <Loader /> : (
                     <section className="eb-rev-feed-section">
                         <div className="eb-rev-feed-viewport" ref={viewportRef}>

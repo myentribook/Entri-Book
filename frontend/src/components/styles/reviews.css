@@ -6,7 +6,6 @@
     padding: 0;
 }
 
-/* Container matching Dashboard's 900px max-width & padding pattern */
 .eb-rev-workspace-container {
     position: relative;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -36,15 +35,14 @@
     opacity: 0.6;
     pointer-events: none;
 }
-.eb-rev-dots-tl { top: 44px; left: 28px; }
+.eb-rev-dots-tl { top: 24px; left: 24px; }
 .eb-rev-dots-tr { top: 110px; right: 28px; }
 .eb-rev-dots-bl { bottom: 44px; left: 28px; }
 .eb-rev-dots-br { bottom: 44px; right: 28px; }
 
-/* --- HEADER SECTION (Exact Dashboard Top-Bar Pattern) --- */
+/* --- HEADER SECTION (Left-Aligned Headings + Right Post Button) --- */
 .eb-rev-workspace-header {
     width: 100%;
-    text-align: center;
     margin-bottom: 32px;
 }
 
@@ -55,23 +53,23 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0 96px;
+    justify-content: space-between;
+    gap: 16px;
     min-height: 52px;
 }
 
-.eb-rev-heading-center {
+.eb-rev-heading-left {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     gap: 4px;
 }
 
 .eb-rev-script-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
 }
 
@@ -91,7 +89,7 @@
 .eb-rev-bold-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
 }
 
@@ -109,12 +107,8 @@
     line-height: 1.2;
 }
 
-/* Right Corner "Post" Button (Positioned like Dashboard's search-toggle-btn) */
+/* Right Side "Post" Button */
 .eb-rev-post-toggle-btn {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
     height: 44px;
     padding: 0 18px;
     border-radius: 999px;
@@ -135,13 +129,13 @@
 
 .eb-rev-post-toggle-btn:hover,
 .eb-rev-post-toggle-btn.is-active {
-    transform: translateY(calc(-50% - 2px));
+    transform: translateY(-2px);
     background: #f7c331;
     color: #1f1f1f;
     box-shadow: 0 12px 26px rgba(247, 195, 49, 0.35);
 }
 
-/* --- FEED SECTION (Matching Dashboard's 780px Section) --- */
+/* --- FEED SECTION --- */
 .eb-rev-feed-section {
     width: 100%;
     max-width: 780px;
@@ -421,23 +415,23 @@
     cursor: not-allowed;
 }
 
-/* --- RESPONSIVE BREAKPOINTS (Matching Dashboard's 720px Breakpoint) --- */
+/* --- RESPONSIVE BREAKPOINTS --- */
 @media (max-width: 720px) {
     .eb-rev-workspace-container {
         padding: 28px 14px 44px;
     }
 
     .eb-rev-top-bar {
-        padding: 0 76px;
+        gap: 10px;
         min-height: 44px;
     }
 
     .eb-rev-script-title {
-        font-size: 24px;
+        font-size: 23px;
     }
 
     .eb-rev-speech-bubble {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     .eb-rev-big-star {
