@@ -10,8 +10,8 @@
     position: relative;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: #f4f7fa;
-    background-image: radial-gradient(circle at 20% 20%, rgba(235, 232, 222, 0.5) 0%, transparent 45%),
-                      radial-gradient(circle at 80% 80%, rgba(235, 232, 222, 0.5) 0%, transparent 45%);
+    background-image: radial-gradient(circle at 20% 20%, #f4f7fa 0%, transparent 45%),
+                      radial-gradient(circle at 80% 80%, #f4f7fa 0%, transparent 45%);
     color: #0f172a;
     min-height: 100vh;
     width: 100%;
