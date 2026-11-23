@@ -10,7 +10,7 @@ import '../styles/reviews.css';
 export default function Reviews() {
     const [name, setName] = useState('');
     const [comment, setComment] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false); // Popup modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const dispatch = useDispatch();
     const { comments = [], loading, error, isCreated } = useSelector((state) => state.commentState || {});
@@ -30,13 +30,12 @@ export default function Reviews() {
             toast.success('Thank you for your feedback!');
             setName('');
             setComment('');
-            setIsModalOpen(false); // Submit aanadhum popup close aagum
+            setIsModalOpen(false);
             dispatch(clearCommentCreated());
             dispatch(getComments());
         }
     }, [dispatch, error, isCreated]);
 
-    // Infinite Vertical Auto-Scroll Logic (Preserved)
     useEffect(() => {
         const track = trackRef.current;
         const viewport = viewportRef.current;
@@ -51,7 +50,7 @@ export default function Reviews() {
             let height = 0;
             const originalItems = track.querySelectorAll('.eb-rev-card-original');
             originalItems.forEach(item => {
-                height += item.offsetHeight + 22; // Card height + gap
+                height += item.offsetHeight + 22;
             });
             return height;
         };
@@ -128,7 +127,6 @@ export default function Reviews() {
             return;
         }
 
-        // Confetti burst
         confetti({
             particleCount: 90,
             spread: 75,
@@ -139,9 +137,8 @@ export default function Reviews() {
         dispatch(addComment({ name: trimmedName || 'Anonymous', comment: trimmedComment }));
     };
 
-    // Helper function to render each review card exactly like the reference image
     const renderReviewCard = (item, index, type) => {
-        const isYellow = index % 2 === 0; // Alternating Yellow & White cards
+        const isYellow = index % 2 === 0;
         const avatarColors = ['#B8D4E3', '#F5B041', '#F7DC6F', '#D7BDE2'];
         const avatarBg = avatarColors[index % avatarColors.length];
 
@@ -165,7 +162,6 @@ export default function Reviews() {
                         </div>
                     </div>
 
-                    {/* 5-Star Pill Badge */}
                     <div className="eb-rev-stars-pill">
                         <span>★</span>
                         <span>★</span>
@@ -185,23 +181,21 @@ export default function Reviews() {
             <Toaster position="top-center" />
             {loading ? <Loader /> : (
                 <div className="eb-rev-page-wrapper">
-                    {/* Decorative Background Dots (Matching Image Corners) */}
                     <div className="eb-rev-dots eb-rev-dots-tl"></div>
                     <div className="eb-rev-dots eb-rev-dots-tr"></div>
                     <div className="eb-rev-dots eb-rev-dots-bl"></div>
                     <div className="eb-rev-dots eb-rev-dots-br"></div>
 
-                    {/* Top Right Corner "Post" Button */}
+                    {/* Right Corner "Post" Button */}
                     <button
                         type="button"
                         className="eb-rev-top-post-btn"
                         onClick={() => setIsModalOpen(true)}
                     >
-                        <span className="eb-rev-plus-icon">+</span> Post
+                        Post
                     </button>
 
                     <div className="eb-rev-center-stage">
-                        {/* Exact Header Design from Image */}
                         <header className="eb-rev-hero-header">
                             <div className="eb-rev-script-row">
                                 <span className="eb-rev-speech-bubble">💬</span>
@@ -213,7 +207,6 @@ export default function Reviews() {
                             </div>
                         </header>
 
-                        {/* Tilted Cards Scrolling Feed */}
                         <div className="eb-rev-feed-viewport" ref={viewportRef}>
                             <div className="eb-rev-feed-track" ref={trackRef}>
                                 {comments && comments.length > 0 ? (
@@ -227,11 +220,10 @@ export default function Reviews() {
                             </div>
                         </div>
 
-                        {/* Bottom Handle Tag (Optional like image) */}
                         <div className="eb-rev-footer-tag">@EntriBook</div>
                     </div>
 
-                    {/* Center Popup Modal for Posting Review */}
+                    {/* Center Popup Window for Posting Reviews */}
                     {isModalOpen && (
                         <div className="eb-rev-modal-backdrop" onClick={() => setIsModalOpen(false)}>
                             <div className="eb-rev-modal-box" onClick={(e) => e.stopPropagation()}>
@@ -245,31 +237,30 @@ export default function Reviews() {
                                 </button>
 
                                 <div className="eb-rev-modal-header">
-                                    <span className="eb-rev-modal-badge">★ Share Your Experience</span>
-                                    <h2>Write a Review</h2>
+                                    <h2>Customer Reviews</h2>
                                 </div>
 
                                 <form onSubmit={handleFormSubmit} className="eb-rev-modal-form">
                                     <div className="eb-rev-input-group">
-                                        <label htmlFor="ebRevName">Your Name</label>
+                                        <label htmlFor="ebRevName">Name</label>
                                         <input
                                             type="text"
                                             id="ebRevName"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                            placeholder="e.g. VetriVel (Velan Stores)"
+                                            placeholder="Enter your name"
                                             autoFocus
                                         />
                                     </div>
 
                                     <div className="eb-rev-input-group">
-                                        <label htmlFor="ebRevComment">Your Comment</label>
+                                        <label htmlFor="ebRevComment">Comment</label>
                                         <textarea
                                             id="ebRevComment"
                                             rows="4"
                                             value={comment}
                                             onChange={(e) => setComment(e.target.value)}
-                                            placeholder="Tell us what you love about the app..."
+                                            placeholder="Write your review..."
                                             required
                                         ></textarea>
                                     </div>

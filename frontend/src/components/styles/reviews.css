@@ -8,7 +8,6 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Warm Off-White / Cream Textured Background like Image */
 .eb-rev-page-wrapper {
     position: relative;
     min-height: 100vh;
@@ -24,7 +23,6 @@
     overflow-x: hidden;
 }
 
-/* Decorative Dotted Grids */
 .eb-rev-dots {
     position: absolute;
     width: 64px;
@@ -49,12 +47,9 @@
     color: #ffffff;
     border: 2px solid #f7c331;
     border-radius: 50px;
-    padding: 10px 22px;
+    padding: 10px 24px;
     font-size: 15px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
     cursor: pointer;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
     transition: all 0.25s ease;
@@ -67,13 +62,6 @@
     box-shadow: 0 10px 24px rgba(247, 195, 49, 0.35);
 }
 
-.eb-rev-plus-icon {
-    font-size: 18px;
-    font-weight: 800;
-    line-height: 1;
-}
-
-/* Main Center Stage */
 .eb-rev-center-stage {
     width: 100%;
     max-width: 580px;
@@ -83,7 +71,6 @@
     align-items: center;
 }
 
-/* Hero Header matching image */
 .eb-rev-hero-header {
     text-align: center;
     margin-bottom: 32px;
@@ -130,7 +117,6 @@
     letter-spacing: -0.8px;
 }
 
-/* Viewport for Scrolling Cards */
 .eb-rev-feed-viewport {
     width: 100%;
     height: 540px;
@@ -150,7 +136,6 @@
     touch-action: pan-y;
 }
 
-/* Alternating Tilted Cards */
 .eb-rev-showcase-card {
     border-radius: 18px;
     padding: 20px 24px;
@@ -175,7 +160,6 @@
     transform: rotate(0deg) scale(1.015);
 }
 
-/* Card Header: Avatar + Name + 5-Star Pill */
 .eb-rev-card-top {
     display: flex;
     justify-content: space-between;
@@ -218,7 +202,6 @@
     color: #3f3f46;
 }
 
-/* White Pill with 5 Yellow Stars */
 .eb-rev-stars-pill {
     background-color: #ffffff;
     border-radius: 50px;
@@ -261,9 +244,7 @@
     font-weight: 600;
 }
 
-/* ==========================================
-   CENTER POPUP MODAL STYLING
-   ========================================== */
+/* Center Popup Window Styling */
 .eb-rev-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -326,17 +307,6 @@
 .eb-rev-modal-header {
     text-align: center;
     margin-bottom: 24px;
-}
-
-.eb-rev-modal-badge {
-    display: inline-block;
-    background-color: #fef3c7;
-    color: #b45309;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 50px;
-    margin-bottom: 8px;
 }
 
 .eb-rev-modal-header h2 {
@@ -402,10 +372,9 @@
     cursor: not-allowed;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 600px) {
     .eb-rev-script-title { font-size: 28px; }
     .eb-rev-bold-row h1 { font-size: 26px; }
-    .eb-rev-top-post-btn { top: 16px; right: 16px; padding: 8px 16px; font-size: 14px; }
+    .eb-rev-top-post-btn { top: 16px; right: 16px; padding: 8px 18px; font-size: 14px; }
     .eb-rev-showcase-card { padding: 16px 18px; }
 }
