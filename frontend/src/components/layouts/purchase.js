@@ -283,15 +283,15 @@ export default function Purchase() {
                                 <tbody>
                                     {tempItems.length > 0 ? tempItems.map((item, idx) => (
                                         <tr key={idx}>
-                                            <td className="bill-mgr-td">{item.productName}</td>
-                                            <td className="bill-mgr-td">{item.quantity}</td>
-                                            <td className="bill-mgr-td">{item.conversionFactor}</td>
-                                            <td className="bill-mgr-td">{item.purchasePrice}</td>
-                                            <td className="bill-mgr-td">{item.amount.toFixed(2)}</td>
+                                            <td className="bill-mgr-td" data-label="Product">{item.productName}</td>
+                                            <td className="bill-mgr-td" data-label="Qty">{item.quantity}</td>
+                                            <td className="bill-mgr-td" data-label="Conv. F.">{item.conversionFactor}</td>
+                                            <td className="bill-mgr-td" data-label="Price">{item.purchasePrice}</td>
+                                            <td className="bill-mgr-td" data-label="Total">{item.amount.toFixed(2)}</td>
                                         </tr>
                                     )) : (
                                         <tr>
-                                            <td colSpan="5" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
+                                            <td colSpan="5" className="bill-mgr-td bill-mgr-empty-cell">
                                                 <div className="bill-mgr-empty-state">
                                                     <i className="fa-regular fa-file-lines"></i>
                                                     <span>No items added yet</span>
@@ -347,10 +347,10 @@ export default function Purchase() {
                                         .filter(item => (item?.supplierName ?? "").toLowerCase().includes(keyword.toLowerCase()))
                                         .map((item) => (
                                             <tr key={item._id}>
-                                                <td className="bill-mgr-td">{item.supplierName}</td>
-                                                <td className="bill-mgr-td">{item.supplierBillNo}</td>
-                                                <td className="bill-mgr-td">{item.items?.length || 0}</td>
-                                                <td className="bill-mgr-td" style={{ textAlign: "right" }}>
+                                                <td className="bill-mgr-td" data-label="Supplier">{item.supplierName}</td>
+                                                <td className="bill-mgr-td" data-label="Bill No">{item.supplierBillNo}</td>
+                                                <td className="bill-mgr-td" data-label="Items">{item.items?.length || 0}</td>
+                                                <td className="bill-mgr-td bill-mgr-action-td" data-label="Actions">
                                                     <button type="button" className="bill-mgr-btn bill-mgr-btn-view" onClick={() => setSelectedView(item)}>
                                                         <i className="fa-solid fa-eye"></i> View
                                                     </button>
@@ -358,7 +358,7 @@ export default function Purchase() {
                                             </tr>
                                         )) : (
                                             <tr>
-                                                <td colSpan="4" className="bill-mgr-td" style={{ textAlign: "center", padding: "40px 20px" }}>
+                                                <td colSpan="4" className="bill-mgr-td bill-mgr-empty-cell">
                                                     <div className="bill-mgr-empty-state">
                                                         <i className="fa-regular fa-file-lines"></i>
                                                         <span>No purchase found</span>

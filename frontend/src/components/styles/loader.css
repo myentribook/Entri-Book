@@ -35,7 +35,7 @@
     stroke-linejoin: miter;
     stroke-dasharray: 620;
     stroke-dashoffset: 620;
-    animation: loopE 1.5s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+    animation: loopE 1s cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }
 
 /* Bottom-right arrow / G-bar loop */
@@ -47,7 +47,7 @@
     stroke-linejoin: miter;
     stroke-dasharray: 150;
     stroke-dashoffset: 150;
-    animation: loopArrow 1.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+    animation: loopArrow 1s cubic-bezier(0.25, 1, 0.5, 1) infinite;
 }
 
 @keyframes loopE {
