@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&display=swap');
 
-* {
+*{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -82,7 +82,7 @@
     font-family: 'Dancing Script', cursive;
     font-size: 32px;
     font-weight: 700;
-    color: #d4b445;
+    color: #0B4F8A;
     letter-spacing: 0.4px;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .eb-rev-big-star {
-    color: #f7b731;
+    color: #0B4F8A;
     font-size: 28px;
     line-height: 1;
 }
@@ -112,7 +112,7 @@
     height: 44px;
     padding: 0 18px;
     border-radius: 999px;
-    border: 2px solid #f7c331;
+    border: 2px solid #0B4F8A;
     background: #1f1f1f;
     color: #ffffff;
     display: inline-flex;
@@ -130,7 +130,7 @@
 .eb-rev-post-toggle-btn:hover,
 .eb-rev-post-toggle-btn.is-active {
     transform: translateY(-2px);
-    background: #f7c331;
+    background: #0B4F8A;
     color: #1f1f1f;
     box-shadow: 0 12px 26px rgba(247, 195, 49, 0.35);
 }
@@ -175,7 +175,7 @@
 }
 
 .eb-rev-card-yellow {
-    background-color: #f7c331;
+    background-color: #0B4F8A;
     color: #1f1f1f;
     transform: rotate(-2.2deg);
 }
@@ -249,7 +249,7 @@
 }
 
 .eb-rev-stars-pill span {
-    color: #f7b731;
+    color: #0B4F8A;
     font-size: 15px;
     line-height: 1;
 }
@@ -297,7 +297,7 @@
     border-radius: 22px;
     padding: 32px 28px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    border: 2px solid #f7c331;
+    border: 2px solid #0B4F8A;
     animation: ebRevPopScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -341,7 +341,7 @@
 
 .eb-rev-modal-badge {
     display: inline-block;
-    background-color: #fef3c7;
+    background-color: #CBDAFA;
     color: #b45309;
     font-size: 12px;
     font-weight: 700;
@@ -384,7 +384,7 @@
 
 .eb-rev-input-group input:focus,
 .eb-rev-input-group textarea:focus {
-    border-color: #f7c331;
+    border-color: #0B4F8A;
     background-color: #ffffff;
     box-shadow: 0 0 0 4px rgba(247, 195, 49, 0.18);
 }
@@ -392,7 +392,7 @@
 .eb-rev-modal-submit-btn {
     width: 100%;
     padding: 14px 20px;
-    background-color: #f7c331;
+    background-color: #0B4F8A;
     color: #0f172a;
     border: none;
     border-radius: 14px;
@@ -406,7 +406,7 @@
 }
 
 .eb-rev-modal-submit-btn:hover {
-    background-color: #eab308;
+    background-color: #0B4F8A;
     transform: translateY(-1px);
 }
 
