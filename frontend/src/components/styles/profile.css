@@ -16,7 +16,7 @@
 .profile-page-wrapper {
     width: 100%;
     min-height: 100vh;
-    background-color: #FFFFFF;
+    background-color: #f4f7fa;
     color: var(--text-main);
     box-sizing: border-box;
     padding: 20px 0 48px;
@@ -165,8 +165,8 @@
 
 .profile-gpay-avatar-wrap {
     position: relative;
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     margin-left: 2px;
     flex-shrink: 0;
 }

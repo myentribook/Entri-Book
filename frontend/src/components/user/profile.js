@@ -101,7 +101,7 @@ export default function Profile() {
                 <div className="profile-gpay-surface-card">
                     <div className="profile-surface-header">
                         <span className="profile-surface-title">Business & account overview</span>
-                        <Link to="/myprofile/update" className="profile-surface-arrow">
+                        <Link to="" className="profile-surface-arrow">
                             <i className="fa-solid fa-chevron-right"></i>
                         </Link>
                     </div>
@@ -117,7 +117,7 @@ export default function Profile() {
                             </div>
                         </div>
 
-                        <Link to="/myprofile/update" className="profile-surface-item">
+                        <Link to="" className="profile-surface-item">
                             <div className="profile-circle-icon is-dashed">
                                 <i className="fa-solid fa-percent"></i>
                                 <span className="profile-circle-plus">
@@ -136,7 +136,7 @@ export default function Profile() {
                             </div>
                         </Link>
 
-                        <Link to="/myprofile/update/password" className="profile-surface-item">
+                        <Link to="" className="profile-surface-item">
                             <div className="profile-circle-icon is-dashed">
                                 <i className="fa-solid fa-lock"></i>
                                 <span className="profile-circle-plus">
@@ -163,7 +163,7 @@ export default function Profile() {
                                 </span>
                             </div>
                         </div>
-                        <Link to="/myprofile/update" className="profile-bottom-action-link">
+                        <Link to="" className="profile-bottom-action-link">
                             Edit
                         </Link>
                     </div>
@@ -180,7 +180,7 @@ export default function Profile() {
                                 </span>
                             </div>
                         </div>
-                        <Link to="/myprofile/update" className="profile-bottom-action-link">
+                        <Link to="" className="profile-bottom-action-link">
                             {user.gstin ? 'Update' : 'Add'}
                         </Link>
                     </div>
@@ -196,7 +196,7 @@ export default function Profile() {
                             <span>Change Password</span>
                         </Link>
 
-                        <Link to="/dashboard" className="profile-footer-link-item">
+                        <Link to="/" className="profile-footer-link-item">
                             <i className="fa-regular fa-circle-question"></i>
                             <span>Business Dashboard</span>
                         </Link>
