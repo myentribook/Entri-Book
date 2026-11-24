@@ -63,10 +63,11 @@
 }
 
 .profile-banner-logo-mark img {
-    width: 62%;
-    height: 62%;
+    width: 64%;
+    height: 64%;
     object-fit: contain;
-    opacity: 0.42;
+    opacity: 0.45;
+    mix-blend-mode: multiply;
 }
 
 .profile-banner-logo-1 {

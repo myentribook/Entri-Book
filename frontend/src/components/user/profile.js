@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom';
 import '../styles/profile.css';
 import { useSelector } from 'react-redux';
 
-const BRAND_LOGO_SRC = '/images/entribook-logo.png';
-
 export default function Profile() {
     const { user } = useSelector((state) => state.authState);
 
@@ -24,15 +22,15 @@ export default function Profile() {
             <div className="profile-gpay-container">
                 {/* Top Banner Contained to 870px Card */}
                 <div className="profile-gpay-banner">
-                    {/* Alternate Brand Logo Badges in place of Green Circles */}
+                    {/* Brand Logo Badges in place of Green Circles */}
                     <span className="profile-banner-logo-mark profile-banner-logo-1" aria-hidden="true">
-                        <img src={BRAND_LOGO_SRC} alt="" />
+                        <img src="/EntriBooks.jpeg" alt="EntriBooks Logo" />
                     </span>
                     <span className="profile-banner-logo-mark profile-banner-logo-2" aria-hidden="true">
-                        <img src={BRAND_LOGO_SRC} alt="" />
+                        <img src="/EntriBooks.jpeg" alt="EntriBooks Logo" />
                     </span>
                     <span className="profile-banner-logo-mark profile-banner-logo-3" aria-hidden="true">
-                        <img src={BRAND_LOGO_SRC} alt="" />
+                        <img src="/EntriBooks.jpeg" alt="EntriBooks Logo" />
                     </span>
 
                     <div className="profile-gpay-banner-inner">
