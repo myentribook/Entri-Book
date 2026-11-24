@@ -39,7 +39,7 @@
    ========================================== */
 .profile-gpay-banner {
     width: 100%;
-    background: linear-gradient(120deg, #e5f3e7 0%, #ebf6ee 38%, #e3f0fb 72%, #eef5fc 100%);
+    background: linear-gradient(120deg, #3f6e98 0%, #264c6e 38%, #e3f0fb 72%, #eef5fc 100%);
     position: relative;
     overflow: hidden;
     padding: 24px 24px;
@@ -48,26 +48,39 @@
     box-sizing: border-box;
 }
 
-/* Watermark Brand Logo Badges replacing Green Circles */
+/* Pure CSS Brand Watermark Badges (No <img> tag) */
 .profile-banner-logo-mark {
     position: absolute;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.55);
-    border: 1px solid rgba(11, 79, 138, 0.12);
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
     pointer-events: none;
     z-index: 0;
-    box-shadow: 0 4px 14px rgba(11, 79, 138, 0.06);
+    box-shadow: 0 4px 14px rgba(8, 47, 92, 0.08);
 }
 
-.profile-banner-logo-mark img {
-    width: 64%;
-    height: 64%;
-    object-fit: contain;
-    opacity: 0.45;
-    mix-blend-mode: multiply;
+.profile-banner-logo-mark::before {
+    content: "e";
+    font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 46px;
+    line-height: 1;
+    color: rgba(8, 47, 92, 0.16);
+    transform: translateY(-2px);
+}
+
+.profile-banner-logo-mark::after {
+    content: "↗";
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(11, 79, 138, 0.24);
 }
 
 .profile-banner-logo-1 {
@@ -86,12 +99,32 @@
     transform: rotate(10deg);
 }
 
+.profile-banner-logo-2::before {
+    font-size: 38px;
+}
+
+.profile-banner-logo-2::after {
+    top: 11px;
+    right: 14px;
+    font-size: 14px;
+}
+
 .profile-banner-logo-3 {
     right: 19%;
     top: -28px;
     width: 78px;
     height: 78px;
     transform: rotate(-8deg);
+}
+
+.profile-banner-logo-3::before {
+    font-size: 32px;
+}
+
+.profile-banner-logo-3::after {
+    top: 9px;
+    right: 12px;
+    font-size: 12px;
 }
 
 .profile-gpay-banner-inner {
@@ -154,6 +187,12 @@
     font-weight: 600;
     padding: 3px 10px;
     border-radius: 999px;
+}
+
+.profile-gpay-verified-pill i {
+    color: var(--primary-hover);
+    font-size: 12px;
+    line-height: 1;
 }
 
 /* Header Right Icons + Avatar (Shown on All Screens) */
@@ -552,11 +591,19 @@
         bottom: -22px;
     }
 
+    .profile-banner-logo-1::before {
+        font-size: 34px;
+    }
+
     .profile-banner-logo-2 {
         width: 68px;
         height: 68px;
         left: 44%;
         bottom: -24px;
+    }
+
+    .profile-banner-logo-2::before {
+        font-size: 28px;
     }
 
     .profile-banner-logo-3 {

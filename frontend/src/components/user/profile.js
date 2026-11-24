@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
-import '../styles/profile.css';
 import { useSelector } from 'react-redux';
+import Loader from '../layouts/loader';
+import '../styles/profile.css';
 
 export default function Profile() {
-    const { user } = useSelector((state) => state.authState);
+    const { user, loading } = useSelector((state) => state.authState);
+
+    if (loading) {
+        return <Loader />;
+    }
 
     if (!user) {
-        return <div className="profile-page-wrapper">Loading...</div>;
+        return <div className="profile-page-wrapper">No profile data available.</div>;
     }
 
     const joinedDate = user.createdAt
@@ -22,16 +27,10 @@ export default function Profile() {
             <div className="profile-gpay-container">
                 {/* Top Banner Contained to 870px Card */}
                 <div className="profile-gpay-banner">
-                    {/* Brand Logo Badges in place of Green Circles */}
-                    <span className="profile-banner-logo-mark profile-banner-logo-1" aria-hidden="true">
-                        <img src="/EntriBooks.jpeg" alt="EntriBooks Logo" />
-                    </span>
-                    <span className="profile-banner-logo-mark profile-banner-logo-2" aria-hidden="true">
-                        <img src="/EntriBooks.jpeg" alt="EntriBooks Logo" />
-                    </span>
-                    <span className="profile-banner-logo-mark profile-banner-logo-3" aria-hidden="true">
-                        <img src="/EntriBooks.jpeg" alt="EntriBooks Logo" />
-                    </span>
+                    {/* Pure CSS Brand Logo Watermarks */}
+                    <span className="profile-banner-logo-mark profile-banner-logo-1" aria-hidden="true"></span>
+                    <span className="profile-banner-logo-mark profile-banner-logo-2" aria-hidden="true"></span>
+                    <span className="profile-banner-logo-mark profile-banner-logo-3" aria-hidden="true"></span>
 
                     <div className="profile-gpay-banner-inner">
                         <div className="profile-gpay-user-info">
@@ -42,7 +41,7 @@ export default function Profile() {
                                     {user.gstin ? `GSTIN: ${user.gstin}` : 'GSTIN: Not Added'}
                                 </span>
                                 <span className="profile-gpay-verified-pill">
-                                    <i className="fa-solid fa-circle-check"></i> Admin Account
+                                    <i className="fa-solid fa-circle-check" aria-hidden="true"></i> Admin Account
                                 </span>
                             </div>
                         </div>
@@ -97,7 +96,12 @@ export default function Profile() {
 
                     <div className="profile-gpay-pill profile-pill-blue">
                         <div className="profile-pill-icon blue-icon">
-                            <i className="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                            <i
+                                className={`fa-solid ${
+                                    user.gstin ? 'fa-certificate' : 'fa-shield-halved'
+                                }`}
+                                aria-hidden="true"
+                            ></i>
                         </div>
                         <div className="profile-pill-text">
                             <span className="profile-pill-title">
