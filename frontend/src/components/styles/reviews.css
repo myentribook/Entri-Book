@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&display=swap');
 
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -9,15 +9,13 @@
 .eb-rev-workspace-container {
     position: relative;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #f4f7fa;
-    background-image: radial-gradient(circle at 20% 20%, #f4f7fa 0%, transparent 45%),
-                      radial-gradient(circle at 80% 80%, #f4f7fa 0%, transparent 45%);
-    color: #0f172a;
+    background-color: #f3f4f6;
+    color: #111827;
     min-height: 100vh;
     width: 100%;
-    max-width: 900px;
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 40px 24px 56px;
+    padding: 44px 24px 56px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,120 +23,127 @@
     overflow-x: hidden;
 }
 
-/* Decorative Dotted Grids */
-.eb-rev-dots {
+/* Decorative Plus Accents matching reference */
+.eb-rev-plus {
     position: absolute;
-    width: 64px;
-    height: 36px;
-    background-image: radial-gradient(#a1a1aa 1.5px, transparent 1.5px);
-    background-size: 10px 10px;
-    opacity: 0.6;
+    font-size: 26px;
+    font-weight: 400;
+    color: #1f2937;
+    line-height: 1;
     pointer-events: none;
+    user-select: none;
 }
-.eb-rev-dots-tl { top: 24px; left: 24px; }
-.eb-rev-dots-tr { top: 110px; right: 28px; }
-.eb-rev-dots-bl { bottom: 44px; left: 28px; }
-.eb-rev-dots-br { bottom: 44px; right: 28px; }
 
-/* --- HEADER SECTION (Left-Aligned Headings + Right Post Button) --- */
+.eb-rev-plus-tl {
+    top: 68px;
+    left: 22%;
+}
+
+.eb-rev-plus-tr {
+    top: 126px;
+    right: 22%;
+}
+
+/* --- HEADER SECTION --- */
 .eb-rev-workspace-header {
     width: 100%;
-    margin-bottom: 32px;
+    max-width: 980px;
+    margin-bottom: 34px;
 }
 
 .eb-rev-top-bar {
     position: relative;
     width: 100%;
-    max-width: 780px;
-    margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    min-height: 52px;
+    justify-content: center;
 }
 
-.eb-rev-heading-left {
+.eb-rev-heading-center-group {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     gap: 4px;
+    padding-right: 76px;
 }
 
 .eb-rev-script-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
 }
 
 .eb-rev-speech-bubble {
-    font-size: 24px;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    font-size: 20px;
 }
 
 .eb-rev-script-title {
     font-family: 'Dancing Script', cursive;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     color: #0B4F8A;
-    letter-spacing: 0.4px;
 }
 
 .eb-rev-bold-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
+    justify-content: center;
+    gap: 8px;
 }
 
 .eb-rev-big-star {
     color: #0B4F8A;
-    font-size: 28px;
+    font-size: 22px;
     line-height: 1;
 }
 
 .eb-rev-workspace-title {
-    font-size: 28px;
+    font-size: 34px;
     font-weight: 800;
-    color: #0f172a;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+    color: #111827;
+    letter-spacing: -0.025em;
+    line-height: 1.18;
+    max-width: 560px;
 }
 
 /* Right Side "Post" Button */
 .eb-rev-post-toggle-btn {
-    height: 44px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 42px;
     padding: 0 18px;
     border-radius: 999px;
-    border: 2px solid #0B4F8A;
-    background: #1f1f1f;
+    border: 1.5px solid #111827;
+    background: #111827;
     color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 7px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
     flex-shrink: 0;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
-    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 16px rgba(17, 24, 39, 0.14);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .eb-rev-post-toggle-btn:hover,
 .eb-rev-post-toggle-btn.is-active {
-    transform: translateY(-2px);
+    transform: translateY(calc(-50% - 2px));
     background: #0B4F8A;
-    color: #1f1f1f;
-    box-shadow: 0 12px 26px rgba(247, 195, 49, 0.35);
+    border-color: #0B4F8A;
+    color: #ffffff;
 }
 
-/* --- FEED SECTION --- */
+/* --- HORIZONTAL CAROUSEL SECTION --- */
 .eb-rev-feed-section {
     width: 100%;
-    max-width: 780px;
+    max-width: 1020px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -147,132 +152,202 @@
 
 .eb-rev-feed-viewport {
     width: 100%;
-    max-width: 560px;
-    height: 530px;
     overflow: hidden;
     position: relative;
-    padding: 16px 14px;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+    padding: 28px 16px;
+    mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
 }
 
 .eb-rev-feed-track {
     display: flex;
-    flex-direction: column;
-    gap: 22px;
+    flex-direction: row;
+    align-items: center;
+    gap: 28px;
+    width: max-content;
     will-change: transform;
     user-select: none;
     touch-action: pan-y;
 }
 
-/* Alternating Tilted Review Cards */
+/* Reference-Style Review Cards */
 .eb-rev-showcase-card {
-    border-radius: 18px;
-    padding: 20px 24px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.07);
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-}
-
-.eb-rev-card-yellow {
-    background-color: #0B4F8A;
-    color: #1f1f1f;
-    transform: rotate(-2.2deg);
-}
-
-.eb-rev-card-white {
+    width: 310px;
+    min-height: 330px;
     background-color: #ffffff;
-    color: #1f1f1f;
-    border: 1px solid #e2e8f0;
-    transform: rotate(2.2deg);
+    color: #1f2937;
+    border-radius: 22px;
+    padding: 28px 24px 26px;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0;
+    transition: box-shadow 0.25s ease;
 }
 
 .eb-rev-showcase-card:hover {
-    transform: rotate(0deg) scale(1.015);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
 }
 
-.eb-rev-card-top {
+.eb-rev-card-top-center {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-    gap: 12px;
-}
-
-.eb-rev-user-meta {
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
+    margin-bottom: 14px;
 }
 
 .eb-rev-user-avatar {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    border: 1.5px solid #1f1f1f;
+    border: 1.5px solid #1f2937;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 18px;
-    color: #1f1f1f;
+    font-size: 19px;
+    color: #111827;
+    margin-bottom: 12px;
     flex-shrink: 0;
 }
 
-.eb-rev-user-info h4 {
-    font-size: 16px;
-    font-weight: 800;
-    color: #1a1a1a;
-    margin-bottom: 2px;
+.eb-rev-card-author {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 3px;
 }
 
 .eb-rev-user-role {
     display: block;
     font-size: 12px;
-    font-weight: 500;
-    color: #3f3f46;
+    font-weight: 400;
+    color: #6b7280;
 }
 
-.eb-rev-stars-pill {
-    background-color: #ffffff;
-    border-radius: 50px;
-    padding: 5px 12px;
+.eb-rev-rating-row {
     display: flex;
     align-items: center;
-    gap: 3px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
 }
 
-.eb-rev-card-white .eb-rev-stars-pill {
-    background-color: #fdfbf7;
-    border: 1px solid #f3f4f6;
-}
-
-.eb-rev-stars-pill span {
-    color: #0B4F8A;
-    font-size: 15px;
+.eb-rev-stars-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: #ea580c;
+    font-size: 14px;
     line-height: 1;
 }
 
+.eb-rev-rating-score {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
 .eb-rev-card-message {
-    font-size: 14.5px;
-    line-height: 1.55;
-    color: #262626;
-    font-weight: 500;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #374151;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* --- INDICATOR DOTS & ARROW CONTROLS BELOW --- */
+.eb-rev-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 4px;
+}
+
+.eb-rev-dots-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.eb-rev-indicator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background-color: #d1d5db;
+    transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.eb-rev-indicator-dot.is-active {
+    width: 18px;
+    background-color: #ea580c;
+}
+
+.eb-rev-arrow-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.eb-rev-arrow-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    transition: transform 0.16s ease, background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+
+.eb-rev-arrow-btn:hover {
+    transform: translateY(-1px) scale(1.05);
+    border-color: #111827;
+}
+
+.eb-rev-arrow-btn:active {
+    transform: scale(0.95);
+}
+
+.eb-rev-arrow-next {
+    background-color: #111827;
+    color: #ffffff;
+    border-color: #111827;
+}
+
+.eb-rev-arrow-next:hover {
+    background-color: #0B4F8A;
+    border-color: #0B4F8A;
 }
 
 .eb-rev-footer-tag {
-    margin-top: 20px;
-    font-size: 14px;
+    margin-top: 18px;
+    font-size: 13.5px;
     font-weight: 700;
-    color: #27272a;
+    color: #374151;
 }
 
 .eb-rev-empty-msg {
     text-align: center;
     color: #64748b;
-    margin-top: 60px;
+    padding: 60px 20px;
     font-weight: 600;
+    width: 100%;
 }
 
 /* --- CENTER POPUP MODAL --- */
@@ -342,7 +417,7 @@
 .eb-rev-modal-badge {
     display: inline-block;
     background-color: #CBDAFA;
-    color: #b45309;
+    color: #0B4F8A;
     font-size: 12px;
     font-weight: 700;
     padding: 4px 12px;
@@ -386,27 +461,27 @@
 .eb-rev-input-group textarea:focus {
     border-color: #0B4F8A;
     background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(247, 195, 49, 0.18);
+    box-shadow: 0 0 0 4px rgba(11, 79, 138, 0.14);
 }
 
 .eb-rev-modal-submit-btn {
     width: 100%;
     padding: 14px 20px;
     background-color: #0B4F8A;
-    color: #0f172a;
+    color: #ffffff;
     border: none;
     border-radius: 14px;
     font-family: inherit;
     font-size: 15.5px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(247, 195, 49, 0.35);
+    box-shadow: 0 6px 16px rgba(11, 79, 138, 0.3);
     transition: all 0.2s ease;
     margin-top: 4px;
 }
 
 .eb-rev-modal-submit-btn:hover {
-    background-color: #0B4F8A;
+    background-color: #093d6b;
     transform: translateY(-1px);
 }
 
@@ -416,72 +491,46 @@
 }
 
 /* --- RESPONSIVE BREAKPOINTS --- */
-@media (max-width: 720px) {
+@media (max-width: 768px) {
     .eb-rev-workspace-container {
         padding: 28px 14px 44px;
     }
 
+    .eb-rev-plus {
+        display: none;
+    }
+
     .eb-rev-top-bar {
-        gap: 10px;
-        min-height: 44px;
+        flex-direction: column;
+        gap: 14px;
     }
 
-    .eb-rev-script-title {
-        font-size: 23px;
-    }
-
-    .eb-rev-speech-bubble {
-        font-size: 18px;
-    }
-
-    .eb-rev-big-star {
-        font-size: 20px;
+    .eb-rev-heading-center-group {
+        padding-right: 0;
     }
 
     .eb-rev-workspace-title {
-        font-size: 19px;
+        font-size: 24px;
     }
 
     .eb-rev-post-toggle-btn {
+        position: static;
+        transform: none;
         height: 38px;
-        padding: 0 13px;
+        padding: 0 15px;
         font-size: 12.5px;
     }
 
-    .eb-rev-feed-viewport {
-        height: 460px;
-        padding: 12px 8px;
+    .eb-rev-post-toggle-btn:hover,
+    .eb-rev-post-toggle-btn.is-active {
+        transform: translateY(-2px);
     }
 
     .eb-rev-showcase-card {
-        padding: 16px 18px;
-        border-radius: 14px;
-    }
-
-    .eb-rev-user-avatar {
-        width: 38px;
-        height: 38px;
-        font-size: 15px;
-    }
-
-    .eb-rev-user-info h4 {
-        font-size: 14.5px;
-    }
-
-    .eb-rev-stars-pill {
-        padding: 4px 9px;
-    }
-
-    .eb-rev-stars-pill span {
-        font-size: 13px;
-    }
-
-    .eb-rev-card-message {
-        font-size: 13.5px;
-    }
-
-    .eb-rev-dots {
-        display: none;
+        width: 275px;
+        min-height: 305px;
+        padding: 22px 18px;
+        border-radius: 18px;
     }
 
     .eb-rev-modal-box {
