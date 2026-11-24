@@ -19,58 +19,60 @@ export default function Profile() {
 
     return (
         <div className="profile-page-wrapper">
-            {/* Top Google Pay Style Illustrated Banner */}
-            <div className="profile-gpay-banner">
-                <div className="profile-gpay-banner-inner">
-                    <div className="profile-gpay-user-info">
-                        <h2 className="profile-gpay-name">{user.name}</h2>
-                        <p className="profile-gpay-subtext">Email: {user.email}</p>
-                        <div className="profile-gpay-meta-row">
-                            <span className="profile-gpay-gst-text">
-                                {user.gstin ? `GSTIN: ${user.gstin}` : 'GSTIN: Not Added'}
-                            </span>
-                            <span className="profile-gpay-verified-pill">
-                                <i className="fa-solid fa-circle-check"></i> Admin Account
-                            </span>
+            <div className="profile-gpay-container">
+                {/* Top Banner Contained to 870px Card */}
+                <div className="profile-gpay-banner">
+                    <div className="profile-gpay-banner-inner">
+                        <div className="profile-gpay-user-info">
+                            <h2 className="profile-gpay-name">{user.name}</h2>
+                            <p className="profile-gpay-subtext">Email: {user.email}</p>
+                            <div className="profile-gpay-meta-row">
+                                <span className="profile-gpay-gst-text">
+                                    {user.gstin ? `GSTIN: ${user.gstin}` : 'GSTIN: Not Added'}
+                                </span>
+                                <span className="profile-gpay-verified-pill">
+                                    <i className="fa-solid fa-circle-check"></i> Admin Account
+                                </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="profile-gpay-header-right">
-                        <Link
-                            to="/myprofile/update"
-                            className="profile-gpay-icon-action"
-                            title="Edit Profile"
-                        >
-                            <i className="fa-regular fa-pen-to-square"></i>
-                        </Link>
-                        <Link
-                            to="/myprofile/update/password"
-                            className="profile-gpay-icon-action"
-                            title="Change Password"
-                        >
-                            <i className="fa-solid fa-key"></i>
-                        </Link>
-                        <div className="profile-gpay-avatar-wrap">
-                            <img
-                                src={
-                                    user.avatar && user.avatar.trim() !== ''
-                                        ? user.avatar
-                                        : '/images/default_avatar.jpg'
-                                }
-                                alt="User Avatar"
-                                className="profile-gpay-avatar"
-                            />
-                            <span className="profile-gpay-qr-badge">
-                                <i className="fa-solid fa-store"></i>
-                            </span>
+                        {/* Always Visible Across Laptop & Mobile */}
+                        <div className="profile-gpay-header-right">
+                            <Link
+                                to="/myprofile/update"
+                                className="profile-gpay-icon-action"
+                                title="Edit Profile"
+                                aria-label="Edit Profile"
+                            >
+                                <i className="fa-regular fa-pen-to-square"></i>
+                            </Link>
+                            <Link
+                                to="/myprofile/update/password"
+                                className="profile-gpay-icon-action"
+                                title="Change Password"
+                                aria-label="Change Password"
+                            >
+                                <i className="fa-solid fa-key"></i>
+                            </Link>
+                            <div className="profile-gpay-avatar-wrap">
+                                <img
+                                    src={
+                                        user.avatar && user.avatar.trim() !== ''
+                                            ? user.avatar
+                                            : '/images/default_avatar.jpg'
+                                    }
+                                    alt="User Avatar"
+                                    className="profile-gpay-avatar"
+                                />
+                                <span className="profile-gpay-qr-badge">
+                                    <i className="fa-solid fa-store"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Main Content Container (870px Reference Width) */}
-            <div className="profile-gpay-body">
-                {/* 2 Horizontal Highlight Pill Cards (Like Get rewards & Refer a friend) */}
+                {/* 2 Horizontal Highlight Pill Cards */}
                 <div className="profile-gpay-pills-grid">
                     <div className="profile-gpay-pill profile-pill-peach">
                         <div className="profile-pill-icon peach-icon">
@@ -95,7 +97,7 @@ export default function Profile() {
                     </div>
                 </div>
 
-                {/* Middle Surface Card (Like "Set up payment methods 1/3") */}
+                {/* Middle Surface Card */}
                 <div className="profile-gpay-surface-card">
                     <div className="profile-surface-header">
                         <span className="profile-surface-title">Business & account overview</span>
@@ -105,30 +107,35 @@ export default function Profile() {
                     </div>
 
                     <div className="profile-surface-grid">
-                        {/* Item 1: Active Circle Icon */}
                         <div className="profile-surface-item">
                             <div className="profile-circle-icon is-solid">
                                 <i className="fa-solid fa-store"></i>
                             </div>
-                            <span className="profile-item-title">{user.name}</span>
-                            <span className="profile-item-sub">Business name</span>
+                            <div className="profile-surface-item-meta">
+                                <span className="profile-item-title">{user.name}</span>
+                                <span className="profile-item-sub">Business name</span>
+                            </div>
                         </div>
 
-                        {/* Item 2: Dashed Circle Icon with + Badge */}
                         <Link to="/myprofile/update" className="profile-surface-item">
                             <div className="profile-circle-icon is-dashed">
                                 <i className="fa-solid fa-percent"></i>
                                 <span className="profile-circle-plus">
-                                    <i className={`fa-solid ${user.gstin ? 'fa-check' : 'fa-plus'}`}></i>
+                                    <i
+                                        className={`fa-solid ${
+                                            user.gstin ? 'fa-check' : 'fa-plus'
+                                        }`}
+                                    ></i>
                                 </span>
                             </div>
-                            <span className="profile-item-title">
-                                {user.gstin ? user.gstin : 'Add GSTIN'}
-                            </span>
-                            <span className="profile-item-sub">Tax registration</span>
+                            <div className="profile-surface-item-meta">
+                                <span className="profile-item-title">
+                                    {user.gstin ? user.gstin : 'Add GSTIN'}
+                                </span>
+                                <span className="profile-item-sub">Tax registration</span>
+                            </div>
                         </Link>
 
-                        {/* Item 3: Dashed Circle Icon with + Badge */}
                         <Link to="/myprofile/update/password" className="profile-surface-item">
                             <div className="profile-circle-icon is-dashed">
                                 <i className="fa-solid fa-lock"></i>
@@ -136,13 +143,15 @@ export default function Profile() {
                                     <i className="fa-solid fa-rotate"></i>
                                 </span>
                             </div>
-                            <span className="profile-item-title">Security & PIN</span>
-                            <span className="profile-item-sub">Update password</span>
+                            <div className="profile-surface-item-meta">
+                                <span className="profile-item-title">Security & PIN</span>
+                                <span className="profile-item-sub">Update password</span>
+                            </div>
                         </Link>
                     </div>
                 </div>
 
-                {/* Bottom Action Rows (Clean List Like GPay Settings/QR/Cards) */}
+                {/* Bottom Action Rows */}
                 <div className="profile-gpay-bottom-list">
                     <div className="profile-bottom-row">
                         <div className="profile-bottom-left">
@@ -176,7 +185,6 @@ export default function Profile() {
                         </Link>
                     </div>
 
-                    {/* Footer Links Row (Like Settings | Manage Google account | Get help) */}
                     <div className="profile-gpay-footer-links">
                         <Link to="/myprofile/update" className="profile-footer-link-item">
                             <i className="fa-solid fa-user-pen"></i>
