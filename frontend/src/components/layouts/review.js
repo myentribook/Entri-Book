@@ -295,12 +295,12 @@ export default function Reviews() {
                     <div className="eb-rev-top-bar">
                         <div className="eb-rev-heading-center-group">
                             <div className="eb-rev-script-row">
-                                <span className="eb-rev-speech-bubble">💬</span>
-                                <span className="eb-rev-script-title">What Our Customers Say</span>
+                                {/* <span className="eb-rev-speech-bubble">💬</span> */}
+                                <span className="eb-rev-script-title">Beyond Expectations.</span>
                             </div>
                             <div className="eb-rev-bold-row">
                                 <span className="eb-rev-big-star">★</span>
-                                <h1 className="eb-rev-workspace-title">Trusted By 1200+ World Class Businesses</h1>
+                                <h1 className="eb-rev-workspace-title">Empowering Businesses Through Better Billing.</h1>
                             </div>
                         </div>
 
@@ -336,14 +336,14 @@ export default function Reviews() {
                         {/* Indicator Dots + Left/Right Fast Single-Card Arrows Below */}
                         {totalComments > 0 && (
                             <div className="eb-rev-controls-wrapper">
-                                <div className="eb-rev-dots-indicator" aria-hidden="true">
+                                {/* <div className="eb-rev-dots-indicator" aria-hidden="true">
                                     {comments.slice(0, Math.min(totalComments, 6)).map((_, idx) => (
                                         <span
                                             key={idx}
                                             className={`eb-rev-indicator-dot ${activeIndex % Math.min(totalComments, 6) === idx ? 'is-active' : ''}`}
                                         />
                                     ))}
-                                </div>
+                                </div> */}
 
                                 <div className="eb-rev-arrow-controls">
                                     <button
