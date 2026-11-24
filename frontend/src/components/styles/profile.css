@@ -39,12 +39,12 @@
    ========================================== */
 .profile-gpay-banner {
     width: 100%;
-    background: #CDE0FB;
+    background: #f4f7fa;
     position: relative;
     overflow: hidden;
     padding: 24px 24px;
     border-radius: var(--radius);
-    border: 1px solid #E5EEF6;
+    border: 1px solid #dce6f2;
     box-sizing: border-box;
 }
 
@@ -277,7 +277,13 @@
 }
 
 .profile-pill-peach {
-    background-color: #FCE8D5;
+    color: #0D4B82;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #e6eef8;
+}
+
+.profile-pill-peach .profile-pill-title {
+    color: #0D4B82;
 }
 
 .profile-pill-blue {
