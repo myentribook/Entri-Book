@@ -39,7 +39,7 @@
    ========================================== */
 .profile-gpay-banner {
     width: 100%;
-    background: linear-gradient(120deg, #3f6e98 0%, #264c6e 38%, #e3f0fb 72%, #eef5fc 100%);
+    background: #CDE0FB;
     position: relative;
     overflow: hidden;
     padding: 24px 24px;
@@ -302,12 +302,12 @@
 }
 
 .peach-icon {
-    color: #8C4A19;
-    background: rgba(255, 255, 255, 0.7);
+    color: #0D4B82;
+    background: rgba(255, 255, 255, 0.85);
 }
 
 .blue-icon {
-    color: #0B4F8A;
+    color: #0D4B82;
     background: rgba(255, 255, 255, 0.85);
     box-shadow: 0 2px 6px rgba(11, 79, 138, 0.1);
 }
