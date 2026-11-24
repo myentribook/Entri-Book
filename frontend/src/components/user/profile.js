@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import '../styles/profile.css';
 import { useSelector } from 'react-redux';
 
+const BRAND_LOGO_SRC = '/images/entribook-logo.png';
+
 export default function Profile() {
     const { user } = useSelector((state) => state.authState);
 
@@ -22,6 +24,17 @@ export default function Profile() {
             <div className="profile-gpay-container">
                 {/* Top Banner Contained to 870px Card */}
                 <div className="profile-gpay-banner">
+                    {/* Alternate Brand Logo Badges in place of Green Circles */}
+                    <span className="profile-banner-logo-mark profile-banner-logo-1" aria-hidden="true">
+                        <img src={BRAND_LOGO_SRC} alt="" />
+                    </span>
+                    <span className="profile-banner-logo-mark profile-banner-logo-2" aria-hidden="true">
+                        <img src={BRAND_LOGO_SRC} alt="" />
+                    </span>
+                    <span className="profile-banner-logo-mark profile-banner-logo-3" aria-hidden="true">
+                        <img src={BRAND_LOGO_SRC} alt="" />
+                    </span>
+
                     <div className="profile-gpay-banner-inner">
                         <div className="profile-gpay-user-info">
                             <h2 className="profile-gpay-name">{user.name}</h2>
@@ -76,7 +89,7 @@ export default function Profile() {
                 <div className="profile-gpay-pills-grid">
                     <div className="profile-gpay-pill profile-pill-peach">
                         <div className="profile-pill-icon peach-icon">
-                            <i className="fa-solid fa-calendar-check"></i>
+                            <i className="fa-solid fa-calendar-check" aria-hidden="true"></i>
                         </div>
                         <div className="profile-pill-text">
                             <span className="profile-pill-title">{joinedDate}</span>
@@ -86,7 +99,7 @@ export default function Profile() {
 
                     <div className="profile-gpay-pill profile-pill-blue">
                         <div className="profile-pill-icon blue-icon">
-                            <i className="fa-solid fa-shield-halved"></i>
+                            <i className="fa-solid fa-shield-halved" aria-hidden="true"></i>
                         </div>
                         <div className="profile-pill-text">
                             <span className="profile-pill-title">

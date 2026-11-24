@@ -48,28 +48,49 @@
     box-sizing: border-box;
 }
 
-.profile-gpay-banner::before {
-    content: "";
+/* Watermark Brand Logo Badges replacing Green Circles */
+.profile-banner-logo-mark {
     position: absolute;
-    left: -28px;
-    bottom: -38px;
-    width: 130px;
-    height: 130px;
     border-radius: 50%;
-    background: rgba(114, 179, 126, 0.28);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(11, 79, 138, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
+    z-index: 0;
+    box-shadow: 0 4px 14px rgba(11, 79, 138, 0.06);
 }
 
-.profile-gpay-banner::after {
-    content: "";
-    position: absolute;
-    left: 34%;
-    bottom: -48px;
-    width: 105px;
-    height: 105px;
-    border-radius: 50%;
-    background: rgba(93, 169, 108, 0.32);
-    pointer-events: none;
+.profile-banner-logo-mark img {
+    width: 62%;
+    height: 62%;
+    object-fit: contain;
+    opacity: 0.42;
+}
+
+.profile-banner-logo-1 {
+    left: -22px;
+    bottom: -30px;
+    width: 112px;
+    height: 112px;
+    transform: rotate(-12deg);
+}
+
+.profile-banner-logo-2 {
+    left: 35%;
+    bottom: -34px;
+    width: 92px;
+    height: 92px;
+    transform: rotate(10deg);
+}
+
+.profile-banner-logo-3 {
+    right: 19%;
+    top: -28px;
+    width: 78px;
+    height: 78px;
+    transform: rotate(-8deg);
 }
 
 .profile-gpay-banner-inner {
@@ -165,8 +186,8 @@
 
 .profile-gpay-avatar-wrap {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     margin-left: 2px;
     flex-shrink: 0;
 }
@@ -224,24 +245,31 @@
 }
 
 .profile-pill-icon {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
+    line-height: 1;
     flex-shrink: 0;
+}
+
+.profile-pill-icon i {
+    display: inline-block;
+    line-height: 1;
 }
 
 .peach-icon {
     color: #8C4A19;
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .blue-icon {
-    color: var(--primary);
-    background: rgba(255, 255, 255, 0.65);
+    color: #0B4F8A;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 6px rgba(11, 79, 138, 0.1);
 }
 
 .profile-pill-text {
@@ -269,7 +297,7 @@
    MIDDLE SURFACE CARD
    ========================================== */
 .profile-gpay-surface-card {
-    background: var(--surface-soft);
+    background: #F8FAFC;
     border-radius: var(--radius);
     padding: 22px 24px;
     border: 1px solid #EDF2F7;
@@ -516,6 +544,24 @@
         border-radius: 14px;
     }
 
+    .profile-banner-logo-1 {
+        width: 84px;
+        height: 84px;
+        left: -18px;
+        bottom: -22px;
+    }
+
+    .profile-banner-logo-2 {
+        width: 68px;
+        height: 68px;
+        left: 44%;
+        bottom: -24px;
+    }
+
+    .profile-banner-logo-3 {
+        display: none;
+    }
+
     .profile-gpay-banner-inner {
         align-items: flex-start;
         gap: 10px;
@@ -530,7 +576,6 @@
         font-size: 12.5px;
     }
 
-    /* Keep Edit & Password Icons Visible on Mobile */
     .profile-gpay-header-right {
         gap: 6px;
     }
