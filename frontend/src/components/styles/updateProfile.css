@@ -228,11 +228,11 @@
     background: #E6F4EE;
     color: #1D8A5E;
     border: none;
-    border-radius: 50px;
+    border-radius: 3px;
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(29, 138, 94, 0.12);
+    /* box-shadow: 0 6px 16px rgba(29, 138, 94, 0.12); */
     transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
     margin-top: 8px;
 }
@@ -241,7 +241,7 @@
     background: #d7ede3;
     color: #166f4b;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(29, 138, 94, 0.18);
+    /* box-shadow: 0 8px 20px rgba(29, 138, 94, 0.18); */
 }
 
 .profile-component-wrapper .pc-btn-submit:active {
