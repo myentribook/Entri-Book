@@ -216,7 +216,7 @@
     padding: 8px 12px;
     border-radius: 12px;
     background: #E6F4EE;
-    border: 1px solid #1D8A5E;
+    /* border: 1px solid #1D8A5E; */
     transition: all 0.2s ease;
 }
 
@@ -236,7 +236,7 @@
     padding: 8px 12px;
     border-radius: 12px;
     background: #E6F4EE;
-    border: 1px solid #1D8A5E;
+    /* border: 1px solid #1D8A5E; */
     transition: all 0.2s ease;
 }
 

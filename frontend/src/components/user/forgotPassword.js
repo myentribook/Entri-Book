@@ -38,24 +38,26 @@ export default function ForgotPassword() {
             <div className="auth-v9-viewport-fix">
                 <div className="auth-v9-card">
                     
-                    {/* Header: Icon & Title on the same line, Paragraph below, centered */}
+                    {/* Header: Rounded Square Icon + Title & Subtitle */}
                     <div className="auth-v9-header">
-                        <div className="auth-v9-title-row">
-                            <div className="auth-v9-icon">
-                                <i className="fa-solid fa-lock"></i>
-                            </div>
-                            <h1 className="auth-v9-title">Forgot Password?</h1>
+                        <div className="auth-v9-icon">
+                            <i className="fa-solid fa-lock"></i>
                         </div>
-                        <p className="auth-v9-desc">
-                            No worries, we'll send you reset instructions to your registered email.
-                        </p>
+                        <div className="auth-v9-header-meta">
+                            <h1 className="auth-v9-title">Forgot Password?</h1>
+                            <p className="auth-v9-desc">
+                                No worries, we'll send you reset instructions to your registered email.
+                            </p>
+                        </div>
                     </div>
 
                     <form onSubmit={submitHandler}>
                         <div className="auth-v9-group">
                             <label className="auth-v9-label">EMAIL ID</label>
                             <div className="auth-v9-input-wrapper">
-                                <i className="fa-regular fa-envelope"></i>
+                                <span className="auth-v9-input-icon-badge" aria-hidden="true">
+                                    <i className="fa-regular fa-envelope"></i>
+                                </span>
                                 <input
                                     type="email"
                                     className="auth-v9-input"
