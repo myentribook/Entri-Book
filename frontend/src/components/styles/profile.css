@@ -18,7 +18,7 @@
 .profile-page-wrapper {
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(180deg, #ffffff 0%, #f7f9fd 100%);
+    background: #f4f7fa;
     color: var(--text-primary);
     box-sizing: border-box;
     padding: 36px 20px;
@@ -30,7 +30,7 @@
 
 .contact-card-shell {
     width: 100%;
-    max-width: 480px;
+    max-width: 680px;
     background-color: var(--card-bg);
     border-radius: 26px;
     padding: 28px 24px 24px;
@@ -290,8 +290,8 @@
 }
 
 .contact-help-banner:hover {
-    background-color: #e3e9ff;
-    color: var(--text-primary);
+    background-color: #E6F4EE;
+    color: #1D8A5E;
 }
 
 .contact-help-icon {
