@@ -57,46 +57,35 @@ export default function Profile() {
     return (
         <div className="profile-page-wrapper">
             <div className="contact-card-shell">
-                {/* Top Hero Card */}
+                {/* Top Header: Rounded Square Avatar + Name & Subtitle + Options */}
                 <div className="contact-hero-box" ref={menuContainerRef}>
-                    <div className="contact-avatar-ring">
-                        <img
-                            src={avatarSrc}
-                            alt={user.name || 'User Avatar'}
-                            className="contact-avatar-img"
-                        />
+                    <div className="contact-hero-left">
+                        <div className="contact-avatar-ring">
+                            <img
+                                src={avatarSrc}
+                                alt={user.name || 'User Avatar'}
+                                className="contact-avatar-img"
+                            />
+                        </div>
+
+                        <div className="contact-hero-meta">
+                            <h3 className="contact-user-name">{user.name}</h3>
+                            <p className="contact-user-role">
+                                {user.gstin ? `GSTIN • ${user.gstin}` : 'Standard Account'}
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="contact-hero-meta">
-                        <h3 className="contact-user-name">{user.name}</h3>
-                        <p className="contact-user-email">{user.email}</p>
-                        <p className="contact-user-role">
-                            <span>{user.gstin ? `GSTIN • ${user.gstin}` : 'Standard Account'}</span>
-                            <span className="contact-role-dot" aria-hidden="true">•</span>
-                            <span className="contact-role-sub">
-                                <i className="fa-solid fa-calendar-check" aria-hidden="true"></i>
-                                <span>{joinedDate}</span>
-                            </span>
-                        </p>
-                    </div>
-
-                    <div className="contact-action-wrap">
-                        <Link to="/myprofile/update" className="contact-edit-btn">
-                            <i className="fa-regular fa-pen-to-square" aria-hidden="true"></i>
-                            <span>Edit Profile</span>
-                        </Link>
-
-                        <button
-                            type="button"
-                            className={`contact-options-btn ${menuOpen ? 'is-active' : ''}`}
-                            aria-label="Profile options"
-                            aria-expanded={menuOpen}
-                            aria-haspopup="menu"
-                            onClick={() => setMenuOpen((prev) => !prev)}
-                        >
-                            <i className="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        className={`contact-options-btn ${menuOpen ? 'is-active' : ''}`}
+                        aria-label="Profile options"
+                        aria-expanded={menuOpen}
+                        aria-haspopup="menu"
+                        onClick={() => setMenuOpen((prev) => !prev)}
+                    >
+                        <i className="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+                    </button>
 
                     {menuOpen && (
                         <div className="contact-options-dropdown" role="menu">
@@ -123,29 +112,39 @@ export default function Profile() {
                     )}
                 </div>
 
-                {/* Group 1: Account & Tax Details */}
+                {/* Section 1: Account & Profile Details */}
                 <div className="contact-details-list">
                     <div className="contact-detail-row">
                         <div className="contact-detail-left">
                             <div className="contact-detail-icon" aria-hidden="true">
-                                <i className="fa-solid fa-envelope"></i>
+                                <i className="fa-solid fa-user"></i>
                             </div>
-                            <span className="contact-detail-label">
-                                Email Address — {user.email}
-                            </span>
+                            <span className="contact-detail-label">Personal Data</span>
                         </div>
+                        <span className="contact-detail-value">{user.email}</span>
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </div>
+
+                    <Link to="/myprofile/update" className="contact-detail-row is-link-row">
+                        <div className="contact-detail-left">
+                            <div className="contact-detail-icon" aria-hidden="true">
+                                <i className="fa-solid fa-gear"></i>
+                            </div>
+                            <span className="contact-detail-label">Edit Details</span>
+                        </div>
+                        <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
+                    </Link>
 
                     <div className="contact-detail-row">
                         <div className="contact-detail-left">
                             <div className="contact-detail-icon" aria-hidden="true">
                                 <i className="fa-solid fa-file-invoice"></i>
                             </div>
-                            <span className="contact-detail-label">
-                                GSTIN / Tax Status — {user.gstin ? `${user.gstin} (Active)` : 'Not Added'}
-                            </span>
+                            <span className="contact-detail-label">GSTIN / Tax Status</span>
                         </div>
+                        <span className="contact-detail-value">
+                            {user.gstin ? `${user.gstin} (Active)` : 'Not Added'}
+                        </span>
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </div>
 
@@ -154,32 +153,23 @@ export default function Profile() {
                             <div className="contact-detail-icon" aria-hidden="true">
                                 <i className="fa-solid fa-calendar-check"></i>
                             </div>
-                            <span className="contact-detail-label">
-                                Member Since — {joinedDate}
-                            </span>
+                            <span className="contact-detail-label">Member Since</span>
                         </div>
+                        <span className="contact-detail-value">{joinedDate}</span>
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </div>
                 </div>
 
-                {/* Group 2: Navigation & Security */}
-                <div className="contact-details-list contact-details-list--secondary">
+                <div className="contact-section-divider" role="separator"></div>
+
+                {/* Section 2: Quick Actions & Security */}
+                <div className="contact-details-list">
                     <Link to="/" className="contact-detail-row is-link-row">
                         <div className="contact-detail-left">
                             <div className="contact-detail-icon" aria-hidden="true">
                                 <i className="fa-solid fa-location-dot"></i>
                             </div>
                             <span className="contact-detail-label">Go to Dashboard</span>
-                        </div>
-                        <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
-                    </Link>
-
-                    <Link to="/myprofile/update" className="contact-detail-row is-link-row">
-                        <div className="contact-detail-left">
-                            <div className="contact-detail-icon" aria-hidden="true">
-                                <i className="fa-regular fa-pen-to-square"></i>
-                            </div>
-                            <span className="contact-detail-label">Edit Details</span>
                         </div>
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </Link>
@@ -194,6 +184,14 @@ export default function Profile() {
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </Link>
                 </div>
+
+                {/* Bottom Soft Support / Help Banner */}
+                <Link to="/myprofile/update" className="contact-help-banner">
+                    <i className="fa-solid fa-headset contact-help-icon" aria-hidden="true"></i>
+                    <span className="contact-help-text">
+                        Need to update your account? Edit Profile
+                    </span>
+                </Link>
             </div>
         </div>
     );
