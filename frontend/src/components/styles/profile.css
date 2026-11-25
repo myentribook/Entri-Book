@@ -1,16 +1,17 @@
 :root {
-    --canvas-bg: #efefef;
+    --canvas-bg: #f6efe9;
     --card-bg: #ffffff;
-    --surface-subtle: #fafafa;
+    --surface-subtle: #ffffff;
     --text-primary: #1f2328;
-    --text-secondary: #767c85;
-    --text-label: #9ca3af;
-    --border-dashed: #d4d7dd;
+    --text-secondary: #8c929c;
+    --text-label: #272b30;
+    --border-dashed: #eceef2;
     --border-hairline: #eceef2;
-    --accent-orange: #f47c48;
-    --accent-orange-soft: #fff2eb;
-    --hover-row: #f4f5f7;
-    --shadow-card: 0 18px 45px rgba(15, 23, 42, 0.06);
+    --accent-orange: #f77800;
+    --accent-orange-hover: #e56e00;
+    --accent-orange-soft: #fff3e8;
+    --hover-row: #f9fafb;
+    --shadow-card: 0 10px 28px rgba(15, 23, 42, 0.04);
     --shadow-dropdown: 0 14px 30px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.05);
     --transition: all 0.18s ease;
 }
@@ -18,10 +19,10 @@
 .profile-page-wrapper {
     width: 100%;
     min-height: 100vh;
-    background-color: var(--canvas-bg);
+    background: linear-gradient(160deg, #f8f2ed 0%, #f5f2f7 55%, #f7efe8 100%);
     color: var(--text-primary);
     box-sizing: border-box;
-    padding: 40px 20px;
+    padding: 36px 18px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,74 +31,35 @@
 
 .contact-card-shell {
     width: 100%;
-    max-width: 500px;
-    background-color: var(--card-bg);
-    border-radius: 22px;
-    padding: 28px 30px 30px;
+    max-width: 440px;
+    background-color: transparent;
+    border-radius: 24px;
+    padding: 0;
     box-sizing: border-box;
-    box-shadow: var(--shadow-card);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-}
-
-/* ==========================================
-   CARD HEADER
-   ========================================== */
-.contact-card-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 22px;
-}
-
-.contact-card-title {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.015em;
-}
-
-.contact-card-top-link {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: var(--transition);
-    flex-shrink: 0;
-}
-
-.contact-card-top-link:hover {
-    color: var(--text-primary);
+    flex-direction: column;
+    gap: 14px;
 }
 
 /* ==========================================
-   DASHED HERO BOX + OPTIONS DROPDOWN
+   CENTERED HERO PROFILE CARD
    ========================================== */
 .contact-hero-box {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 16px 18px;
-    border: 1.25px dashed var(--border-dashed);
-    border-radius: 16px;
-    background-color: var(--surface-subtle);
-    margin-bottom: 24px;
-}
-
-.contact-hero-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-width: 0;
-    flex: 1;
+    text-align: center;
+    padding: 28px 22px 24px;
+    border: 1px solid var(--border-hairline);
+    border-radius: 24px;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-card);
 }
 
 .contact-avatar-ring {
-    width: 52px;
-    height: 52px;
+    width: 78px;
+    height: 78px;
     border-radius: 50%;
     padding: 2px;
     background: #ece9ff;
@@ -105,6 +67,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    margin-bottom: 12px;
 }
 
 .contact-avatar-img {
@@ -118,70 +81,131 @@
 .contact-hero-meta {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
     min-width: 0;
+    margin-bottom: 16px;
 }
 
 .contact-user-name {
     margin: 0;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
     color: var(--text-primary);
     line-height: 1.3;
+    max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.contact-user-role {
+.contact-user-email {
     margin: 0;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 400;
     color: var(--text-secondary);
     line-height: 1.35;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 100%;
+    word-break: break-word;
+}
+
+.contact-user-role {
+    margin: 2px 0 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.35;
+}
+
+.contact-role-dot {
+    color: #b5bac2;
+}
+
+.contact-role-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--accent-orange);
+    font-weight: 500;
+}
+
+.contact-role-sub i {
+    font-size: 11px;
+}
+
+.contact-action-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.contact-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background-color: var(--accent-orange);
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: 0 6px 16px rgba(247, 120, 0, 0.24);
+}
+
+.contact-edit-btn:hover {
+    background-color: var(--accent-orange-hover);
+    color: #ffffff;
 }
 
 .contact-options-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    border: 1px solid #f5d0be;
-    background-color: var(--accent-orange-soft);
-    color: var(--accent-orange);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-hairline);
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     flex-shrink: 0;
     transition: var(--transition);
 }
 
 .contact-options-btn:hover,
 .contact-options-btn.is-active {
-    background-color: var(--accent-orange);
-    border-color: var(--accent-orange);
-    color: #ffffff;
+    background-color: var(--accent-orange-soft);
+    border-color: #f6cfa8;
+    color: var(--accent-orange);
 }
 
 /* Floating Options Menu ("Edit Profile" & "Update Passkey") */
 .contact-options-dropdown {
     position: absolute;
-    top: calc(100% - 6px);
-    right: 12px;
+    top: calc(100% + 6px);
+    right: 16px;
     min-width: 196px;
     background-color: var(--card-bg);
     border: 1px solid var(--border-hairline);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 6px;
     box-shadow: var(--shadow-dropdown);
     z-index: 30;
     display: flex;
     flex-direction: column;
     gap: 2px;
+    text-align: left;
 }
 
 .contact-dropdown-item {
@@ -189,7 +213,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    border-radius: 9px;
+    border-radius: 10px;
     text-decoration: none;
     font-size: 13.5px;
     font-weight: 500;
@@ -219,71 +243,79 @@
 }
 
 /* ==========================================
-   DETAIL ROWS LIST
+   GROUPED ROW CARDS LIST
    ========================================== */
 .contact-details-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 8px;
+}
+
+.contact-details-list--secondary {
+    margin-top: 4px;
 }
 
 .contact-detail-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    min-width: 0;
-}
-
-.contact-detail-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid var(--border-hairline);
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 16px;
     background-color: var(--card-bg);
-    color: var(--text-secondary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
+    border: 1px solid var(--border-hairline);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.025);
+    min-width: 0;
+    transition: var(--transition);
 }
 
-.contact-detail-content {
+.contact-detail-row.is-link-row {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.contact-detail-row.is-link-row:hover {
+    background-color: var(--hover-row);
+    border-color: #e2e5ea;
+}
+
+.contact-detail-left {
     display: flex;
-    flex-direction: column;
-    gap: 3px;
+    align-items: center;
+    gap: 13px;
     min-width: 0;
     flex: 1;
 }
 
+.contact-detail-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    border: 1px solid var(--border-hairline);
+    background-color: #fafafa;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
 .contact-detail-label {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 13.5px;
+    font-weight: 500;
     color: var(--text-label);
-    line-height: 1.2;
-}
-
-.contact-detail-value {
-    font-size: 14.5px;
-    font-weight: 500;
-    color: var(--text-primary);
     line-height: 1.35;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.contact-detail-link-value {
-    font-size: 14.5px;
-    font-weight: 500;
-    color: var(--text-primary);
-    text-decoration: none;
-    line-height: 1.35;
-    transition: var(--transition);
-}
-
-.contact-detail-link-value:hover {
-    color: var(--accent-orange);
+.contact-row-chevron {
+    font-size: 12px;
+    color: #9ca3af;
+    flex-shrink: 0;
 }
 
 /* ==========================================
@@ -295,26 +327,31 @@
         align-items: flex-start;
     }
 
-    .contact-card-shell {
-        padding: 22px 18px 24px;
-        border-radius: 18px;
-    }
-
     .contact-hero-box {
-        padding: 14px;
+        padding: 24px 16px 20px;
+        border-radius: 20px;
     }
 
     .contact-avatar-ring {
-        width: 46px;
-        height: 46px;
+        width: 70px;
+        height: 70px;
     }
 
     .contact-user-name {
-        font-size: 15px;
+        font-size: 16.5px;
+    }
+
+    .contact-user-email {
+        font-size: 12.5px;
     }
 
     .contact-user-role {
-        font-size: 12.5px;
+        font-size: 12px;
+    }
+
+    .contact-edit-btn {
+        padding: 9px 18px;
+        font-size: 13px;
     }
 
     .contact-options-dropdown {
@@ -322,19 +359,18 @@
         min-width: 184px;
     }
 
-    .contact-details-list {
-        gap: 16px;
+    .contact-detail-row {
+        padding: 12px 14px;
+        border-radius: 14px;
     }
 
-    .contact-detail-value,
-    .contact-detail-link-value {
-        font-size: 13.5px;
+    .contact-detail-label {
+        font-size: 13px;
     }
 }
 
 @media (min-width: 1200px) {
     .contact-card-shell {
-        max-width: 520px;
-        padding: 32px 34px 34px;
+        max-width: 460px;
     }
 }
