@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Loader from '../layouts/loader';
@@ -5,6 +6,32 @@ import '../styles/profile.css';
 
 export default function Profile() {
     const { user, loading } = useSelector((state) => state.authState);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuContainerRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                menuContainerRef.current &&
+                !menuContainerRef.current.contains(event.target)
+            ) {
+                setMenuOpen(false);
+            }
+        };
+
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') {
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleEscape);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleEscape);
+        };
+    }, []);
 
     if (loading) {
         return <Loader />;
@@ -22,161 +49,119 @@ export default function Profile() {
           })
         : 'N/A';
 
+    const avatarSrc =
+        user.avatar && user.avatar.trim() !== ''
+            ? user.avatar
+            : '/images/default_avatar.jpg';
+
     return (
         <div className="profile-page-wrapper">
-            <div className="profile-gpay-container">
-                {/* Top Hero Header */}
-                <div className="profile-gpay-banner">
-                    <div className="profile-gpay-banner-inner">
-                        <div className="profile-gpay-avatar-wrap">
+            <div className="contact-card-shell">
+                {/* Top Card Header */}
+                <div className="contact-card-header">
+                    <h2 className="contact-card-title">Account Profile</h2>
+                    <Link to="/myprofile/update" className="contact-card-top-link">
+                        Edit Details
+                    </Link>
+                </div>
+
+                {/* Dashed Highlight Box with Avatar, User Info & Options Menu Trigger */}
+                <div className="contact-hero-box" ref={menuContainerRef}>
+                    <div className="contact-hero-left">
+                        <div className="contact-avatar-ring">
                             <img
-                                src={
-                                    user.avatar && user.avatar.trim() !== ''
-                                        ? user.avatar
-                                        : '/images/default_avatar.jpg'
-                                }
-                                alt="User Avatar"
-                                className="profile-gpay-avatar"
+                                src={avatarSrc}
+                                alt={user.name || 'User Avatar'}
+                                className="contact-avatar-img"
                             />
                         </div>
 
-                        <div className="profile-gpay-user-info">
-                            <h2 className="profile-gpay-name">Account Profile</h2>
-                            <p className="profile-gpay-subtext">
-                                {user.name} &bull; {user.email}
+                        <div className="contact-hero-meta">
+                            <h3 className="contact-user-name">{user.name}</h3>
+                            <p className="contact-user-role">
+                                {user.gstin ? `GSTIN • ${user.gstin}` : 'Standard Account'}
                             </p>
                         </div>
+                    </div>
 
-                        <div className="profile-gpay-header-right">
+                    <button
+                        type="button"
+                        className={`contact-options-btn ${menuOpen ? 'is-active' : ''}`}
+                        aria-label="Profile options"
+                        aria-expanded={menuOpen}
+                        aria-haspopup="menu"
+                        onClick={() => setMenuOpen((prev) => !prev)}
+                    >
+                        <i className="fa-solid fa-plus" aria-hidden="true"></i>
+                    </button>
+
+                    {menuOpen && (
+                        <div className="contact-options-dropdown" role="menu">
                             <Link
                                 to="/myprofile/update"
-                                className="profile-gpay-icon-action"
-                                title="Edit Profile"
-                                aria-label="Edit Profile"
+                                role="menuitem"
+                                className="contact-dropdown-item"
+                                onClick={() => setMenuOpen(false)}
                             >
-                                <i className="fa-regular fa-pen-to-square"></i>
+                                <i className="fa-regular fa-pen-to-square" aria-hidden="true"></i>
                                 <span>Edit Profile</span>
                             </Link>
+
                             <Link
                                 to="/myprofile/update/password"
-                                className="profile-gpay-icon-action"
-                                title="Change Password"
-                                aria-label="Change Password"
+                                role="menuitem"
+                                className="contact-dropdown-item is-highlighted"
+                                onClick={() => setMenuOpen(false)}
                             >
-                                <i className="fa-solid fa-key"></i>
-                                <span>Password</span>
+                                <i className="fa-solid fa-key" aria-hidden="true"></i>
+                                <span>Update Passkey</span>
                             </Link>
                         </div>
-                    </div>
+                    )}
                 </div>
 
-                {/* Highlight Strip Card (Equivalent to Item Summary Card) */}
-                <div className="profile-gpay-pills-grid">
-                    <div className="profile-gpay-pill">
-                        <div className="profile-pill-icon">
-                            <i className="fa-solid fa-store" aria-hidden="true"></i>
+                {/* Icon + Uppercase Label + Value Rows */}
+                <div className="contact-details-list">
+                    <div className="contact-detail-row">
+                        <div className="contact-detail-icon" aria-hidden="true">
+                            <i className="fa-solid fa-envelope"></i>
                         </div>
-                        <div className="profile-pill-text">
-                            <span className="profile-pill-title">{user.name}</span>
-                            <span className="profile-pill-sub">Account Name</span>
+                        <div className="contact-detail-content">
+                            <span className="contact-detail-label">EMAIL ADDRESS</span>
+                            <span className="contact-detail-value">{user.email}</span>
                         </div>
                     </div>
 
-                    <div className="profile-gpay-pill">
-                        <div className="profile-pill-icon">
-                            <i
-                                className={`fa-solid ${
-                                    user.gstin ? 'fa-certificate' : 'fa-calendar-check'
-                                }`}
-                                aria-hidden="true"
-                            ></i>
+                    <div className="contact-detail-row">
+                        <div className="contact-detail-icon" aria-hidden="true">
+                            <i className="fa-solid fa-file-invoice"></i>
                         </div>
-                        <div className="profile-pill-text">
-                            <span className="profile-pill-title">
-                                {user.gstin ? 'GST Active' : joinedDate}
-                            </span>
-                            <span className="profile-pill-sub">
-                                {user.gstin ? 'Tax Registered' : 'Member Since'}
+                        <div className="contact-detail-content">
+                            <span className="contact-detail-label">GSTIN / TAX STATUS</span>
+                            <span className="contact-detail-value">
+                                {user.gstin ? `${user.gstin} (Active)` : 'Not Added'}
                             </span>
                         </div>
                     </div>
-                </div>
 
-                {/* Profile Summary Card (Equivalent to Order Summary Table Card) */}
-                <div className="profile-gpay-surface-card">
-                    <div className="profile-surface-header">
-                        <span className="profile-surface-title">Account Summary</span>
-                        <Link to="/myprofile/update" className="profile-surface-arrow" aria-label="Update Details">
-                            <i className="fa-solid fa-chevron-right"></i>
-                        </Link>
-                    </div>
-
-                    <div className="profile-surface-grid">
-                        <div className="profile-surface-item">
-                            <span className="profile-item-sub">Full Name</span>
-                            <div className="profile-surface-item-meta">
-                                <span className="profile-item-title">{user.name}</span>
-                            </div>
+                    <div className="contact-detail-row">
+                        <div className="contact-detail-icon" aria-hidden="true">
+                            <i className="fa-solid fa-calendar-check"></i>
                         </div>
-
-                        <div className="profile-surface-item">
-                            <span className="profile-item-sub">Email Address</span>
-                            <div className="profile-surface-item-meta">
-                                <span className="profile-item-title">{user.email}</span>
-                            </div>
-                        </div>
-
-                        <div className="profile-surface-item">
-                            <span className="profile-item-sub">GSTIN</span>
-                            <div className="profile-surface-item-meta">
-                                <span className="profile-item-title">
-                                    {user.gstin ? user.gstin : 'Not Added'}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="profile-surface-item">
-                            <span className="profile-item-sub">Member Since</span>
-                            <div className="profile-surface-item-meta">
-                                <span className="profile-item-title">{joinedDate}</span>
-                            </div>
+                        <div className="contact-detail-content">
+                            <span className="contact-detail-label">MEMBER SINCE</span>
+                            <span className="contact-detail-value">{joinedDate}</span>
                         </div>
                     </div>
-                </div>
 
-                {/* Quick Action Rows + Dark Pill CTA + Green Status Caption */}
-                <div className="profile-gpay-bottom-list">
-                    <div className="profile-bottom-row">
-                        <div className="profile-bottom-left">
-                            <i className="fa-solid fa-file-invoice profile-bottom-icon"></i>
-                            <div className="profile-bottom-text">
-                                <span className="profile-bottom-title">
-                                    {user.gstin || 'No GSTIN configured'}
-                                </span>
-                                <span className="profile-bottom-sub">
-                                    Used automatically on customer invoices
-                                </span>
-                            </div>
+                    <div className="contact-detail-row">
+                        <div className="contact-detail-icon" aria-hidden="true">
+                            <i className="fa-solid fa-location-dot"></i>
                         </div>
-                        <Link to="/myprofile/update" className="profile-bottom-action-link">
-                            {user.gstin ? 'Update' : 'Add'}
-                        </Link>
-                    </div>
-
-                    <div className="profile-gpay-footer-links">
-                        <Link to="/myprofile/update" className="profile-footer-link-item primary-cta">
-                            <span>Edit Profile</span>
-                        </Link>
-
-                        <div className="profile-secondary-links-row">
-                            <Link to="/myprofile/update/password" className="profile-footer-link-item secondary-link">
-                                <i className="fa-solid fa-key"></i>
-                                <span>Change Password</span>
-                            </Link>
-
-                            <Link to="/" className="profile-footer-link-item secondary-link">
-                                <i className="fa-solid fa-house"></i>
-                                <span>Go to Dashboard</span>
+                        <div className="contact-detail-content">
+                            <span className="contact-detail-label">DASHBOARD</span>
+                            <Link to="/" className="contact-detail-link-value">
+                                Go to Dashboard
                             </Link>
                         </div>
                     </div>
