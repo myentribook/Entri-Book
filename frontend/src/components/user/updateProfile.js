@@ -72,8 +72,8 @@ export default function UpdateProfile() {
             <Toaster />
             <div className="profile-component-wrapper">
                 <div className="pc-container">
-                    
-                    {/* Header Box: Icon & Heading on same line, Paragraph below, all centered */}
+
+                    {/* Header Box */}
                     <div className="pc-header-box">
                         <div className="pc-title-row">
                             <div className="pc-top-icon-badge">
