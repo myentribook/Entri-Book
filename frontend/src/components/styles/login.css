@@ -2,7 +2,7 @@
 .ka-login-page-wrapper {
     background: #f4f7fa;
     width: 100%;
-    /* min-height: 100vh; */
+    min-height: 100vh;
     padding: 40px 20px;
     display: flex;
     align-items: center;

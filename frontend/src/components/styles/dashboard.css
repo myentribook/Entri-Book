@@ -258,14 +258,15 @@
 
 .apps-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 300px));
-    justify-content: space-between;
-    row-gap: 48px;
-    column-gap: 34px;
+    grid-template-columns: repeat(2, 230px); /* Fixed or clean max-width kodunga */
+    justify-content: center; /* space-between eduthutu center podunga */
+    row-gap: 40px;
+    column-gap: 48px; /* Indha gap-ah unga viruppathukku yetha maari adjust pannikonga (e.g. 32px to 60px) */
     padding: 14px 12px 24px;
 }
 
 .app-card {
+    width: 100%; /* Column width full-aa edukkum */
     position: relative;
     background: #ffffff;
     border-radius: 16px;
@@ -280,13 +281,13 @@
 
 .app-card.is-left {
     transform: rotate(-5.5deg);
-    justify-self: start;
+    /* justify-self: start; */
 }
 
 .app-card.is-right {
     transform: rotate(5.5deg);
     margin-top: 56px;
-    justify-self: end;
+    /* justify-self: end; */
 }
 
 .app-card.is-left:hover {
