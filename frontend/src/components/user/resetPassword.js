@@ -60,22 +60,24 @@ export default function ResetPassword() {
             <div className="reset-password-container-module">
                 <div className="reset-password-card">
                     
-                    {/* Header: Icon & Title side-by-side, Description below, centered */}
+                    {/* Header: Rounded Square Icon + Title & Description */}
                     <div className="reset-password-header">
-                        <div className="reset-password-title-row">
-                            <div className="reset-password-icon">
-                                <i className="fa-solid fa-key"></i>
-                            </div>
-                            <h1 className="reset-password-title">Set new password</h1>
+                        <div className="reset-password-icon">
+                            <i className="fa-solid fa-key"></i>
                         </div>
-                        <p className="reset-password-desc">Must be at least 6 characters. Enter same password in both of the field</p>
+                        <div className="reset-password-header-meta">
+                            <h1 className="reset-password-title">Set new password</h1>
+                            <p className="reset-password-desc">Must be at least 6 characters. Enter same password in both of the field</p>
+                        </div>
                     </div>
 
                     <form onSubmit={submitHandler}>
                         <div className="input-group">
                             <label>PASSWORD</label>
                             <div className="reset-input-wrapper">
-                                <i className="fa-solid fa-lock"></i>
+                                <span className="reset-input-icon-badge" aria-hidden="true">
+                                    <i className="fa-solid fa-lock"></i>
+                                </span>
                                 <input 
                                     type="password" 
                                     className="reset-input" 
@@ -90,7 +92,9 @@ export default function ResetPassword() {
                         <div className="input-group">
                             <label>CONFIRM PASSWORD</label>
                             <div className="reset-input-wrapper">
-                                <i className="fa-solid fa-key"></i>
+                                <span className="reset-input-icon-badge" aria-hidden="true">
+                                    <i className="fa-solid fa-key"></i>
+                                </span>
                                 <input 
                                     type="password" 
                                     className="reset-input" 
