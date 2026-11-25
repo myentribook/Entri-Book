@@ -3,14 +3,14 @@
   "name": "Entri Book",
   "icons": [
     {
-      "src": "/headingLogos.png",
-      "type": "image/png",
+      "src": "/homeLogo2.jpeg",
+      "type": "image/jpeg",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "/headingLogos.png",
-      "type": "image/png",
+      "src": "/homeLogo.jpeg",
+      "type": "image/jpeg",
       "sizes": "512x512",
       "purpose": "any"
     }
@@ -19,6 +19,6 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "theme_color": "#f7F7F7",
+  "background_color": "#f7F7F7"
 }
