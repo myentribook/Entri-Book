@@ -1,321 +1,191 @@
 :root {
-    --primary: #082f5c;
-    --primary-hover: #0B4F8A;
-    --bg: #F4F7Fa;
-    --card-bg: #FFFFFF;
-    --surface-soft: #F4F7FC;
-    --text-main: #0F172A;
-    --text-sub: #64748B;
-    --border: #CBD5E1;
-    --border-light: #E8EEF5;
-    --shadow: 0 10px 28px -6px rgba(15, 23, 42, 0.06), 0 4px 12px -4px rgba(15, 23, 42, 0.03);
-    --radius: 18px;
+    --primary: #141416;
+    --primary-hover: #262629;
+    --bg: #f6f6f7;
+    --card-bg: #ffffff;
+    --text-main: #18181b;
+    --text-sub: #71717a;
+    --text-muted: #9ca3af;
+    --border-light: #ededef;
+    --accent-green: #22c55e;
+    --radius-card: 16px;
+    --radius-pill: 999px;
     --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .profile-page-wrapper {
     width: 100%;
     min-height: 100vh;
-    background-color: #f4f7fa;
+    background-color: var(--bg);
     color: var(--text-main);
     box-sizing: border-box;
-    padding: 20px 0 48px;
+    padding: 32px 16px 56px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Plus Jakarta Sans', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Single Unified Container Matching Reference Width (870px) */
 .profile-gpay-container {
-    max-width: 870px;
+    max-width: 520px;
     width: 100%;
     margin: 0 auto;
-    padding: 0 18px;
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 32px 24px 28px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    align-items: center;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 12px 32px rgba(24, 24, 27, 0.04);
 }
 
 /* ==========================================
-   CONTAINED GOOGLE PAY STYLE BANNER (870px)
+   TOP HERO / STATUS HEADER (LIKE ILLUSTRATION + TITLE)
    ========================================== */
 .profile-gpay-banner {
     width: 100%;
-    background: #f4f7fa;
-    position: relative;
-    overflow: hidden;
-    padding: 24px 24px;
-    border-radius: var(--radius);
-    border: 1px solid #dce6f2;
-    box-sizing: border-box;
-}
-
-/* Pure CSS Brand Watermark Badges (No <img> tag) */
-.profile-banner-logo-mark {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
-    border: 1px solid rgba(255, 255, 255, 0.35);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 0;
-    box-shadow: 0 4px 14px rgba(8, 47, 92, 0.08);
+    text-align: center;
+    position: relative;
+    margin-bottom: 24px;
 }
 
-.profile-banner-logo-mark::before {
-    content: "e";
-    font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: 46px;
-    line-height: 1;
-    color: rgba(8, 47, 92, 0.16);
-    transform: translateY(-2px);
-}
-
-.profile-banner-logo-mark::after {
-    content: "↗";
-    position: absolute;
-    top: 14px;
-    right: 18px;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1;
-    color: rgba(11, 79, 138, 0.24);
-}
-
-.profile-banner-logo-1 {
-    left: -22px;
-    bottom: -30px;
-    width: 112px;
-    height: 112px;
-    transform: rotate(-12deg);
-}
-
-.profile-banner-logo-2 {
-    left: 35%;
-    bottom: -34px;
-    width: 92px;
-    height: 92px;
-    transform: rotate(10deg);
-}
-
-.profile-banner-logo-2::before {
-    font-size: 38px;
-}
-
-.profile-banner-logo-2::after {
-    top: 11px;
-    right: 14px;
-    font-size: 14px;
-}
-
-.profile-banner-logo-3 {
-    right: 19%;
-    top: -28px;
-    width: 78px;
-    height: 78px;
-    transform: rotate(-8deg);
-}
-
-.profile-banner-logo-3::before {
-    font-size: 32px;
-}
-
-.profile-banner-logo-3::after {
-    top: 9px;
-    right: 12px;
-    font-size: 12px;
+/* Hide pure CSS watermarks to match clean minimalist UI */
+.profile-banner-logo-mark,
+.profile-gpay-qr-badge,
+.profile-gpay-verified-pill {
+    display: none;
 }
 
 .profile-gpay-banner-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.profile-gpay-avatar-wrap {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #d8f3e5;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    position: relative;
-    z-index: 1;
-    width: 100%;
+    justify-content: center;
+    padding: 6px;
     box-sizing: border-box;
+}
+
+.profile-gpay-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
 }
 
 .profile-gpay-user-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-    flex: 1;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
 }
 
 .profile-gpay-name {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-main);
     margin: 0;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     line-height: 1.25;
 }
 
 .profile-gpay-subtext {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 400;
-    color: #334155;
+    color: var(--text-sub);
     margin: 0;
+    line-height: 1.4;
     word-break: break-word;
 }
 
 .profile-gpay-meta-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 2px;
+    display: none;
 }
 
-.profile-gpay-gst-text {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--text-main);
-}
-
-.profile-gpay-verified-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: #D6E9FF;
-    color: var(--primary);
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 999px;
-}
-
-.profile-gpay-verified-pill i {
-    color: var(--primary-hover);
-    font-size: 12px;
-    line-height: 1;
-}
-
-/* Header Right Icons + Avatar (Shown on All Screens) */
 .profile-gpay-header-right {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    flex-shrink: 0;
+    flex-wrap: wrap;
+    margin-top: 2px;
 }
 
 .profile-gpay-icon-action {
-    width: 34px;
-    height: 34px;
-    border-radius: 999px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.75);
-    color: #1E293B;
-    font-size: 14px;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: #fafafa;
+    border: 1px solid var(--border-light);
+    color: var(--text-sub);
+    font-size: 12px;
+    font-weight: 500;
     text-decoration: none;
-    border: 1px solid rgba(15, 23, 42, 0.06);
     transition: var(--transition);
 }
 
 .profile-gpay-icon-action:hover {
-    background: #FFFFFF;
-    color: var(--primary);
-    transform: translateY(-1px);
-}
-
-.profile-gpay-avatar-wrap {
-    position: relative;
-    width: 48px;
-    height: 48px;
-    margin-left: 2px;
-    flex-shrink: 0;
-}
-
-.profile-gpay-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #FFFFFF;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
-}
-
-.profile-gpay-qr-badge {
-    position: absolute;
-    right: -2px;
-    bottom: -2px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #FFFFFF;
-    color: var(--primary);
-    font-size: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+    background: #f1f1f3;
+    color: var(--text-main);
 }
 
 /* ==========================================
-   2 HORIZONTAL HIGHLIGHT PILL CARDS
+   HIGHLIGHT SUMMARY STRIP CARD (LIKE APPLE WATCH CARD)
    ========================================== */
 .profile-gpay-pills-grid {
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    background: #fcfcfd;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-card);
+    margin-bottom: 16px;
+    overflow: hidden;
 }
 
 .profile-gpay-pill {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 20px;
-    border-radius: 999px;
-    transition: var(--transition);
+    gap: 12px;
+    padding: 16px;
     box-sizing: border-box;
+    background: transparent;
 }
 
-.profile-pill-peach {
-    color: #0D4B82;
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid #e6eef8;
-}
-
-.profile-pill-peach .profile-pill-title {
-    color: #0D4B82;
-}
-
-.profile-pill-blue {
-    background-color: #E3F0FB;
+.profile-gpay-pill:first-child {
+    border-right: 1px solid var(--border-light);
 }
 
 .profile-pill-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f4f4f6;
+    color: var(--text-main);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
-    line-height: 1;
     flex-shrink: 0;
-}
-
-.profile-pill-icon i {
-    display: inline-block;
-    line-height: 1;
-}
-
-.peach-icon {
-    color: #0D4B82;
-    background: rgba(255, 255, 255, 0.85);
-}
-
-.blue-icon {
-    color: #0D4B82;
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 2px 6px rgba(11, 79, 138, 0.1);
 }
 
 .profile-pill-text {
@@ -326,51 +196,53 @@
 }
 
 .profile-pill-title {
-    font-size: 14.5px;
+    font-size: 13.5px;
     font-weight: 600;
     color: var(--text-main);
-    line-height: 1.25;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .profile-pill-sub {
     font-size: 12px;
     font-weight: 400;
-    color: #475569;
-    line-height: 1.25;
+    color: var(--text-muted);
+    line-height: 1.3;
 }
 
 /* ==========================================
-   MIDDLE SURFACE CARD
+   ACCOUNT SUMMARY CARD (LIKE ORDER SUMMARY TABLE CARD)
    ========================================== */
 .profile-gpay-surface-card {
-    background: #F8FAFC;
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    border: 1px solid #EDF2F7;
+    width: 100%;
+    background: #fcfcfd;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-card);
+    padding: 18px 20px;
     box-sizing: border-box;
+    margin-bottom: 16px;
 }
 
 .profile-surface-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .profile-surface-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-main);
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
 }
 
 .profile-surface-arrow {
-    color: var(--text-main);
-    font-size: 13.5px;
+    color: var(--text-sub);
+    font-size: 12px;
     text-decoration: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -378,126 +250,90 @@
 }
 
 .profile-surface-arrow:hover {
-    background: #E2E8F0;
+    color: var(--text-main);
+    transform: translateX(2px);
 }
 
+/* Key-Value Summary Rows Matching Image */
 .profile-surface-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
 }
 
 .profile-surface-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     text-decoration: none;
     color: inherit;
-    padding: 10px 8px;
-    border-radius: 14px;
+    padding: 2px 0;
     transition: var(--transition);
 }
 
-.profile-surface-item:hover {
-    background: rgba(255, 255, 255, 0.75);
-}
-
-.profile-surface-item-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+.profile-surface-item:hover .profile-item-title {
+    color: var(--primary-hover);
 }
 
 .profile-circle-icon {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    color: var(--primary);
-    margin-bottom: 10px;
+    display: none;
+}
+
+.profile-item-sub {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--text-muted);
     flex-shrink: 0;
 }
 
-.profile-circle-icon.is-solid {
-    background: #DCE8F8;
-}
-
-.profile-circle-icon.is-dashed {
-    background: transparent;
-    border: 1.5px dashed #93B4E8;
-}
-
-.profile-circle-plus {
-    position: absolute;
-    right: -2px;
-    bottom: -2px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: #FFFFFF;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--surface-soft);
+.profile-surface-item-meta {
+    margin-left: auto;
+    text-align: right;
+    min-width: 0;
 }
 
 .profile-item-title {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13.5px;
+    font-weight: 500;
     color: var(--text-main);
     word-break: break-word;
 }
 
-.profile-item-sub {
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--text-sub);
-}
-
 /* ==========================================
-   BOTTOM ACTION ROWS & FOOTER LINKS
+   BOTTOM ACTION ROWS & PRIMARY DARK CTA BUTTON
    ========================================== */
 .profile-gpay-bottom-list {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 2px 4px;
+    gap: 12px;
 }
 
 .profile-bottom-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 13px 10px;
+    padding: 12px 16px;
     border-radius: 12px;
-    gap: 14px;
-    transition: var(--transition);
-}
-
-.profile-bottom-row:hover {
-    background: #F8FAFC;
+    background: #fcfcfd;
+    border: 1px solid var(--border-light);
+    gap: 12px;
 }
 
 .profile-bottom-left {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     min-width: 0;
     flex: 1;
 }
 
 .profile-bottom-icon {
-    font-size: 17px;
-    color: var(--primary);
-    width: 24px;
+    font-size: 14px;
+    color: var(--text-sub);
+    width: 18px;
     text-align: center;
     flex-shrink: 0;
 }
@@ -510,204 +346,124 @@
 }
 
 .profile-bottom-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text-main);
     word-break: break-word;
 }
 
 .profile-bottom-sub {
-    font-size: 12.5px;
+    font-size: 11.5px;
     font-weight: 400;
-    color: var(--text-sub);
-    line-height: 1.35;
+    color: var(--text-muted);
 }
 
 .profile-bottom-action-link {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 600;
-    color: var(--primary);
+    color: var(--text-main);
     text-decoration: none;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 8px;
+    background: #f4f4f6;
     flex-shrink: 0;
     transition: var(--transition);
 }
 
 .profile-bottom-action-link:hover {
-    background: #EFF6FF;
-    color: var(--primary-hover);
+    background: #e4e4e7;
 }
 
+/* Primary Dark Pill Button ("Track order" equivalent) */
 .profile-gpay-footer-links {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 10px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border-light);
-}
-
-.profile-footer-link-item {
-    display: inline-flex;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--text-main);
-    font-size: 13.5px;
+    margin-top: 8px;
+}
+
+.profile-footer-link-item.primary-cta {
+    width: 100%;
+    max-width: 340px;
+    height: 48px;
+    border-radius: var(--radius-pill);
+    background-color: var(--primary);
+    color: #ffffff;
+    font-size: 14px;
     font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: var(--transition);
 }
 
-.profile-footer-link-item i {
-    color: var(--primary);
-    font-size: 15px;
-    flex-shrink: 0;
+.profile-footer-link-item.primary-cta:hover {
+    background-color: var(--primary-hover);
 }
 
-.profile-footer-link-item:hover {
-    background: #F4F7FC;
-    color: var(--primary);
+.profile-footer-link-item.primary-cta i {
+    display: none;
+}
+
+.profile-secondary-links-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+.profile-footer-link-item.secondary-link {
+    text-decoration: none;
+    color: var(--accent-green);
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.profile-footer-link-item.secondary-link:hover {
+    opacity: 0.8;
+}
+
+.profile-footer-link-item.secondary-link i {
+    font-size: 12px;
 }
 
 /* ==========================================
-   POLISHED MOBILE VIEW (<= 600px)
+   MOBILE RESPONSIVE (<= 600px)
    ========================================== */
 @media (max-width: 600px) {
     .profile-page-wrapper {
-        padding: 12px 0 36px;
+        padding: 16px 12px 40px;
     }
 
     .profile-gpay-container {
-        padding: 0 12px;
-        gap: 14px;
-    }
-
-    .profile-gpay-banner {
-        padding: 18px 16px;
-        border-radius: 14px;
-    }
-
-    .profile-banner-logo-1 {
-        width: 84px;
-        height: 84px;
-        left: -18px;
-        bottom: -22px;
-    }
-
-    .profile-banner-logo-1::before {
-        font-size: 34px;
-    }
-
-    .profile-banner-logo-2 {
-        width: 68px;
-        height: 68px;
-        left: 44%;
-        bottom: -24px;
-    }
-
-    .profile-banner-logo-2::before {
-        font-size: 28px;
-    }
-
-    .profile-banner-logo-3 {
-        display: none;
-    }
-
-    .profile-gpay-banner-inner {
-        align-items: flex-start;
-        gap: 10px;
+        padding: 24px 16px 22px;
+        border-radius: 22px;
     }
 
     .profile-gpay-name {
-        font-size: 18px;
-    }
-
-    .profile-gpay-subtext,
-    .profile-gpay-gst-text {
-        font-size: 12.5px;
-    }
-
-    .profile-gpay-header-right {
-        gap: 6px;
-    }
-
-    .profile-gpay-icon-action {
-        width: 30px;
-        height: 30px;
-        font-size: 13px;
-    }
-
-    .profile-gpay-avatar-wrap,
-    .profile-gpay-avatar {
-        width: 42px;
-        height: 42px;
-    }
-
-    .profile-gpay-qr-badge {
-        width: 16px;
-        height: 16px;
-        font-size: 8px;
+        font-size: 21px;
     }
 
     .profile-gpay-pills-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
     }
 
-    .profile-gpay-pill {
-        padding: 12px 16px;
-        gap: 12px;
-    }
-
-    .profile-gpay-surface-card {
-        padding: 16px;
-        border-radius: 14px;
-    }
-
-    .profile-surface-header {
-        margin-bottom: 14px;
-    }
-
-    .profile-surface-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+    .profile-gpay-pill:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
     }
 
     .profile-surface-item {
-        flex-direction: row;
-        text-align: left;
-        gap: 14px;
-        padding: 8px 6px;
-    }
-
-    .profile-circle-icon {
-        margin-bottom: 0;
-        width: 44px;
-        height: 44px;
-        font-size: 16px;
-    }
-
-    .profile-bottom-row {
-        padding: 12px 6px;
-        gap: 10px;
-    }
-
-    .profile-bottom-left {
-        gap: 12px;
-    }
-
-    .profile-bottom-action-link {
-        padding: 6px 8px;
-        font-size: 13px;
-    }
-
-    .profile-gpay-footer-links {
-        grid-template-columns: 1fr;
-        gap: 6px;
-        margin-top: 8px;
-        padding-top: 12px;
+        align-items: flex-start;
     }
 }
