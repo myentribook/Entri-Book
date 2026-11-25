@@ -64,26 +64,26 @@
 }
 
 /* Typography */
-.ka-title { 
-    color: #162447; 
-    font-size: 1.4rem; 
+.ka-title {
+    color: #162447;
+    font-size: 1.4rem;
     font-weight: 800;
-    margin-bottom: 6px; 
+    margin-bottom: 6px;
     padding-bottom: 0;
 }
 
-.ka-para { 
-    color: #8c96ab; 
-    margin: 0; 
+.ka-para {
+    color: #8c96ab;
+    margin: 0;
     font-size: 0.84rem;
     font-weight: 400;
     line-height: 1.4;
 }
 
 /* Input Styling */
-.ka-input-group { 
-    margin-bottom: 16px; 
-    text-align: left; 
+.ka-input-group {
+    margin-bottom: 16px;
+    text-align: left;
 }
 
 .ka-input-group label {
@@ -119,8 +119,8 @@
     z-index: 2;
 }
 
-.ka-input-wrapper i { 
-    color: #162447; 
+.ka-input-wrapper i {
+    color: #162447;
     font-size: 0.88rem;
 }
 
@@ -147,11 +147,11 @@
     color: #8c96ab;
 }
 
-.ka-input-wrapper input:focus { 
-    outline: none; 
-    border-color: #4663ac; 
+.ka-input-wrapper input:focus {
+    outline: none;
+    border-color: #4663ac;
     background-color: #ffffff;
-    box-shadow: 0 0 0 3px #eef2ff; 
+    box-shadow: 0 0 0 3px #eef2ff;
 }
 
 .ka-input-wrapper:focus-within .ka-input-icon-badge {
@@ -183,7 +183,7 @@
     transform: scale(0.99);
 }
 
-.ka-btn-main:hover { 
+.ka-btn-main:hover {
     background: #e3e9ff;
     color: #3a5394;
 }
@@ -206,43 +206,43 @@
 }
 
 .register-link {
-    font-family: inherit; 
-    font-weight: 600;
-    color: #1e2d4d; 
+    font-family: inherit;
+    font-weight: 700;
+    color: #C93B3B;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 8px 12px;
     border-radius: 12px;
-    background: #ffffff;
-    border: 1px solid #edf1f7;
+    background: #FDECEC;
+    border: 1px solid #F9D6D6;
     transition: all 0.2s ease;
 }
 
 .register-link:hover {
-    background: #f7f9fd;
-    color: #4663ac;
+    background: #FADCD9;
+    color: #A82B2B;
 }
 
 .forgot-password {
     font-family: inherit;
-    font-weight: 600;
-    color: #1e2d4d;
+    font-weight: 700;
+    color: #C93B3B;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 8px 12px;
     border-radius: 12px;
-    background: #ffffff;
-    border: 1px solid #edf1f7;
+    background: #FDECEC;
+    border: 1px solid #F9D6D6;
     transition: all 0.2s ease;
 }
 
 .forgot-password:hover {
-    background: #f7f9fd;
-    color: #4663ac;
+    background: #FADCD9;
+    color: #A82B2B;
 }
 
 .ka-link-chevron {
