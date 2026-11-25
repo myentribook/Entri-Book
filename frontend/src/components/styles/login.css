@@ -208,41 +208,41 @@
 .register-link {
     font-family: inherit;
     font-weight: 700;
-    color: #C93B3B;
+    color: #1D8A5E;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 8px 12px;
     border-radius: 12px;
-    background: #FDECEC;
-    border: 1px solid #F9D6D6;
+    background: #E6F4EE;
+    border: 1px solid #1D8A5E;
     transition: all 0.2s ease;
 }
 
 .register-link:hover {
-    background: #FADCD9;
-    color: #A82B2B;
+    background: #E6F4EE;
+    color: #1D8A5E;
 }
 
 .forgot-password {
     font-family: inherit;
     font-weight: 700;
-    color: #C93B3B;
+    color: #1D8A5E;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 8px 12px;
     border-radius: 12px;
-    background: #FDECEC;
-    border: 1px solid #F9D6D6;
+    background: #E6F4EE;
+    border: 1px solid #1D8A5E;
     transition: all 0.2s ease;
 }
 
 .forgot-password:hover {
-    background: #FADCD9;
-    color: #A82B2B;
+    background: #E6F4EE;
+    color: #1D8A5E;
 }
 
 .ka-link-chevron {

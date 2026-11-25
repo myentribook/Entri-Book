@@ -44,22 +44,24 @@ export default function UpdatePassword() {
             <div className="upd-password-module">
                 <div className="upd-card">
                     
-                    {/* Header: Icon & Heading side-by-side, Paragraph below, centered */}
+                    {/* Header: Rounded Square Badge + Title & Subtitle */}
                     <div className="upd-header">
-                        <div className="upd-title-row">
-                            <div className="upd-top-icon-badge">
-                                <i className="fa-solid fa-key"></i>
-                            </div>
-                            <h2>Change Password</h2>
+                        <div className="upd-top-icon-badge">
+                            <i className="fa-solid fa-key"></i>
                         </div>
-                        <p>Your security is our top priority.</p>
+                        <div className="upd-header-meta">
+                            <h2>Change Password</h2>
+                            <p>Your security is our top priority.</p>
+                        </div>
                     </div>
 
                     <form onSubmit={submitHandler}>
                         <div className="upd-group">
                             <label htmlFor="old-pwd">CURRENT PASSWORD</label>
                             <div className="upd-input-wrapper">
-                                <i className="fa-solid fa-lock"></i>
+                                <span className="upd-input-icon-badge" aria-hidden="true">
+                                    <i className="fa-solid fa-lock"></i>
+                                </span>
                                 <input
                                     type="password"
                                     id="old-pwd"
@@ -74,7 +76,9 @@ export default function UpdatePassword() {
                         <div className="upd-group">
                             <label htmlFor="new-pwd">NEW PASSWORD</label>
                             <div className="upd-input-wrapper">
-                                <i className="fa-solid fa-key"></i>
+                                <span className="upd-input-icon-badge" aria-hidden="true">
+                                    <i className="fa-solid fa-key"></i>
+                                </span>
                                 <input
                                     type="password"
                                     id="new-pwd"
