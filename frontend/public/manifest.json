@@ -2,29 +2,23 @@
   "short_name": "Entri Book",
   "name": "Entri Book",
   "icons": [
-     {
-      "src": "/headingLogo.png",
+    {
+      "src": "/headingLogos.png",
       "type": "image/png",
-      "sizes": "192/192",
-      "purpose":"any"
-    },
-     {
-      "src": "/headingLogo.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose":"any"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "/headingLogo.png",
+      "src": "/headingLogos.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose":"maskable"
+      "purpose": "any"
     }
   ],
   "start_url": "/",
-  "scope":"/",
+  "scope": "/",
   "display": "standalone",
-  "orientation":"portrait",
+  "orientation": "portrait",
   "theme_color": "#F4F7FB",
   "background_color": "#F4F7FB"
 }
