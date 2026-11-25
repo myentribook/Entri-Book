@@ -3,14 +3,14 @@
   "name": "Entri Book",
   "icons": [
     {
-      "src": "/homeLogo2.jpeg",
-      "type": "image/jpeg",
+      "src": "/Logo192.png",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "/homeLogo.jpeg",
-      "type": "image/jpeg",
+      "src": "/Logo512.png",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     }
