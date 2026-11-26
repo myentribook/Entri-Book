@@ -222,7 +222,7 @@ export default function Home() {
                     <span>Entri Book</span>
                   </div>
                   <img
-                    src="/headingLogo.png"
+                    src="/Logo512.png"
                     alt="Entri Book"
                     className="footer-heading-logo"
                   />
