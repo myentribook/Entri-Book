@@ -8,16 +8,16 @@ const cors = require("cors");
 
 const path = require('path')
 
-// const 
-
-
-// app.use(cors({
-//     origin: "http://localhost:3000",
-//     credentials: true
-// }));
+const allowedOrigins = ["http://localhost:3000", "http://www.myentribook.in", "https://www.myentribook.in", "http://16.171.148.56:8000"];
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://www.myentribook.in", "https://www.myentribook.in" , "http://16.171.148.56:8000"],
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
@@ -34,7 +34,6 @@ const Bill = require('./routes/Bill')
 
 const payment = require('./routes/subscriptionRoutes')
 
-// const whatsApp = require('./routes/whatsApp')
 
 const Report = require('./routes/report')
 
@@ -45,7 +44,15 @@ const webHook = require('./routes/webHook')
 const comment = require('./routes/coment')
 
 
-app.use(express.json())
+app.use(express.json({
+    verify: (req, res, buf) => {
+        if (req.originalUrl && req.originalUrl.includes('webhook')) {
+            req.rawBody = buf;
+        }
+    }
+}));
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser())
 
@@ -68,12 +75,19 @@ app.use('/api/v1/', Dashboard)
 app.use('/api/v1/', webHook)
 
 
-if (process.env.NODE_ENV === 'PRODUCTION') {
-    app.use(express.static(path.join(__dirname, '../frontend/build')))
-    
-    app.get(/.*/, (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'))
-    })
+if (process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase() === 'PRODUCTION') {
+    const buildPath = path.resolve(__dirname, '../frontend/build');
+    const indexHtmlPath = path.resolve(buildPath, 'index.html');
+
+    app.use(express.static(buildPath));
+
+    app.get(/.*/, (req, res, next) => {
+        res.sendFile(indexHtmlPath, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
+    });
 }
 
 

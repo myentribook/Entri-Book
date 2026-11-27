@@ -1,9 +1,17 @@
 const userModel = require('../models/userModel')
 
 const setupSocket = (io) => {
+    if (!io || typeof io.on !== 'function') {
+        console.log("Invalid Socket.IO server instance passed to setupSocket");
+        return;
+    }
+
     io.on('connection', async (socket) => {
         // Frontend-la irunthu auth la anupura userId inga varum
-        const userId = socket.handshake.auth?.userId;
+        const rawUserId = socket.handshake?.auth?.userId;
+        const userId = typeof rawUserId === 'string' && rawUserId.trim().length > 0
+            ? rawUserId.trim()
+            : null;
 
         console.log("A user connected, Socket ID:", socket.id, "User ID:", userId);
 
@@ -18,18 +26,22 @@ const setupSocket = (io) => {
 
                 // User disconnect aana (Tab-a moodunalo, logout aanalo)
                 socket.on('disconnect', async () => {
-                    const updatedTime = new Date();
-                    await userModel.findByIdAndUpdate(userId, {
-                        isOnline: false,
-                        lastSeen: updatedTime
-                    });
-                    console.log(`User ${userId} is now OFFLINE in DB`);
-                    
-                    io.emit('userStatusChanged', { 
-                        userId, 
-                        isOnline: false, 
-                        lastSeen: updatedTime 
-                    });
+                    try {
+                        const updatedTime = new Date();
+                        await userModel.findByIdAndUpdate(userId, {
+                            isOnline: false,
+                            lastSeen: updatedTime
+                        });
+                        console.log(`User ${userId} is now OFFLINE in DB`);
+
+                        io.emit('userStatusChanged', {
+                            userId,
+                            isOnline: false,
+                            lastSeen: updatedTime
+                        });
+                    } catch (disconnectErr) {
+                        console.log("Error updating socket offline status in DB:", disconnectErr.message);
+                    }
                 });
             } catch (err) {
                 console.log("Error updating socket status in DB:", err.message);
