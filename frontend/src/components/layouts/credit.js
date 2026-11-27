@@ -6,18 +6,30 @@ import '../styles/credit.css';
 
 export default function Credit() {
     const dispatch = useDispatch();
-    const { Credit, loading } = useSelector((state) => state.creditState);
+    const { Credit, loading } = useSelector((state) => state?.creditState || {});
+    const { isAuthenticated, user } = useSelector((state) => state?.authState || {});
 
     const [modalData, setModalData] = useState({ name: '', amount: '', id: '' });
     const [payAmount, setPayAmount] = useState('');
     const [searchQuery, setSearchQuery] = useState(''); 
 
+    const isLoggedIn = isAuthenticated !== false && Boolean(user || isAuthenticated === undefined);
+
     useEffect(() => {
-        dispatch(getCreditBills());
-    }, [dispatch]);
+        if (isLoggedIn) {
+            dispatch(getCreditBills());
+        } else {
+            setModalData({ name: '', amount: '', id: '' });
+            setPayAmount('');
+            setSearchQuery('');
+            const modal = document.getElementById('payModal');
+            if (modal) modal.style.display = 'none';
+        }
+    }, [dispatch, isLoggedIn]);
 
     const openModal = (id, name, balance) => {
-        setModalData({ id, name, amount: balance });
+        if (!isLoggedIn) return;
+        setModalData({ id: id || '', name: name || '', amount: balance ?? '' });
         const modal = document.getElementById('payModal');
         if (modal) modal.style.display = 'flex';
     };
@@ -29,7 +41,8 @@ export default function Credit() {
     };
 
     const handleConfirm = () => {
-        if (!payAmount || Number(payAmount) <= 0) {
+        if (!isLoggedIn) return;
+        if (!payAmount || Number(payAmount) <= 0 || !Number.isFinite(Number(payAmount))) {
             alert("Please enter a valid amount");
             return;
         }
@@ -37,9 +50,12 @@ export default function Credit() {
         closeModal();
     };
 
-    const filteredBills = Credit ? Credit.filter((bill) => 
-        bill.customerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bill.customerMobile?.includes(searchQuery)
+    const safeCreditList = isLoggedIn && Array.isArray(Credit) ? Credit : [];
+    const normalizedQuery = String(searchQuery || '').toLowerCase();
+
+    const filteredBills = safeCreditList.length > 0 ? safeCreditList.filter((bill) => 
+        String(bill?.customerName || '').toLowerCase().includes(normalizedQuery) ||
+        String(bill?.customerMobile || '').includes(searchQuery)
     ) : [];
 
     return (
@@ -95,20 +111,21 @@ export default function Credit() {
                                 </thead>
                                 <tbody>
                                     {filteredBills.length > 0 ? (
-                                        filteredBills.map((bill) => {
-                                            const isPaid = bill.status?.toLowerCase() === 'paid';
+                                        filteredBills.map((bill, idx) => {
+                                            const isPaid = String(bill?.status || '').toLowerCase() === 'paid';
                                             return (
-                                                <tr key={bill._id}>
-                                                    <td data-label="Customer">{bill.customerName}</td>
-                                                    <td data-label="Contact">{bill.customerMobile}</td>
-                                                    <td data-label="Total">{bill.grandTotal}</td>
-                                                    <td data-label="Paid">{bill.paidAmount}</td>
-                                                    <td data-label="Due">{bill.balanceAmount}</td>
-                                                    <td data-label="Status">{bill.status}</td>
+                                                <tr key={bill?._id || idx}>
+                                                    <td data-label="Customer">{bill?.customerName || 'N/A'}</td>
+                                                    <td data-label="Contact">{bill?.customerMobile || 'N/A'}</td>
+                                                    <td data-label="Total">{bill?.grandTotal ?? 0}</td>
+                                                    <td data-label="Paid">{bill?.paidAmount ?? 0}</td>
+                                                    <td data-label="Due">{bill?.balanceAmount ?? 0}</td>
+                                                    <td data-label="Status">{bill?.status || 'N/A'}</td>
                                                     <td data-label="Action">
                                                         <button 
+                                                            type="button"
                                                             className="credit-pay-button" 
-                                                            onClick={() => openModal(bill._id, bill.customerName, bill.balanceAmount)}
+                                                            onClick={() => openModal(bill?._id, bill?.customerName, bill?.balanceAmount)}
                                                             disabled={isPaid}
                                                             style={{
                                                                 opacity: isPaid ? 0.6 : 1,
@@ -138,8 +155,8 @@ export default function Credit() {
 
                     <div id="payModal" className="credit-modal-overlay" style={{ display: 'none' }}>
                         <div className="credit-modal-window">
-                            <h2>{modalData.name}</h2>
-                            <p>Due Amount: ₹{modalData.amount}</p>
+                            <h2>{modalData?.name || ''}</h2>
+                            <p>Due Amount: ₹{modalData?.amount ?? ''}</p>
                             <div className="credit-modal-input-group">
                                 <input 
                                     type="number" 
@@ -151,6 +168,7 @@ export default function Credit() {
                             </div>
                             <div className="credit-modal-footer">
                                 <button
+                                    type="button"
                                     className="credit-modal-action-btn"
                                     style={{ background: '#f1f5f9', color: '#64748b' }}
                                     onClick={closeModal}
@@ -158,6 +176,7 @@ export default function Credit() {
                                     Cancel
                                 </button>
                                 <button
+                                    type="button"
                                     className="credit-modal-action-btn"
                                     style={{ background: '#062c54', color: 'white' }}
                                     onClick={handleConfirm}

@@ -41,11 +41,14 @@ function FloatingSelect({ label, value, onChange, options, placeholderOption }) 
     };
   }, []);
 
-  const selectedOption = options.find((opt) => String(opt.value) === String(value));
+  const safeOptions = Array.isArray(options) ? options : [];
+  const selectedOption = safeOptions.find((opt) => String(opt.value) === String(value));
   const hasValue = Boolean(selectedOption) || (Boolean(placeholderOption) && value !== '');
 
   const emitChange = (nextValue) => {
-    onChange({ target: { value: nextValue } });
+    if (typeof onChange === 'function') {
+      onChange({ target: { value: nextValue } });
+    }
     setIsOpen(false);
   };
 
@@ -82,7 +85,7 @@ function FloatingSelect({ label, value, onChange, options, placeholderOption }) 
                 {placeholderOption}
               </button>
             )}
-            {options.map((opt) => (
+            {safeOptions.map((opt) => (
               <button
                 key={opt.value}
                 type="button"
@@ -104,8 +107,11 @@ function FloatingSelect({ label, value, onChange, options, placeholderOption }) 
 export default function Billing() {
   const dispatch = useDispatch();
 
-  const { bills = [], loading, error, message } = useSelector(state => state.billingState || {});
-  const { products = [] } = useSelector(state => state.productState || { products: [] });
+  const { bills = [], loading, error, message } = useSelector(state => state?.billingState || {});
+  const { products = [] } = useSelector(state => state?.productState || { products: [] });
+
+  const safeProducts = Array.isArray(products) ? products : [];
+  const safeBills = Array.isArray(bills) ? bills : [];
 
   const [keyword, setKeyword] = useState('');
   const [showShareModal, setShowShareModal] = useState(false);
@@ -131,50 +137,63 @@ export default function Billing() {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(String(error));
     }
     if (message) {
-      toast.success(message);
+      toast.success(String(message));
       dispatch(getBills()); // Refresh bill history on success message
     }
   }, [error, message, dispatch]);
 
   const handleAddTemp = () => {
-    if (!selectedProductId || !quantity || !price) return toast.error("Please fill all product fields");
-    const selectedProduct = products.find(p => p._id === selectedProductId);
+    const qtyNum = Number(quantity);
+    const priceNum = Number(price);
+    if (!selectedProductId || quantity === '' || price === '') return toast.error("Please fill all product fields");
+    if (!Number.isFinite(qtyNum) || qtyNum <= 0 || !Number.isFinite(priceNum) || priceNum < 0) {
+      return toast.error("Please enter valid quantity and price");
+    }
+    const selectedProduct = safeProducts.find(p => String(p?._id) === String(selectedProductId));
     const newItem = {
       product: selectedProductId,
       productName: selectedProduct?.name || "Unknown",
       saleType: saleType,
-      quantity: Number(quantity),
-      price: Number(price),
-      total: Number(quantity) * Number(price)
+      quantity: qtyNum,
+      price: priceNum,
+      total: qtyNum * priceNum
     };
-    setTempItems([...tempItems, newItem]);
+    setTempItems(prev => [...prev, newItem]);
     setQuantity(''); setPrice(''); setSelectedProductId('');
   };
 
   const handleSaveInvoice = () => {
-    const cleanMobile = mobilenumber.replace(/[^0-9]/g, '');
-    if (!customerName || tempItems.length === 0) return toast.error("Please add details and items");
+    const trimmedCustomerName = String(customerName || '').trim();
+    const cleanMobile = String(mobilenumber || '').replace(/[^0-9]/g, '');
+    if (!trimmedCustomerName || tempItems.length === 0) return toast.error("Please add details and items");
     if (cleanMobile.length !== 10) return toast.error("Please enter a valid 10-digit mobile number");
 
-    dispatch(createBill({
-      customerName,
-      customerMobile: `91${cleanMobile}`,
-      paymentType,
-      paymentMode: paymentType,
-      cgstPercent: Number(cgstPercent) || 0,
-      sgstPercent: Number(sgstPercent) || 0,
-      items: tempItems.map(item => ({
-        product: item.product,
-        saleType: item.saleType,
-        quantity: item.quantity,
-        price: item.price
+    const safeCgst = Number.isFinite(Number(cgstPercent)) ? Number(cgstPercent) : 0;
+    const safeSgst = Number.isFinite(Number(sgstPercent)) ? Number(sgstPercent) : 0;
+
+    Promise.resolve(
+      dispatch(createBill({
+        customerName: trimmedCustomerName,
+        customerMobile: `91${cleanMobile}`,
+        paymentType,
+        paymentMode: paymentType,
+        cgstPercent: safeCgst,
+        sgstPercent: safeSgst,
+        items: tempItems.map(item => ({
+          product: item.product,
+          saleType: item.saleType,
+          quantity: item.quantity,
+          price: item.price
+        }))
       }))
-    })).then((res) => {
+    ).then(() => {
       // Force immediate fetch if action resolves successfully
       dispatch(getBills());
+    }).catch(() => {
+      // Error is handled via state/toast without unhandled rejection
     });
 
     setTempItems([]);
@@ -185,12 +204,12 @@ export default function Billing() {
   };
 
   const handleOpenShareModal = (bill) => {
-    setSelectedBill(bill);
+    setSelectedBill(bill || null);
     setShowShareModal(true);
   };
 
   const handleConfirmShare = async () => {
-    if (!selectedBill) {
+    if (!selectedBill || !selectedBill._id) {
       toast.error("Please select a bill");
       return;
     }
@@ -211,23 +230,23 @@ export default function Billing() {
         }
       );
 
-      if (data.success) {
+      if (data?.success) {
         toast.success("WhatsApp message accepted by Meta!");
         setShowShareModal(false);
         setSelectedBill(null);
       } else {
-        toast.error("WhatsApp message could not be sent");
+        toast.error(data?.message || "WhatsApp message could not be sent");
       }
 
     } catch (err) {
       console.error(
         "Share Bill Error:",
-        err.response?.data || err.message
+        err?.response?.data || err?.message
       );
 
       const errorMsg =
-        err.response?.data?.message ||
-        err.message ||
+        err?.response?.data?.message ||
+        err?.message ||
         "Failed to send WhatsApp message";
 
       toast.error(errorMsg);
@@ -237,20 +256,25 @@ export default function Billing() {
     }
   };
 
-  const itemsSubTotal = tempItems.reduce((sum, item) => sum + (Number(item.total) || 0), 0);
+  const itemsSubTotal = tempItems.reduce((sum, item) => sum + (Number(item?.total) || 0), 0);
   const computedGrandTotal =
     itemsSubTotal +
     (itemsSubTotal * (Number(cgstPercent) || 0)) / 100 +
     (itemsSubTotal * (Number(sgstPercent) || 0)) / 100;
 
-  const filteredBills = bills && bills.length > 0
-    ? bills
+  const normalizedKeyword = String(keyword || '').toLowerCase();
+
+  const filteredBills = safeBills.length > 0
+    ? safeBills
         .filter(bill => {
           // Relaxed filter to prevent hiding bills if paymentType/paymentMode is missing or formatted differently
-          const pType = (bill?.paymentType ?? bill?.paymentMode ?? "CASH").trim().toUpperCase();
+          const pType = String(bill?.paymentType ?? bill?.paymentMode ?? "CASH").trim().toUpperCase();
           return pType === 'CASH' || pType === '';
         })
-        .filter(bill => (bill?.customerName ?? "").toLowerCase().includes(keyword.toLowerCase()) || (bill?.invoiceNo ?? "").toLowerCase().includes(keyword.toLowerCase()))
+        .filter(bill =>
+          String(bill?.customerName ?? "").toLowerCase().includes(normalizedKeyword) ||
+          String(bill?.invoiceNo ?? "").toLowerCase().includes(normalizedKeyword)
+        )
     : [];
 
   return (
@@ -326,7 +350,7 @@ export default function Billing() {
                 value={selectedProductId}
                 onChange={(e) => setSelectedProductId(e.target.value)}
                 placeholderOption="Select Item"
-                options={products.map(p => ({ value: p._id, label: p.name }))}
+                options={safeProducts.map(p => ({ value: p._id, label: p.name }))}
               />
 
               <FloatingSelect
@@ -402,7 +426,7 @@ export default function Billing() {
               <div className="bill-mgr-save-wrapper">
                 <div className="bill-mgr-grand-total">
                   <span className="bill-mgr-grand-total-label">Grand Total</span>
-                  <span className="bill-mgr-grand-total-value">₹{computedGrandTotal.toFixed(2)}</span>
+                  <span className="bill-mgr-grand-total-value">₹{(Number.isFinite(computedGrandTotal) ? computedGrandTotal : 0).toFixed(2)}</span>
                 </div>
                 <button type="button" className="bill-mgr-save-btn" onClick={handleSaveInvoice} disabled={loading}>
                   <i className="fa-regular fa-floppy-disk"></i> {loading ? "Saving..." : "Save Invoice →"}
@@ -442,12 +466,12 @@ export default function Billing() {
                 </thead>
                 <tbody>
                   {filteredBills.length > 0 ? filteredBills
-                    .map(bill => (
-                      <tr key={bill._id}>
-                        <td className="bill-mgr-td" data-label="Customer">{bill.customerName} ({bill.invoiceNo || 'N/A'})</td>
-                        <td className="bill-mgr-td" data-label="Date">{bill.createdAt ? bill.createdAt.split('T')[0] : 'N/A'}</td>
-                        <td className="bill-mgr-td" data-label="Items">{bill.items?.length || 0}</td>
-                        <td className="bill-mgr-td" data-label="Total">₹{bill.grandTotal}</td>
+                    .map((bill, idx) => (
+                      <tr key={bill?._id || idx}>
+                        <td className="bill-mgr-td" data-label="Customer">{bill?.customerName || 'N/A'} ({bill?.invoiceNo || 'N/A'})</td>
+                        <td className="bill-mgr-td" data-label="Date">{bill?.createdAt ? String(bill.createdAt).split('T')[0] : 'N/A'}</td>
+                        <td className="bill-mgr-td" data-label="Items">{Array.isArray(bill?.items) ? bill.items.length : 0}</td>
+                        <td className="bill-mgr-td" data-label="Total">₹{bill?.grandTotal ?? 0}</td>
                         <td className="bill-mgr-td" data-label="Actions">
                           <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>
                             <i className="fa-brands fa-whatsapp"></i> Share
@@ -476,26 +500,26 @@ export default function Billing() {
                   <i className="fa-solid fa-file-invoice" style={{ color: "var(--primary)" }}></i> Bill Details Preview
                 </h3>
                 <div style={{ fontSize: '14px', color: '#475569', marginBottom: '16px', lineHeight: '1.6' }}>
-                  <p><strong>Customer:</strong> {selectedBill.customerName}</p>
-                  <p><strong>Mobile:</strong> {selectedBill.customerMobile}</p>
-                  <p><strong>Payment Type:</strong> {selectedBill.paymentType || selectedBill.paymentMode}</p>
-                  <p><strong>Date:</strong> {selectedBill.createdAt ? selectedBill.createdAt.split('T')[0] : 'N/A'}</p>
-                  <p><strong>GSTIN :</strong> {selectedBill.gstin || 'N/A'}</p>
+                  <p><strong>Customer:</strong> {selectedBill?.customerName || 'N/A'}</p>
+                  <p><strong>Mobile:</strong> {selectedBill?.customerMobile || 'N/A'}</p>
+                  <p><strong>Payment Type:</strong> {selectedBill?.paymentType || selectedBill?.paymentMode || 'N/A'}</p>
+                  <p><strong>Date:</strong> {selectedBill?.createdAt ? String(selectedBill.createdAt).split('T')[0] : 'N/A'}</p>
+                  <p><strong>GSTIN :</strong> {selectedBill?.gstin || 'N/A'}</p>
                   <div style={{ maxHeight: '120px', overflowY: 'auto', margin: '10px 0', border: '1px solid #E2E8F0', padding: '8px', borderRadius: '8px' }}>
                     <strong>Items:</strong>
-                    {selectedBill.items?.map((it, i) => (
+                    {Array.isArray(selectedBill?.items) && selectedBill.items.map((it, i) => (
                       <div key={i} style={{ fontSize: '13px', borderBottom: '1px solid #F1F5F9', padding: '4px 0' }}>
-                        - {it.product?.name || it.productName || "Product"} ({it.saleType}) - Qty: {it.quantity} | ₹{it.total}
+- {it?.product?.name || it?.productName || "Product"} ({it?.saleType || 'N/A'}) - Qty: {it?.quantity ?? 0} | ₹{it?.total ?? 0}
                       </div>
                     ))}
                   </div>
-                  <p style={{ fontSize: '14px', color: '#64748B' }}>SubTotal: ₹{selectedBill.subTotal}</p>
-                  <p style={{ fontSize: '14px', color: '#64748B' }}>Tax (CGST+SGST): ₹{selectedBill.totalTax}</p>
-                  <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#0F172A', marginTop: '4px' }}>Grand Total: ₹{selectedBill.grandTotal}</p>
+                  <p style={{ fontSize: '14px', color: '#64748B' }}>SubTotal: ₹{selectedBill?.subTotal ?? 0}</p>
+                  <p style={{ fontSize: '14px', color: '#64748B' }}>Tax (CGST+SGST): ₹{selectedBill?.totalTax ?? 0}</p>
+                  <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#0F172A', marginTop: '4px' }}>Grand Total: ₹{selectedBill?.grandTotal ?? 0}</p>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                  <button onClick={() => setShowShareModal(false)} disabled={sharing} style={{ padding: '10px 16px', background: '#E2E8F0', color: '#334155', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Cancel</button>
-                  <button onClick={handleConfirmShare} disabled={sharing} style={{ padding: '10px 16px', background: '#25D366', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <button type="button" onClick={() => setShowShareModal(false)} disabled={sharing} style={{ padding: '10px 16px', background: '#E2E8F0', color: '#334155', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Cancel</button>
+                  <button type="button" onClick={handleConfirmShare} disabled={sharing} style={{ padding: '10px 16px', background: '#25D366', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <i className="fa-brands fa-whatsapp"></i> {sharing ? "Sending..." : "Confirm & Send"}
                   </button>
                 </div>
