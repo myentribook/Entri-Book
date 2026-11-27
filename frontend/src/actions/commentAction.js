@@ -1,19 +1,32 @@
 import axios from 'axios'
 import { commentRequest, commentSuccess, commentFailure, newCommentRequest, newCommentSuccess, newCommentFailure, deleteCommentRequest, deleteCommentSuccess, deleteCommentFailure, clearCommentCreated, clearCommentDeleted, clearCommentError } from '../slices/commentSlice'
 
+const getErrorMessage = (error) => {
+    if (error && typeof error === 'object') {
+        const responseMessage = error.response?.data?.message
+        if (typeof responseMessage === 'string' && responseMessage.trim().length > 0) {
+            return responseMessage.trim()
+        }
+        if (typeof error.message === 'string' && error.message.trim().length > 0) {
+            return error.message.trim()
+        }
+    }
+    return 'Something went wrong'
+}
+
 export const getComments = () => async (dispatch) => {
 
     try {
 
         dispatch(commentRequest())
 
-        const { data } = await axios.get('/api/v1/comments')
+        const { data } = await axios.get('/api/v1/comments', { withCredentials: true })
 
         dispatch(commentSuccess(data))
 
     } catch (error) {
 
-        dispatch(commentFailure(error.response?.data?.message || error.message))
+        dispatch(commentFailure(getErrorMessage(error)))
 
     }
 
@@ -26,7 +39,12 @@ export const addComment = (commentData) => async (dispatch) => {
 
         dispatch(newCommentRequest())
 
-        const config = { headers: { 'ContentType': 'application/json' } }
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        }
 
         const { data } = await axios.post(`/api/v1/comment/new`, commentData, config)
 
@@ -34,7 +52,7 @@ export const addComment = (commentData) => async (dispatch) => {
 
     } catch (error) {
 
-        dispatch(newCommentFailure(error.response?.data?.message || error.message))
+        dispatch(newCommentFailure(getErrorMessage(error)))
 
     }
 
@@ -49,13 +67,19 @@ export const deleteComment = (id) => async (dispatch) => {
 
         dispatch(deleteCommentRequest())
 
-        await axios.delete(`/api/v1/comment/${id}`)
+        if (!id) {
+            throw new Error('Comment ID is required')
+        }
+
+        const encodedId = encodeURIComponent(String(id).trim())
+
+        await axios.delete(`/api/v1/comment/${encodedId}`, { withCredentials: true })
 
         dispatch(deleteCommentSuccess(id))
 
     } catch (error) {
 
-        dispatch(deleteCommentFailure(error.response?.data?.message || error.message))
+        dispatch(deleteCommentFailure(getErrorMessage(error)))
 
     }
 

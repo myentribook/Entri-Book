@@ -1,79 +1,3 @@
-// import { createPaymentRequest, createPaymentSuccess, createPaymentFailure, clearPaymentState, trailRequest, trailSuccess, trailFailure, resetPayment, verifyPaymentRequest, verifyPaymentSuccess, verifyPaymentFailure } from '../slices/paymentSlice'
-// import axios from 'axios'
-
-
-
-// export const createPayment = (paymentData) => async (dispatch) => {
-
-//     try {
-
-//         dispatch(createPaymentRequest())
-
-//         const { data } = await axios.post(`/api/v1/order`, paymentData, {
-//             withCredentials: true
-//         })
-
-//         dispatch(createPaymentSuccess(data))
-
-
-//     } catch (error) {
-
-
-//         const message = error.response?.data?.message || error.message || `payment failure`
-
-//         dispatch(createPaymentFailure(message))
-
-
-//     }
-
-// }
-
-
-// export const trails = (trailData) => async (dispatch) => {
-
-//     try {
-
-//         dispatch(trailRequest())
-
-//         const { data } = await axios.post(`/api/v1/trial`, trailData, {
-//             withCredentials: true
-//         })
-
-//         dispatch(trailSuccess(data))
-
-//     } catch (error) {
-
-//         const message = error.response?.data?.message || error.message || 'Trails creation Failure'
-
-//         dispatch(trailFailure(message))
-
-//     }
-
-// }
-
-
-
-// export const verifyPayment = (verifyPaymentData) => async (dispatch) => {
-
-//     try {
-
-//         dispatch(verifyPaymentRequest())
-
-//         const { data } = await axios.post(`/api/v1/verify`, verifyPaymentData, {
-//             withCredentials: true
-//         })
-
-//         dispatch(verifyPaymentSuccess(data))
-
-//     } catch (error) {
-
-//         const message = error.response?.data?.message || error.message || ` Verify Paymeny Failure` 
- 
-//         dispatch(verifyPaymentFailure(message))
-
-//     }
-
-// }
 import axios from 'axios';
 import { 
     createPaymentRequest, 
@@ -90,17 +14,7 @@ import {
     subscriptionFail 
 } from '../slices/paymentSlice';
 
-// const API = axios.create({
-//     baseURL: 'http://16.171.148.56:8000/',
-//     withCredentials: true
-// });
 
-// const API = axios.create({
-//     baseURL: process.env.NODE_ENV === 'production' 
-//         ? 'http://16.171.148.56:8000'  // Domain name (HTTPS irukanum)
-//         : 'http://localhost:8000',
-//     withCredentials: true
-// });
 
 const API = axios.create({
     baseURL: process.env.NODE_ENV === 'production' 
@@ -109,13 +23,26 @@ const API = axios.create({
     withCredentials: true
 });
 
+const getErrorMessage = (error, fallbackMessage) => {
+    if (error && typeof error === 'object') {
+        const responseMessage = error.response?.data?.message;
+        if (typeof responseMessage === 'string' && responseMessage.trim().length > 0) {
+            return responseMessage.trim();
+        }
+        if (typeof error.message === 'string' && error.message.trim().length > 0) {
+            return error.message.trim();
+        }
+    }
+    return fallbackMessage;
+};
+
 export const createPayment = (paymentData) => async (dispatch) => {
     try {
         dispatch(createPaymentRequest());
         const { data } = await API.post(`/api/v1/order`, paymentData);
         dispatch(createPaymentSuccess(data));
     } catch (error) {
-        const message = error.response?.data?.message || error.message || `payment failure`;
+        const message = getErrorMessage(error, `payment failure`);
         dispatch(createPaymentFailure(message));
     }
 };
@@ -126,7 +53,7 @@ export const trails = (trailData) => async (dispatch) => {
         const { data } = await API.post(`/api/v1/trial`, trailData);
         dispatch(trailSuccess(data));
     } catch (error) {
-        const message = error.response?.data?.message || error.message || 'Trails creation Failure';
+        const message = getErrorMessage(error, 'Trails creation Failure');
         dispatch(trailFailure(message));
     }
 };
@@ -137,7 +64,7 @@ export const verifyPayment = (verifyPaymentData) => async (dispatch) => {
         const { data } = await API.post(`/api/v1/verify`, verifyPaymentData);
         dispatch(verifyPaymentSuccess(data));
     } catch (error) {
-        const message = error.response?.data?.message || error.message || `Verify Payment Failure`; 
+        const message = getErrorMessage(error, `Verify Payment Failure`); 
         dispatch(verifyPaymentFailure(message));
     }
 };
@@ -148,7 +75,7 @@ export const getMySubscription = () => async (dispatch) => {
         const { data } = await API.get(`/api/v1/my-subscription`);
         dispatch(subscriptionSuccess(data));
     } catch (error) {
-        const message = error.response?.data?.message || error.message || 'Failed to fetch subscription';
+        const message = getErrorMessage(error, 'Failed to fetch subscription');
         dispatch(subscriptionFail(message));
     }
 };

@@ -1,47 +1,18 @@
-// import axios from 'axios';
-// import { dashboardFailure, dashboardRequest, dashboardSuccess } from '../slices/dashboardSlice';
-
-// // Add this extra function wrapper (Thunk pattern)
-// export const getDashboardReports = () => async (dispatch) => {
-//     try {
-//         dispatch(dashboardRequest());
-
-//         const { data } = await axios.get('/api/v1/report',{
-//               withCredentials: true
-//         });
-
-//         dispatch(dashboardSuccess(data));
-//     } catch (error) {
-//         // Added safety check to prevent crash if error.response is missing
-//         const message = error.response?.data?.message || error.message;
-//         dispatch(dashboardFailure(message));
-//     }
-// };
-
-
-// import axios from 'axios';
-// import { dashboardFailure, dashboardRequest, dashboardSuccess } from '../slices/dashboardSlice';
-
-// export const getDashboardReports = () => async (dispatch) => {
-//     try {
-//         dispatch(dashboardRequest());
-
-//         const { data } = await axios.get('/api/v1/report', {
-//             withCredentials: true // Cookies/Session ke liye zaroori hai
-//         });
-
-//         dispatch(dashboardSuccess(data));
-//     } catch (error) {
-//         // Agar error aaye to backend ka message dikha do, nahi to generic error
-//         const message = error.response?.data?.message || "Kuch galat ho gaya!";
-//         dispatch(dashboardFailure(message));
-//     }
-// };
-
-
-
 import axios from 'axios';
 import { dashboardFailure, dashboardRequest, dashboardSuccess } from '../slices/dashboardSlice';
+
+const getErrorMessage = (error) => {
+    if (error && typeof error === 'object') {
+        const responseMessage = error.response?.data?.message;
+        if (typeof responseMessage === 'string' && responseMessage.trim().length > 0) {
+            return responseMessage.trim();
+        }
+        if (typeof error.message === 'string' && error.message.trim().length > 0) {
+            return error.message.trim();
+        }
+    }
+    return "something went wrong !";
+};
 
 export const getDashboardReports = () => async (dispatch) => {
     try {
@@ -54,7 +25,7 @@ export const getDashboardReports = () => async (dispatch) => {
 
         dispatch(dashboardSuccess(data));
     } catch (error) {
-        const message = error.response?.data?.message || error.message || "something went wrong !";
+        const message = getErrorMessage(error);
         dispatch(dashboardFailure(message));
     }
 };

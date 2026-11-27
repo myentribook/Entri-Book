@@ -5,12 +5,27 @@ import {
     searchFailure
 } from '../slices/searchSlice';
 
+const getErrorMessage = (error) => {
+    if (error && typeof error === 'object') {
+        const responseMessage = error.response?.data?.message;
+        if (typeof responseMessage === 'string' && responseMessage.trim().length > 0) {
+            return responseMessage.trim();
+        }
+        if (typeof error.message === 'string' && error.message.trim().length > 0) {
+            return error.message.trim();
+        }
+    }
+    return 'Something went wrong';
+};
+
 export const searchProduct = (keyword = '') => async (dispatch) => {
     try {
         dispatch(searchRequest());
 
-        // keyword இருந்தால் தேடுதல், இல்லையெனில் அனைத்துப் பொருட்கள்
-        const url = keyword ? `/api/v1/getDashboard?keyword=${keyword}` : '/api/v1/getDashboard';
+        const normalizedKeyword = typeof keyword === 'string' ? keyword.trim() : '';
+        const url = normalizedKeyword
+            ? `/api/v1/getDashboard?keyword=${encodeURIComponent(normalizedKeyword)}`
+            : '/api/v1/getDashboard';
         
         const { data } = await axios.get(url, { withCredentials: true });
 
@@ -18,7 +33,7 @@ export const searchProduct = (keyword = '') => async (dispatch) => {
     } catch (error) {
         dispatch(
             searchFailure(
-                error.response?.data?.message || error.message
+                getErrorMessage(error)
             )
         );
     }

@@ -1,23 +1,39 @@
 import axios from 'axios'
 import { creditActionFailure, creditActionRequest, creditActionSuccess, creditFailure, creditRequest, creditSuccess } from '../slices/creditSlice'
 
+const getErrorMessage = (error, fallbackMessage) => {
+    if (error && typeof error === 'object') {
+        const responseMessage = error.response?.data?.message
+        if (typeof responseMessage === 'string' && responseMessage.trim().length > 0) {
+            return responseMessage.trim()
+        }
+    }
+    return fallbackMessage
+}
+
 export const getCreditBills = () => async (dispatch) => {
     try {
         dispatch(creditRequest())
         const { data } = await axios.get('/api/v1/credit', { withCredentials: true })
         dispatch(creditSuccess(data))
     } catch (error) {
-        dispatch(creditFailure(error.response?.data?.message || "Failed to fetch credit bills"))
+        dispatch(creditFailure(getErrorMessage(error, "Failed to fetch credit bills")))
     }
 }
 
 export const updateCreditBills = (id, bill) => async (dispatch) => {
     try {
         dispatch(creditActionRequest())
-        const { data } = await axios.put(`/api/v1/credit/${id}`, bill, { withCredentials: true })
+
+        if (!id) {
+            throw new Error("Failed to update payment")
+        }
+
+        const encodedId = encodeURIComponent(String(id).trim())
+        const { data } = await axios.put(`/api/v1/credit/${encodedId}`, bill, { withCredentials: true })
         dispatch(creditActionSuccess(data))
-        dispatch(getCreditBills()) // Refresh list
+        await dispatch(getCreditBills()) // Refresh list
     } catch (error) {
-        dispatch(creditActionFailure(error.response?.data?.message || "Failed to update payment"))
+        dispatch(creditActionFailure(getErrorMessage(error, "Failed to update payment")))
     }
 }
