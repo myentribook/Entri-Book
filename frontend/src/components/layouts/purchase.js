@@ -10,8 +10,12 @@ import '../styles/purchase.css';
 export default function Purchase() {
     const dispatch = useDispatch();
 
-    const { purchase = [], loading, error, message } = useSelector(state => state.purchaseState || {});
-    const { products = [] } = useSelector(state => state.productState || { products: [] });
+    const { isAuthenticated } = useSelector((state) => state?.authState || {});
+    const { purchase = [], loading, error, message } = useSelector(state => state?.purchaseState || {});
+    const { products = [] } = useSelector(state => state?.productState || { products: [] });
+
+    const safePurchaseList = Array.isArray(purchase) ? purchase : [];
+    const safeProductsList = Array.isArray(products) ? products : [];
 
     // Toast logic
     useEffect(() => {
@@ -36,6 +40,22 @@ export default function Purchase() {
     const dropdownRef = useRef(null);
 
     useEffect(() => {
+        if (isAuthenticated === false) {
+            setSupplierName('');
+            setSupplierBillNo('');
+            setSelectedProductId('');
+            setQuantity('');
+            setConversionFactor('');
+            setPurchasePrice('');
+            setTempItems([]);
+            setKeyword('');
+            setSelectedView(null);
+            setDropdownOpen(false);
+            dispatch(clearPurchaseState());
+        }
+    }, [isAuthenticated, dispatch]);
+
+    useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setDropdownOpen(false);
@@ -56,7 +76,7 @@ export default function Purchase() {
 
     const handleAddTemp = () => {
         if (!selectedProductId || !quantity || !purchasePrice) return toast.error("Please fill all product fields");
-        const selectedProduct = products.find(p => p._id === selectedProductId);
+        const selectedProduct = safeProductsList.find(p => String(p?._id) === String(selectedProductId));
         const q = Number(quantity);
         const p = Number(purchasePrice);
         const cf = Number(conversionFactor || selectedProduct?.conversionFactor || 0);
@@ -64,10 +84,10 @@ export default function Purchase() {
         const newItem = {
             product: selectedProductId,
             productName: selectedProduct?.name || "Unknown",
-            quantity: q,
-            conversionFactor: cf,
-            purchasePrice: p,
-            amount: q * p
+            quantity: Number.isFinite(q) ? q : 0,
+            conversionFactor: Number.isFinite(cf) ? cf : 0,
+            purchasePrice: Number.isFinite(p) ? p : 0,
+            amount: (Number.isFinite(q) ? q : 0) * (Number.isFinite(p) ? p : 0)
         };
 
         setTempItems([...tempItems, newItem]);
@@ -80,11 +100,14 @@ export default function Purchase() {
         const mergedItemsMap = {};
 
         tempItems.forEach(item => {
+            if (!item || typeof item !== 'object') return;
+            const itemQty = Number(item.quantity) || 0;
+            const itemAmt = Number(item.amount) || 0;
             if (mergedItemsMap[item.product]) {
-                mergedItemsMap[item.product].quantity += Number(item.quantity);
-                mergedItemsMap[item.product].amount += item.amount;
+                mergedItemsMap[item.product].quantity += itemQty;
+                mergedItemsMap[item.product].amount += itemAmt;
             } else {
-                mergedItemsMap[item.product] = { ...item };
+                mergedItemsMap[item.product] = { ...item, quantity: itemQty, amount: itemAmt };
             }
         });
 
@@ -101,7 +124,7 @@ export default function Purchase() {
             }))
         };
 
-        dispatch(createPurchase(purchaseData)).then(() => {
+        Promise.resolve(dispatch(createPurchase(purchaseData))).then(() => {
             dispatch(getPurchase());
             dispatch(getProducts());
         });
@@ -111,9 +134,13 @@ export default function Purchase() {
         setSupplierBillNo('');
     };
 
-    const computedAmount = quantity && purchasePrice ? (Number(quantity) * Number(purchasePrice)).toFixed(2) : "0.00";
-    const hasActiveAmount = Boolean(quantity && purchasePrice && Number(quantity) * Number(purchasePrice) > 0);
-    const selectedProductObj = products.find(p => String(p._id) === String(selectedProductId));
+    const numericQty = Number(quantity);
+    const numericPrice = Number(purchasePrice);
+    const hasValidNumbers = quantity !== '' && purchasePrice !== '' && Number.isFinite(numericQty) && Number.isFinite(numericPrice);
+    const computedAmount = hasValidNumbers ? (numericQty * numericPrice).toFixed(2) : "0.00";
+    const hasActiveAmount = Boolean(hasValidNumbers && numericQty * numericPrice > 0);
+    const selectedProductObj = safeProductsList.find(p => String(p?._id) === String(selectedProductId));
+    const safeKeyword = String(keyword || '').toLowerCase();
 
     return (
         <div className="bill-mgr-wrapper">
@@ -127,26 +154,28 @@ export default function Purchase() {
                         <>
                             <p><strong>Supplier:</strong> {selectedView.supplierName}</p>
                             <p><strong>Bill No:</strong> {selectedView.supplierBillNo}</p>
-                            <p><strong>Items Count:</strong> {selectedView.items?.length || 0}</p>
+                            <p><strong>Items Count:</strong> {Array.isArray(selectedView.items) ? selectedView.items.length : 0}</p>
                             <ul style={{ listStyle: "none", padding: 0, maxHeight: '200px', overflowY: 'auto' }}>
-                                {selectedView.items?.map((item, index) => {
-                                    const productDetail = products.find(p => String(p._id) === String(item.product));
-                                    const finalProductName = item.productName && item.productName !== "Unknown"
+                                {Array.isArray(selectedView.items) && selectedView.items.map((item, index) => {
+                                    const productDetail = safeProductsList.find(p => String(p?._id) === String(item?.product));
+                                    const finalProductName = item?.productName && item.productName !== "Unknown"
                                         ? item.productName
                                         : (productDetail?.name || "Product Name Not Found");
 
-                                    const subTotal = Number(item.quantity) * Number(item.purchasePrice);
+                                    const itemQty = Number(item?.quantity) || 0;
+                                    const itemPrice = Number(item?.purchasePrice) || 0;
+                                    const subTotal = itemQty * itemPrice;
 
                                     return (
-                                        <li key={index} style={{ marginBottom: "8px", borderBottom: "1px solid #f0f0f0", paddingBottom: "4px" }}>
+                                        <li key={item?._id || item?.product || index} style={{ marginBottom: "8px", borderBottom: "1px solid #f0f0f0", paddingBottom: "4px" }}>
                                             <strong>{finalProductName}</strong><br />
-                                            {item.quantity} x {item.purchasePrice} = {subTotal.toFixed(2)}
+                                            {itemQty} x {itemPrice} = {subTotal.toFixed(2)}
                                         </li>
                                     );
                                 })}
                             </ul>
                             <p style={{ marginTop: "15px" }}>
-                                <strong>Grand Total: ₹{selectedView.items?.reduce((acc, item) => acc + (Number(item.quantity) * Number(item.purchasePrice)), 0).toFixed(2)}</strong>
+                                <strong>Grand Total: ₹{(Array.isArray(selectedView.items) ? selectedView.items : []).reduce((acc, item) => acc + ((Number(item?.quantity) || 0) * (Number(item?.purchasePrice) || 0)), 0).toFixed(2)}</strong>
                             </p>
                         </>
                         <button 
@@ -226,16 +255,16 @@ export default function Purchase() {
                                         >
                                             Select Item
                                         </div>
-                                        {products.map(p => (
+                                        {safeProductsList.map((p, index) => (
                                             <div
-                                                key={p._id}
-                                                className={`bill-mgr-custom-option ${String(selectedProductId) === String(p._id) ? 'is-active' : ''}`}
+                                                key={p?._id || p?.id || index}
+                                                className={`bill-mgr-custom-option ${String(selectedProductId) === String(p?._id) ? 'is-active' : ''}`}
                                                 onClick={() => {
-                                                    setSelectedProductId(p._id);
+                                                    setSelectedProductId(p?._id || '');
                                                     setDropdownOpen(false);
                                                 }}
                                             >
-                                                {p.name}
+                                                {p?.name || 'Product'}
                                             </div>
                                         ))}
                                     </div>
@@ -282,12 +311,12 @@ export default function Purchase() {
                                 </thead>
                                 <tbody>
                                     {tempItems.length > 0 ? tempItems.map((item, idx) => (
-                                        <tr key={idx}>
+                                        <tr key={item?.product || idx}>
                                             <td className="bill-mgr-td" data-label="Product">{item.productName}</td>
                                             <td className="bill-mgr-td" data-label="Qty">{item.quantity}</td>
                                             <td className="bill-mgr-td" data-label="Conv. F.">{item.conversionFactor}</td>
                                             <td className="bill-mgr-td" data-label="Price">{item.purchasePrice}</td>
-                                            <td className="bill-mgr-td" data-label="Total">{item.amount.toFixed(2)}</td>
+                                            <td className="bill-mgr-td" data-label="Total">{(Number(item.amount) || 0).toFixed(2)}</td>
                                         </tr>
                                     )) : (
                                         <tr>
@@ -343,13 +372,13 @@ export default function Purchase() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {purchase && purchase.length > 0 ? purchase
-                                        .filter(item => (item?.supplierName ?? "").toLowerCase().includes(keyword.toLowerCase()))
-                                        .map((item) => (
-                                            <tr key={item._id}>
-                                                <td className="bill-mgr-td" data-label="Supplier">{item.supplierName}</td>
-                                                <td className="bill-mgr-td" data-label="Bill No">{item.supplierBillNo}</td>
-                                                <td className="bill-mgr-td" data-label="Items">{item.items?.length || 0}</td>
+                                    {safePurchaseList.length > 0 ? safePurchaseList
+                                        .filter(item => String(item?.supplierName ?? "").toLowerCase().includes(safeKeyword))
+                                        .map((item, index) => (
+                                            <tr key={item?._id || item?.id || index}>
+                                                <td className="bill-mgr-td" data-label="Supplier">{item?.supplierName}</td>
+                                                <td className="bill-mgr-td" data-label="Bill No">{item?.supplierBillNo}</td>
+                                                <td className="bill-mgr-td" data-label="Items">{Array.isArray(item?.items) ? item.items.length : 0}</td>
                                                 <td className="bill-mgr-td bill-mgr-action-td" data-label="Actions">
                                                     <button type="button" className="bill-mgr-btn bill-mgr-btn-view" onClick={() => setSelectedView(item)}>
                                                         <i className="fa-solid fa-eye"></i> View

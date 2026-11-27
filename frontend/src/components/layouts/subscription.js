@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPayment, trails, verifyPayment, getMySubscription } from '../../actions/paymentAction';
 import { resetPayment } from '../../slices/paymentSlice';
@@ -7,10 +7,12 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function Subscription() {
     const dispatch = useDispatch();
-    const { loading, payment, subscription, error, message } = useSelector((state) => state.paymentState);
+    const { loading, payment, subscription, error, message } = useSelector((state) => state?.paymentState || {});
     
     // Logged-in user details
-    const { user } = useSelector((state) => state.authState || state.userState || {});
+    const { user } = useSelector((state) => state?.authState || state?.userState || {});
+
+    const refreshTimerRef = useRef(null);
 
     // Debug user and subscription states on render
     console.log("--- DEBUG: Render State ---", { user, subscription, payment, loading, error, message });
@@ -18,19 +20,33 @@ export default function Subscription() {
     // Check if user has an active, valid subscription
     const isAlreadySubscribed = React.useMemo(() => {
         console.log("--- DEBUG: Running isAlreadySubscribed memo ---", { subscription, user });
-        if (!subscription) return false;
+        if (!subscription || !user) return false;
         
-        const subData = subscription.user ? subscription : (Array.isArray(subscription) ? subscription.find(sub => sub.user === user?._id || sub.user?._id === user?._id) : null);
+        const subData = subscription?.user
+            ? subscription
+            : (Array.isArray(subscription)
+                ? subscription.find(sub => {
+                    if (!sub || typeof sub !== 'object') return false;
+                    const subOwnerId = (typeof sub.user === 'object' ? sub.user?._id : sub.user)?.toString();
+                    const currentUserId = user?._id?.toString();
+                    return Boolean(currentUserId && subOwnerId && currentUserId === subOwnerId);
+                })
+                : null);
 
         console.log("--- DEBUG: Resolved subData ---", subData);
-        if (!subData) return false;
+        if (!subData || typeof subData !== 'object') return false;
 
         const userIdString = user?._id?.toString();
         const subUserIdString = (typeof subData.user === 'object' ? subData.user?._id : subData.user)?.toString();
 
-        const isUserMatch = userIdString && subUserIdString && userIdString === subUserIdString;
+        const isUserMatch = Boolean(userIdString && subUserIdString && userIdString === subUserIdString);
         const isActiveStatus = subData.status === 'active' || subData.status === 'trial' || subData.status === 'lifetime';
-        const isNotExpired = subData.endDate ? new Date(subData.endDate) > new Date() : true;
+
+        let isNotExpired = true;
+        if (subData.endDate) {
+            const parsedEndDate = new Date(subData.endDate);
+            isNotExpired = !Number.isNaN(parsedEndDate.getTime()) ? parsedEndDate > new Date() : false;
+        }
 
         console.log("--- DEBUG: Subscription Check Flags ---", {
             userIdString,
@@ -52,19 +68,28 @@ export default function Subscription() {
         dispatch(resetPayment());
         dispatch(getMySubscription());
         setShouldPay(false);
+
+        return () => {
+            if (refreshTimerRef.current) {
+                clearTimeout(refreshTimerRef.current);
+                refreshTimerRef.current = null;
+            }
+        };
     }, [dispatch]);
 
     const switchPlan = (planType) => {
-        console.log("--- DEBUG: switchPlan called with ---", planType);
+        const safePlanType = String(planType || '').toLowerCase();
+        console.log("--- DEBUG: switchPlan called with ---", safePlanType);
+        if (!safePlanType || typeof document === 'undefined') return;
         const deck = document.getElementById('pricingDeckContainer');
         const pills = document.querySelectorAll('.switcher-pill');
         if (!deck) return;
         deck.classList.remove('display-trial', 'display-monthly', 'display-annual');
-        deck.classList.add('display-' + planType);
+        deck.classList.add('display-' + safePlanType);
 
         pills.forEach(pill => {
             pill.classList.remove('active-pill');
-            if (pill.textContent.toLowerCase().includes(planType)) {
+            if (String(pill.textContent || '').toLowerCase().includes(safePlanType)) {
                 pill.classList.add('active-pill');
             }
         });
@@ -88,6 +113,12 @@ export default function Subscription() {
         console.log("--- DEBUG: Payment effect triggered ---", { shouldPay, orderData, payment });
 
         if (shouldPay && orderData && orderData.id) {
+            if (typeof window === 'undefined' || typeof window.Razorpay !== 'function') {
+                toast.error("Payment gateway unavailable. Please refresh and try again.");
+                setShouldPay(false);
+                return;
+            }
+
             console.log("--- DEBUG: Opening Razorpay modal with order ---", orderData);
             const options = {
                 key: "rzp_test_TKgkEW4fJWouhL",
@@ -99,21 +130,25 @@ export default function Subscription() {
                 handler: async function (response) {
                     console.log("--- DEBUG: Razorpay success handler response ---", response);
                     const verifyData = {
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_signature: response.razorpay_signature,
-                        plan: orderData.notes?.plan || "monthly"
+                        razorpay_order_id: response?.razorpay_order_id,
+                        razorpay_payment_id: response?.razorpay_payment_id,
+                        razorpay_signature: response?.razorpay_signature,
+                        plan: orderData?.notes?.plan || "monthly"
                     };
                     
                     console.log("--- DEBUG: Dispatching verifyPayment with ---", verifyData);
                     // 1. Verify payment
-                    await dispatch(verifyPayment(verifyData));
+                    await Promise.resolve(dispatch(verifyPayment(verifyData)));
                     setShouldPay(false);
                     
                     // 2. Refresh subscription status after a short delay for DB sync
-                    setTimeout(() => {
+                    if (refreshTimerRef.current) {
+                        clearTimeout(refreshTimerRef.current);
+                    }
+                    refreshTimerRef.current = setTimeout(() => {
                         console.log("--- DEBUG: Refreshing subscription status after payment verification ---");
                         dispatch(getMySubscription());
+                        refreshTimerRef.current = null;
                     }, 1000);
                 },
                 prefill: {

@@ -11,7 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Product() {
     const dispatch = useDispatch();
-    const { products, loading, message, error } = useSelector((state) => state.productState);
+    const { products, loading, message, error } = useSelector((state) => state?.productState || {});
 
     const [keyword, setKeyword] = useState('');
     const [newProductName, setNewProductName] = useState('');
@@ -41,21 +41,28 @@ export default function Product() {
     };
 
     const handleUpdate = () => {
+        if (!editData?.id) return;
         dispatch(updateProduct(editData.id, { name: editData.name, hsnCode: editData.hsnCode }));
         setShowEdit(false);
     };
 
     const handleDelete = () => {
+        if (!deleteId) return;
         dispatch(deleteProduct(deleteId));
         setShowDelete(false);
         setDeleteId(null);
     };
 
     // Client-side instant filtering based on product name or HSN code
-    const filteredProducts = products ? products.filter((p) => 
-        p.name?.toLowerCase().includes(keyword.toLowerCase()) ||
-        p.hsnCode?.toLowerCase().includes(keyword.toLowerCase())
-    ) : [];
+    const safeKeyword = String(keyword || '').toLowerCase();
+    const filteredProducts = Array.isArray(products)
+        ? products.filter((p) => {
+            if (!p || typeof p !== 'object') return false;
+            const nameMatch = String(p.name || '').toLowerCase().includes(safeKeyword);
+            const hsnMatch = String(p.hsnCode || '').toLowerCase().includes(safeKeyword);
+            return nameMatch || hsnMatch;
+        })
+        : [];
 
     return (
         <Fragment>
@@ -119,15 +126,15 @@ export default function Product() {
                                         </thead>
                                         <tbody>
                                             {filteredProducts.length > 0 ? (
-                                                filteredProducts.map((p) => (
-                                                    <tr key={p._id}>
+                                                filteredProducts.map((p, index) => (
+                                                    <tr key={p._id || p.id || index}>
                                                         <td><div className="prod-mgr-info-card">{p.name}</div></td>
                                                         <td>{p.hsnCode || '-'}</td>
-                                                        <td>{p.stock || 0}</td>
-                                                        <td>{p.conversionFactor || 0}</td>
+                                                        <td>{p.stock ?? 0}</td>
+                                                        <td>{p.conversionFactor ?? 0}</td>
                                                         <td>
                                                             <div className="prod-mgr-action-btns">
-                                                                <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name, hsnCode: p.hsnCode || '' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
+                                                                <button className="prod-mgr-btn-icon prod-mgr-btn-edit" onClick={() => { setEditData({ id: p._id, name: p.name || '', hsnCode: p.hsnCode || '' }); setShowEdit(true); }}><i className="fa-solid fa-pen"></i></button>
                                                             </div>
                                                         </td>
                                                     </tr>

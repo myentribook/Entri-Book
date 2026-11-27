@@ -14,7 +14,8 @@ export default function Reviews() {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const dispatch = useDispatch();
-    const { comments = [], loading, error, isCreated } = useSelector((state) => state.commentState || {});
+    const { comments = [], loading, error, isCreated } = useSelector((state) => state?.commentState || {});
+    const safeComments = Array.isArray(comments) ? comments : [];
 
     const trackRef = useRef(null);
     const viewportRef = useRef(null);
@@ -46,17 +47,18 @@ export default function Reviews() {
         if (!track) return 300;
         const firstCard = track.querySelector('.eb-rev-showcase-card');
         if (!firstCard) return 300;
-        const cardWidth = firstCard.getBoundingClientRect().width;
+        const cardWidth = firstCard.getBoundingClientRect().width || 0;
         const styles = window.getComputedStyle(track);
         const gap = parseFloat(styles.gap || styles.columnGap || 24) || 24;
-        return cardWidth + gap;
+        const totalStep = cardWidth + gap;
+        return totalStep > 0 ? totalStep : 300;
     }, []);
 
     const getOriginalWidth = useCallback(() => {
-        const count = comments?.length || 0;
+        const count = safeComments.length;
         if (count === 0) return 0;
         return count * getCardStepWidth();
-    }, [comments, getCardStepWidth]);
+    }, [safeComments.length, getCardStepWidth]);
 
     const updateCardTilts = useCallback(() => {
         const viewport = viewportRef.current;
@@ -64,6 +66,8 @@ export default function Reviews() {
         if (!viewport || !track) return;
 
         const viewportRect = viewport.getBoundingClientRect();
+        if (!viewportRect || viewportRect.width <= 0) return;
+
         const viewportCenter = viewportRect.left + viewportRect.width / 2;
         const cards = track.querySelectorAll('.eb-rev-showcase-card');
 
@@ -97,7 +101,7 @@ export default function Reviews() {
     useEffect(() => {
         const track = trackRef.current;
         const viewport = viewportRef.current;
-        if (!track || !viewport || !comments || comments.length === 0) return;
+        if (!track || !viewport || loading || safeComments.length === 0) return;
 
         scrollXRef.current = 0;
         const autoSpeed = 0.75; // px per frame towards left
@@ -136,14 +140,14 @@ export default function Reviews() {
 
         const handleTouchStart = (e) => {
             isPausedRef.current = true;
-            startX = e.touches[0].clientX;
+            startX = e.touches?.[0]?.clientX ?? 0;
             initialXOffset = scrollXRef.current;
         };
 
         const handleTouchMove = (e) => {
             const totalWidth = getOriginalWidth();
             if (totalWidth <= 0) return;
-            const currentX = e.touches[0].clientX;
+            const currentX = e.touches?.[0]?.clientX ?? startX;
             const deltaX = startX - currentX; // swipe left -> positive delta -> moves left
             scrollXRef.current = normalizeScroll(initialXOffset + deltaX, totalWidth);
             track.style.transform = `translate3d(-${scrollXRef.current}px, 0, 0)`;
@@ -173,7 +177,7 @@ export default function Reviews() {
             viewport.removeEventListener('touchend', handleTouchEnd);
             window.removeEventListener('resize', handleResize);
         };
-    }, [comments, getOriginalWidth, updateCardTilts]);
+    }, [safeComments.length, loading, getOriginalWidth, updateCardTilts]);
 
     // Fast single-card slide on arrow click ("prev" / "next")
     const slideByOneCard = (direction) => {
@@ -221,46 +225,58 @@ export default function Reviews() {
     };
 
     const handleFormSubmit = (e) => {
-        e.preventDefault();
-        const trimmedName = name.trim();
-        const trimmedComment = comment.trim();
+        if (e && typeof e.preventDefault === 'function') {
+            e.preventDefault();
+        }
+        const trimmedName = String(name || '').trim();
+        const trimmedComment = String(comment || '').trim();
         if (!trimmedComment) {
             toast.error("Please enter your review!");
             return;
         }
 
-        confetti({
-            particleCount: 90,
-            spread: 75,
-            origin: { y: 0.6 },
-            zIndex: 9999
-        });
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 90,
+                spread: 75,
+                origin: { y: 0.6 },
+                zIndex: 9999
+            });
+        }
 
         dispatch(addComment({ name: trimmedName || 'Anonymous', comment: trimmedComment }));
     };
 
     const renderReviewCard = (item, index, type) => {
+        const safeItem = item && typeof item === 'object' ? item : {};
         const avatarColors = ['#B8D4E3', '#F5B041', '#F7DC6F', '#D7BDE2'];
         const avatarBg = avatarColors[index % avatarColors.length];
-        const formattedDate = item.createdAt
-            ? new Date(item.createdAt).toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-            })
-            : 'Verified Customer';
+        let formattedDate = 'Verified Customer';
+        if (safeItem.createdAt) {
+            const parsedDate = new Date(safeItem.createdAt);
+            if (!Number.isNaN(parsedDate.getTime())) {
+                formattedDate = parsedDate.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            }
+        }
+
+        const displayName = safeItem.name || 'Anonymous';
+        const displayComment = safeItem.comment || safeItem.text || '';
 
         return (
             <div
                 className={`eb-rev-showcase-card ${type === 'orig' ? 'eb-rev-card-original' : 'eb-rev-card-clone'}`}
                 data-orig-index={index}
-                key={`${type}-${item._id || item.id || index}`}
+                key={`${type}-${safeItem._id || safeItem.id || index}`}
             >
                 <div className="eb-rev-card-top-center">
                     <div className="eb-rev-user-avatar" style={{ backgroundColor: avatarBg }}>
-                        <span>{(item.name || 'C').charAt(0).toUpperCase()}</span>
+                        <span>{String(displayName || 'C').charAt(0).toUpperCase()}</span>
                     </div>
-                    <h4 className="eb-rev-card-author">— {item.name || 'Anonymous'}</h4>
+                    <h4 className="eb-rev-card-author">— {displayName}</h4>
                     <span className="eb-rev-user-role">{formattedDate}</span>
                 </div>
 
@@ -275,12 +291,12 @@ export default function Reviews() {
                     <span className="eb-rev-rating-score">5.0</span>
                 </div>
 
-                <p className="eb-rev-card-message">“{item.comment || item.text}”</p>
+                <p className="eb-rev-card-message">“{displayComment}”</p>
             </div>
         );
     };
 
-    const totalComments = comments?.length || 0;
+    const totalComments = safeComments.length;
 
     return (
         <Fragment>
@@ -323,9 +339,9 @@ export default function Reviews() {
                             <div className="eb-rev-feed-track" ref={trackRef}>
                                 {totalComments > 0 ? (
                                     <>
-                                        {comments.map((item, idx) => renderReviewCard(item, idx, 'orig'))}
-                                        {comments.map((item, idx) => renderReviewCard(item, idx, 'clone'))}
-                                        {comments.map((item, idx) => renderReviewCard(item, idx, 'clone2'))}
+                                        {safeComments.map((item, idx) => renderReviewCard(item, idx, 'orig'))}
+                                        {safeComments.map((item, idx) => renderReviewCard(item, idx, 'clone'))}
+                                        {safeComments.map((item, idx) => renderReviewCard(item, idx, 'clone2'))}
                                     </>
                                 ) : (
                                     <p className="eb-rev-empty-msg">No reviews yet. Click "Post" to be the first!</p>
@@ -337,7 +353,7 @@ export default function Reviews() {
                         {totalComments > 0 && (
                             <div className="eb-rev-controls-wrapper">
                                 {/* <div className="eb-rev-dots-indicator" aria-hidden="true">
-                                    {comments.slice(0, Math.min(totalComments, 6)).map((_, idx) => (
+                                    {safeComments.slice(0, Math.min(totalComments, 6)).map((_, idx) => (
                                         <span
                                             key={idx}
                                             className={`eb-rev-indicator-dot ${activeIndex % Math.min(totalComments, 6) === idx ? 'is-active' : ''}`}

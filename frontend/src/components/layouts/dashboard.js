@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchProduct } from '../../actions/searchAction';
 import Loader from '../layouts/loader';
@@ -20,6 +20,7 @@ const defaultAppsData = [
 ];
 
 function shuffleArray(array) {
+    if (!Array.isArray(array)) return [];
     let shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -32,10 +33,14 @@ export default function SearchProduct() {
     const dispatch = useDispatch();
     const [keyword, setKeyword] = useState('');
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+    const debounceTimerRef = useRef(null);
 
-    const searchState = useSelector((state) => state.searchState || state.search);
-    const products = searchState?.products || searchState?.searchProduct || (Array.isArray(searchState) ? searchState : []);
-    const loading = searchState?.loading;
+    const searchState = useSelector((state) => state?.searchState || state?.search);
+    const products = useMemo(() => {
+        const list = searchState?.products || searchState?.searchProduct || (Array.isArray(searchState) ? searchState : []);
+        return Array.isArray(list) ? list : [];
+    }, [searchState]);
+    const loading = Boolean(searchState?.loading);
 
     // Initial load
     useEffect(() => {
@@ -44,25 +49,44 @@ export default function SearchProduct() {
 
     // Auto search on typing with a small debounce delay to optimize requests
     useEffect(() => {
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+        }
+
         const timer = setTimeout(() => {
             dispatch(searchProduct(keyword));
         }, 300);
 
-        return () => clearTimeout(timer);
+        debounceTimerRef.current = timer;
+
+        return () => {
+            clearTimeout(timer);
+            if (debounceTimerRef.current === timer) {
+                debounceTimerRef.current = null;
+            }
+        };
     }, [keyword, dispatch]);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+            debounceTimerRef.current = null;
+        }
         dispatch(searchProduct(keyword));
     };
 
-    const rawData = products && products.length > 0 ? products : defaultAppsData;
+    const rawData = useMemo(() => {
+        return products.length > 0 ? products : defaultAppsData;
+    }, [products]);
 
-    const [shuffledThemes, setShuffledThemes] = useState(colorThemes);
+    const [shuffledThemes, setShuffledThemes] = useState(() => shuffleArray(colorThemes));
 
     useEffect(() => {
         setShuffledThemes(shuffleArray(colorThemes));
     }, [rawData]);
+
+    const activeThemes = Array.isArray(shuffledThemes) && shuffledThemes.length > 0 ? shuffledThemes : colorThemes;
 
     return (
         <div className="workspace-container">
@@ -132,23 +156,26 @@ export default function SearchProduct() {
                 <section className="apps-section">
                     <h2 className="section-label">Products ({rawData.length})</h2>
                     <div className="apps-grid" id="appsGrid">
-                        {rawData.map((app, index) => {
-                            const theme = shuffledThemes[index % shuffledThemes.length] || colorThemes[0];
+                        {rawData.map((item, index) => {
+                            const app = item && typeof item === 'object' ? item : {};
+                            const theme = activeThemes[index % activeThemes.length] || colorThemes[0];
                             const appIcon = app.icon || "M20.38 3.46L16 2a4 4 0 0 1-5.66 0L3.52 8.82a3 3 0 0 0 0 4.24l6.36 6.36a3 3 0 0 0 4.24 0l6.82-6.82a4 4 0 0 1 0-5.66l-.56-.56zM5.64 11.64L11 6.28l1.41 1.41-5.36 5.36-1.41-1.41z";
 
                             const appName = app.name || app.title || 'Product';
-                            const appStock = app.stock !== undefined ? app.stock : 'N/A';
+                            const appStock = app.stock !== undefined && app.stock !== null ? app.stock : 'N/A';
 
                             // Extracting city and phone from app or app.user object
-                            const appCity = app.city || app.user?.city || 'N/A';
-                            const appPhone = app.phone || app.user?.phone || 'N/A';
-                            const userName = app.user?.name || '';
+                            const userObj = app.user && typeof app.user === 'object' ? app.user : {};
+                            const appCity = app.city || userObj.city || 'N/A';
+                            const appPhone = app.phone || userObj.phone || 'N/A';
+                            const userName = userObj.name || '';
                             const cardIndexNum = String(index + 1).padStart(2, '0');
+                            const itemKey = app._id || app.id || `${appName}-${index}`;
 
                             return (
                                 <div
                                     className={`app-card ${index % 2 === 1 ? 'is-right' : 'is-left'}`}
-                                    key={app._id || index}
+                                    key={itemKey}
                                     style={{ '--pin-color': theme.iconBg }}
                                 >
                                     <span className="pin-head" aria-hidden="true"></span>
