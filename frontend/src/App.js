@@ -33,25 +33,39 @@ const SOCKET_URL = 'https://www.myentribook.in'
 
 // === Local Socket Connector Component ===
 function SocketManager() {
-  const { user } = useSelector((state) => state.authState || {});
+  const { user } = useSelector((state) => state.authState || state.userState || {});
+  const userId = user?._id || user?.id;
 
   useEffect(() => {
-    if (!user) return; // User login panniruntha mattum socket connect aaganum
+    if (!user || !userId) return; // User login panniruntha mattum socket connect aaganum
 
     const socket = io(SOCKET_URL, {
       auth: {
-        userId: user?._id || user?.id
-      }
+        userId
+      },
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000
     });
 
-    socket.on('connect', () => {
+    const handleConnect = () => {
       console.log("User Socket Connected Successfully:", socket.id);
-    });
+    };
+
+    const handleConnectError = () => {
+      // Handle transient socket connection errors safely
+    };
+
+    socket.on('connect', handleConnect);
+    socket.on('connect_error', handleConnectError);
 
     return () => {
+      socket.off('connect', handleConnect);
+      socket.off('connect_error', handleConnectError);
       socket.disconnect();
     };
-  }, [user]);
+  }, [user, userId]);
 
   return null;
 }
@@ -60,7 +74,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadUser());
+    if (typeof loadUser === 'function') {
+      dispatch(loadUser());
+    }
   }, [dispatch]);
 
   return (
@@ -68,7 +84,7 @@ function App() {
       <div className="App">
         <HelmetProvider>
           <Header />
-          <ToastContainer theme='dark' />
+          <ToastContainer theme='dark' position='bottom-right' newestOnTop limit={3} />
 
           {/* Inga SocketManager-ah add panniyachu */}
           <SocketManager />

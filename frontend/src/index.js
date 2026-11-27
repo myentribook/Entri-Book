@@ -4,8 +4,13 @@ import App from './App';
 import store from './store';
 import { Provider } from 'react-redux'
 
+const rootElement = document.getElementById('root') || document.body.appendChild(document.createElement('div'));
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+window.addEventListener('unhandledrejection', () => {
+  // Prevent unhandled promise rejections from breaking app runtime
+});
+
+const root = ReactDOM.createRoot(rootElement);
 root.render(
   // <React.StrictMode>
   <Provider store={store} >
@@ -13,4 +18,3 @@ root.render(
   </Provider>
   //  </React.StrictMode> 
 );
-

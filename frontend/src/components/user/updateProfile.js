@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { clearUpdateProfile } from '../../slices/authSlice';
 
 export default function UpdateProfile() {
-    const { error, user, isUpdated } = useSelector(state => state.authState);
+    const { error, user, isUpdated } = useSelector(state => state.authState || {});
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -21,44 +21,102 @@ export default function UpdateProfile() {
             setName(user.name || "");
             setEmail(user.email || "");
             setGstin(user.gstin || "");
-            if (user.avatar) {
-                setAvatarPreview(user.avatar);
+            if (typeof user.avatar === 'string' && user.avatar.trim() !== "") {
+                setAvatarPreview(user.avatar.trim());
+            } else {
+                setAvatarPreview("/images/default_avatar.jpg");
             }
         }
     }, [user]);
 
     useEffect(() => {
+        let isMounted = true;
+
         if (isUpdated) {
-            toast.success('Profile updated successfully', { position: 'bottom-right' });
-            dispatch(clearUpdateProfile());
+            if (isMounted) {
+                toast.success('Profile updated successfully', {
+                    id: 'update-profile-success',
+                    position: 'bottom-right'
+                });
+            }
+            if (typeof clearUpdateProfile === 'function') {
+                dispatch(clearUpdateProfile());
+            } else {
+                dispatch(clearUpdateProfile);
+            }
             return;
         }
         if (error) {
-            toast.error(error, { position: 'bottom-right' });
-            dispatch(clearAuthError());
+            const errText =
+                typeof error === 'object' && error !== null
+                    ? (error.message || 'Profile update failed. Please try again.')
+                    : String(error);
+
+            if (isMounted && errText) {
+                toast.error(errText, {
+                    id: 'update-profile-error',
+                    position: 'bottom-right'
+                });
+            }
+
+            if (typeof clearAuthError === 'function') {
+                dispatch(clearAuthError());
+            } else {
+                dispatch(clearAuthError);
+            }
             return;
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [isUpdated, error, dispatch]);
 
     const onChangeAvatar = (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) {
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = () => {
-            if (reader.readyState === 2) {
+            if (reader.readyState === 2 && typeof reader.result === 'string') {
                 setAvatarPreview(reader.result);
-                setAvatar(e.target.files[0]);
+                setAvatar(file);
             }
         };
-        if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0]);
+        reader.onerror = () => {
+            toast.error("Failed to read selected image.", {
+                id: 'update-profile-avatar-error',
+                position: 'bottom-right'
+            });
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleAvatarError = (e) => {
+        if (e.currentTarget.src !== window.location.origin + '/images/default_avatar.jpg') {
+            setAvatarPreview('/images/default_avatar.jpg');
         }
     };
 
     const submitHandler = (e) => {
         e.preventDefault();
+
+        const trimmedName = name.trim();
+        const trimmedEmail = email.trim();
+        if (!trimmedName || !trimmedEmail) {
+            toast.error("Please enter both full name and email address.", {
+                id: 'update-profile-required-error',
+                position: 'bottom-right'
+            });
+            return;
+        }
+
         const formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('gstin', gstin);
+        formData.append('name', trimmedName);
+        formData.append('email', trimmedEmail);
+        formData.append('gstin', gstin.trim());
         if (avatar) {
             formData.append('avatar', avatar);
         }
@@ -92,12 +150,14 @@ export default function UpdateProfile() {
                                     src={avatarPreview}
                                     className="rounded-circle"
                                     alt="Avatar Preview"
+                                    onError={handleAvatarError}
                                 />
                             </figure>
                             <div className="custom-file">
                                 <input
                                     type="file"
                                     name="avatar"
+                                    accept="image/*"
                                     className="custom-file-input"
                                     id="customFile"
                                     onChange={onChangeAvatar}
@@ -110,38 +170,43 @@ export default function UpdateProfile() {
                         </div>
 
                         <div className="pc-form-group">
-                            <label>FULL NAME</label>
+                            <label htmlFor="update-profile-name">FULL NAME</label>
                             <div className="pc-input-wrapper">
                                 <i className="fa-regular fa-user"></i>
                                 <input
+                                    id="update-profile-name"
                                     type="text"
                                     value={name}
                                     onChange={e => setName(e.target.value)}
                                     className="pc-input"
                                     placeholder="Enter your name"
+                                    required
                                 />
                             </div>
                         </div>
 
                         <div className="pc-form-group">
-                            <label>EMAIL ADDRESS</label>
+                            <label htmlFor="update-profile-email">EMAIL ADDRESS</label>
                             <div className="pc-input-wrapper">
                                 <i className="fa-regular fa-envelope"></i>
                                 <input
+                                    id="update-profile-email"
                                     type="email"
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
                                     className="pc-input"
                                     placeholder="name@business.com"
+                                    required
                                 />
                             </div>
                         </div>
 
                         <div className="pc-form-group">
-                            <label>GSTIN NUMBER</label>
+                            <label htmlFor="update-profile-gstin">GSTIN NUMBER</label>
                             <div className="pc-input-wrapper">
                                 <i className="fa-solid fa-percent"></i>
                                 <input
+                                    id="update-profile-gstin"
                                     type="text"
                                     value={gstin}
                                     onChange={e => setGstin(e.target.value)}

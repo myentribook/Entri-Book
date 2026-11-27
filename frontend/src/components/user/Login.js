@@ -13,22 +13,43 @@ export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { loading, error, isAuthenticated } = useSelector(state => state.authState);
+    const { loading, error, isAuthenticated } = useSelector(state => state.authState || {});
 
     useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/');
+        let isMounted = true;
+
+        if (isAuthenticated && isMounted) {
+            navigate('/', { replace: true });
         }
 
         if (error) {
-            toast.error(error, { position: 'bottom-right' });
-            dispatch(clearAuthError());
+            const errText =
+                typeof error === 'object' && error !== null
+                    ? (error.message || 'Login failed. Please try again.')
+                    : String(error);
+
+            if (isMounted && errText) {
+                toast.error(errText, { id: 'login-error', position: 'bottom-right' });
+            }
+
+            if (typeof clearAuthError === 'function') {
+                dispatch(clearAuthError());
+            } else {
+                dispatch(clearAuthError);
+            }
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [isAuthenticated, error, navigate, dispatch]); 
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(login(email, password));
+        if (loading) return;
+
+        const trimmedEmail = email.trim();
+        dispatch(login(trimmedEmail, password));
     };
 
     return (
@@ -49,31 +70,36 @@ export default function Login() {
 
                     <form onSubmit={submitHandler}>
                         <div className="ka-input-group">
-                            <label>EMAIL ID</label>
+                            <label htmlFor="login-email">EMAIL ID</label>
                             <div className="ka-input-wrapper">
                                 <span className="ka-input-icon-badge" aria-hidden="true">
                                     <i className="fa-regular fa-envelope"></i>
                                 </span>
                                 <input
+                                    id="login-email"
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="name@business.com"
+                                    autoComplete="username"
+                                    required
                                 />
                             </div>
                         </div>
                         <div className="ka-input-group">
-                            <label>PASSWORD</label>
+                            <label htmlFor="login-password">PASSWORD</label>
                             <div className="ka-input-wrapper">
                                 <span className="ka-input-icon-badge" aria-hidden="true">
                                     <i className="fa-solid fa-lock"></i>
                                 </span>
                                 <input
+                                    id="login-password"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
                                     autoComplete="current-password"
+                                    required
                                 />
                             </div>
                         </div>

@@ -13,20 +13,34 @@ export default function ResetPassword() {
     const navigate = useNavigate();
     const { token } = useParams();
     
-    const { isAuthenticated, error, loading } = useSelector(state => state.authState);
+    const { isAuthenticated, error, loading } = useSelector(state => state.authState || {});
 
     const submitHandler = (e) => {
         e.preventDefault();
         
         if (loading) return;
 
+        if (!token || typeof token !== 'string' || !token.trim()) {
+            toast.error("Invalid or missing reset token.", {
+                id: 'reset-password-token-error',
+                position: 'bottom-right'
+            });
+            return;
+        }
+
         if (password.length < 6) {
-            toast.error("Password must be at least 6 characters", { position: 'bottom-right' });
+            toast.error("Password must be at least 6 characters", {
+                id: 'reset-password-length-error',
+                position: 'bottom-right'
+            });
             return;
         }
         
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match", { position: 'bottom-right' });
+            toast.error("Passwords do not match", {
+                id: 'reset-password-mismatch-error',
+                position: 'bottom-right'
+            });
             return;
         }
 
@@ -39,15 +53,39 @@ export default function ResetPassword() {
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
-            toast.success('Password reset successfully', { position: 'bottom-right' });
-            navigate('/');
+        let isMounted = true;
+
+        if (isAuthenticated && isMounted) {
+            toast.success('Password reset successfully', {
+                id: 'reset-password-success',
+                position: 'bottom-right'
+            });
+            navigate('/', { replace: true });
         }
 
         if (error) {
-            toast.error(error, { position: 'bottom-right' });
-            dispatch(clearAuthError()); 
+            const errText =
+                typeof error === 'object' && error !== null
+                    ? (error.message || 'Password reset failed. Please try again.')
+                    : String(error);
+
+            if (isMounted && errText) {
+                toast.error(errText, {
+                    id: 'reset-password-error',
+                    position: 'bottom-right'
+                });
+            }
+
+            if (typeof clearAuthError === 'function') {
+                dispatch(clearAuthError());
+            } else {
+                dispatch(clearAuthError);
+            }
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [isAuthenticated, error, dispatch, navigate]);
 
     return (
@@ -73,34 +111,38 @@ export default function ResetPassword() {
 
                     <form onSubmit={submitHandler}>
                         <div className="input-group">
-                            <label>PASSWORD</label>
+                            <label htmlFor="reset-new-password">PASSWORD</label>
                             <div className="reset-input-wrapper">
                                 <span className="reset-input-icon-badge" aria-hidden="true">
                                     <i className="fa-solid fa-lock"></i>
                                 </span>
                                 <input 
+                                    id="reset-new-password"
                                     type="password" 
                                     className="reset-input" 
                                     placeholder="••••••••"
                                     value={password} 
                                     onChange={e => setPassword(e.target.value)} 
+                                    autoComplete="new-password"
                                     required 
                                 />
                             </div>
                         </div>
 
                         <div className="input-group">
-                            <label>CONFIRM PASSWORD</label>
+                            <label htmlFor="reset-confirm-password">CONFIRM PASSWORD</label>
                             <div className="reset-input-wrapper">
                                 <span className="reset-input-icon-badge" aria-hidden="true">
                                     <i className="fa-solid fa-key"></i>
                                 </span>
                                 <input 
+                                    id="reset-confirm-password"
                                     type="password" 
                                     className="reset-input" 
                                     placeholder="••••••••"
                                     value={confirmPassword} 
                                     onChange={e => setConfirmPassword(e.target.value)} 
+                                    autoComplete="new-password"
                                     required 
                                 />
                             </div>

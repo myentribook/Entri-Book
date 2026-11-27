@@ -9,10 +9,19 @@ export default function UpdatePassword() {
     const [password, setPassword] = useState("")
     const [oldPassword, setOldPassword] = useState("")
     const dispatch = useDispatch()
-    const { isUpdated, error } = useSelector(state => state.authState)
+    const { isUpdated, error } = useSelector(state => state.authState || {})
 
     const submitHandler = (e) => {
         e.preventDefault()
+
+        if (!oldPassword || !password) {
+            toast.error("Please enter both current and new password.", {
+                id: 'update-password-required-error',
+                position: 'bottom-right'
+            });
+            return;
+        }
+
         const formData = new FormData();
 
         formData.append('oldPassword', oldPassword)
@@ -22,20 +31,44 @@ export default function UpdatePassword() {
     }
 
     useEffect(() => {
+        let isMounted = true;
+
         if (isUpdated) {
-            toast.success('Password updated successfully', { position: 'bottom-right' });
-            setOldPassword("")
-            setPassword('')
+            if (isMounted) {
+                toast.success('Password updated successfully', {
+                    id: 'update-password-success',
+                    position: 'bottom-right'
+                });
+                setOldPassword("")
+                setPassword('')
+            }
             return
         }
 
         if (error) {
-            toast.error(error, { 
-                position: 'bottom-right', 
-                onOpen: () => { dispatch(clearAuthError()) } 
-            });
+            const errText =
+                typeof error === 'object' && error !== null
+                    ? (error.message || 'Password update failed. Please try again.')
+                    : String(error);
+
+            if (isMounted && errText) {
+                toast.error(errText, {
+                    id: 'update-password-error',
+                    position: 'bottom-right'
+                });
+            }
+
+            if (typeof clearAuthError === 'function') {
+                dispatch(clearAuthError());
+            } else {
+                dispatch(clearAuthError);
+            }
             return
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [isUpdated, error, dispatch])
 
     return (
@@ -69,6 +102,8 @@ export default function UpdatePassword() {
                                     placeholder="••••••••"
                                     value={oldPassword}
                                     onChange={e => setOldPassword(e.target.value)}
+                                    autoComplete="current-password"
+                                    required
                                 />
                             </div>
                         </div>
@@ -86,6 +121,8 @@ export default function UpdatePassword() {
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
+                                    autoComplete="new-password"
+                                    required
                                 />
                             </div>
                         </div>

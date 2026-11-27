@@ -14,54 +14,89 @@ export default function Register() {
     const [avatarPreview, setAvatarPreview] = useState("/images/default_avatar.jpg");
     const navigate = useNavigate();
 
-    const { loading, error, isRegistered } = useSelector(state => state.authState);
+    const { loading, error, isRegistered } = useSelector(state => state.authState || {});
     const dispatch = useDispatch();
 
     const onChange = (e) => {
         if (e.target.name === 'avatar') {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
             const reader = new FileReader();
             reader.onload = () => {
-                if (reader.readyState === 2) {
+                if (reader.readyState === 2 && typeof reader.result === 'string') {
                     setAvatarPreview(reader.result);
-                    setAvatar(e.target.files[0]);
+                    setAvatar(file);
                 }
             };
-            reader.readAsDataURL(e.target.files[0]);
+            reader.onerror = () => {
+                toast.error("Failed to read selected image.", {
+                    id: 'register-avatar-error',
+                    position: 'bottom-right'
+                });
+            };
+            reader.readAsDataURL(file);
         } else {
-            setUserData({ ...userData, [e.target.name]: e.target.value });
+            const { name, value } = e.target;
+            setUserData((prev) => ({ ...prev, [name]: value }));
         }
     };
 
     const submitHandler = (e) => {
         e.preventDefault();
+        if (loading) return;
+
         const formData = new FormData();
-        formData.append('name', userData.name);
-        formData.append('email', userData.email);
+        formData.append('name', userData.name.trim());
+        formData.append('email', userData.email.trim());
         formData.append('password', userData.password);
-        formData.append('city', userData.city);
-        formData.append('phone', userData.phone);
-        formData.append('avatar', avatar);
-        formData.append('gstin', userData.gstin);
+        formData.append('city', userData.city.trim());
+        formData.append('phone', userData.phone.trim());
+        if (avatar) {
+            formData.append('avatar', avatar);
+        }
+        formData.append('gstin', userData.gstin.trim());
 
         dispatch(register(formData));
     };
 
     useEffect(() => {
+        let isMounted = true;
+
         if (isRegistered) {
-            toast.success("Registration Successful! Please login.", {
-                position: 'bottom-right'
-            });
-            navigate('/login');
+            if (isMounted) {
+                toast.success("Registration Successful! Please login.", {
+                    id: 'register-success',
+                    position: 'bottom-right'
+                });
+                navigate('/login', { replace: true });
+            }
             return;
         }
 
         if (error) {
-            toast.error(error, {
-                position: 'bottom-right'
-            });
-            dispatch(clearAuthError());
-            return;
+            const errText =
+                typeof error === 'object' && error !== null
+                    ? (error.message || 'Registration failed. Please try again.')
+                    : String(error);
+
+            if (isMounted && errText) {
+                toast.error(errText, {
+                    id: 'register-error',
+                    position: 'bottom-right'
+                });
+            }
+
+            if (typeof clearAuthError === 'function') {
+                dispatch(clearAuthError());
+            } else {
+                dispatch(clearAuthError);
+            }
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [error, dispatch, isRegistered, navigate]);
 
     return (
@@ -166,6 +201,7 @@ export default function Register() {
                                         <input
                                             type="file"
                                             name="avatar"
+                                            accept="image/*"
                                             onChange={onChange}
                                             className="custom-file-inputs"
                                             id="customFile"

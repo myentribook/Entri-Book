@@ -11,7 +11,7 @@ export default function Home() {
   const dispatch = useDispatch();
 
   const { isAuthenticated, loading: authLoading, user } = useSelector((state) => state.authState || state.userState || {});
-  const { report, loading, error } = useSelector((state) => state.dashboardState);
+  const { report, loading, error } = useSelector((state) => state.dashboardState || {});
 
   // App Install / Download State
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -35,10 +35,17 @@ export default function Home() {
       setIsInstallable(true);
     };
 
+    const handleAppInstalled = () => {
+      setDeferredPrompt(null);
+      setIsInstallable(false);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);
 
@@ -49,12 +56,26 @@ export default function Home() {
       // toast.success("App browser menu via-va 'Add to Home Screen' pannalaam!");
       return;
     }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setIsInstallable(false);
+
+    try {
+      if (typeof deferredPrompt.prompt === 'function') {
+        deferredPrompt.prompt();
+      }
+      const choiceResult = deferredPrompt.userChoice ? await deferredPrompt.userChoice : null;
+      if (choiceResult?.outcome === 'accepted') {
+        setIsInstallable(false);
+      }
+    } catch {
+      // Ignore prompt rejection or unsupported browser errors safely
+    } finally {
+      setDeferredPrompt(null);
     }
-    setDeferredPrompt(null);
+  };
+
+  const handleLogoError = (e) => {
+    if (e.currentTarget.src !== window.location.origin + '/images/default_avatar.jpg') {
+      e.currentTarget.style.display = 'none';
+    }
   };
 
   const dashboardData = [
@@ -119,7 +140,7 @@ export default function Home() {
             <h2 className="upi-title">Business Suite</h2>
 
             <div className="upi-grid">
-              <Link style={{ textDecoration: 'none' }} to="/billing" type="button" className="upi-btn" aria-label="Sales and Billing">
+              <Link style={{ textDecoration: 'none' }} to="/billing" className="upi-btn" aria-label="Sales and Billing">
                 <div className="icon-circle"><i className="fa-solid fa-receipt"></i></div>
                 <span className="upi-label">Sales<br />& Billing</span>
               </Link>
@@ -129,12 +150,12 @@ export default function Home() {
                 <span className="upi-label">Products<br />& Stock</span>
               </Link>
 
-              <Link to="/credit" type="button" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
+              <Link to="/credit" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Credit Ledger">
                 <div className="icon-circle"><i className="fa-solid fa-address-book"></i></div>
                 <span className="upi-label">Credit<br /> Ledger</span>
               </Link>
 
-              <Link to="/purchase" style={{ textDecoration: 'none' }} type="button" className="upi-btn" aria-label="Purchase Management">
+              <Link to="/purchase" style={{ textDecoration: 'none' }} className="upi-btn" aria-label="Purchase Management">
                 <div className="icon-circle"><i className="fa-solid fa-dolly"></i></div>
                 <span className="upi-label">Purchase <br /> Management</span>
               </Link>
@@ -148,20 +169,20 @@ export default function Home() {
             <div className="Explore-guidelines">
               <div className="upi-grid">
 
-                <Link to="/search/product" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Search Products">
-                  <div className="icon-circles"><i class="fa-solid fa-barcode"></i></div>
+                <Link to="/search/product" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Search Products">
+                  <div className="icon-circles"><i className="fa-solid fa-barcode"></i></div>
                   <span className="upi-label">Search Products</span>
                   <span className="upi-sublabel">Find items</span>
                 </Link>
 
-                <Link to="/privacy" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Terms & Conditions">
-                  <div className="icon-circles"><i class="fa-solid fa-clipboard-list"></i></div>
+                <Link to="/privacy" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Terms & Conditions">
+                  <div className="icon-circles"><i className="fa-solid fa-clipboard-list"></i></div>
                   <span className="upi-label">Terms & Conditions</span>
                   <span className="upi-sublabel">Policies & rules</span>
                 </Link>
 
-                <Link to="/review" style={{ textDecoration: 'none' }} type="button" className="upi-btns" aria-label="Comment and Reviews">
-                  <div className="icon-circles"><i class="fa-solid fa-star-half-stroke"></i></div>
+                <Link to="/review" style={{ textDecoration: 'none' }} className="upi-btns" aria-label="Comment and Reviews">
+                  <div className="icon-circles"><i className="fa-solid fa-star-half-stroke"></i></div>
                   <span className="upi-label">Comment & Reviews</span>
                   <span className="upi-sublabel">User feedback</span>
                 </Link>
@@ -174,7 +195,7 @@ export default function Home() {
             <h2 className="upi-title"><i className="fa-solid fa-chart-column" style={{ color: '#0d4b82', marginRight: "10px", fontWeight: 'bold' }}></i> Business Overview</h2>
             <div className="dashboard-grid">
               {dashboardData.map((card, index) => (
-                <div key={index} className="card-wrapper">
+                <div key={card.title || index} className="card-wrapper">
                   <div className="overview-badge" style={{ backgroundColor: card.bg, color: card.color }}>
                     <i className={`fa-solid ${card.icon}`}></i>
                   </div>
@@ -196,7 +217,7 @@ export default function Home() {
                 <div className="refer-desc">Install Entri Book app on your device.</div>
 
                 {/* Refer Link replaced with App Download Button */}
-                <button onClick={handleInstallClick} className="refer-link" style={{ border: 'none', cursor: 'pointer' }}>
+                <button type="button" onClick={handleInstallClick} className="refer-link" style={{ border: 'none', cursor: 'pointer' }}>
                   <i className="fa-solid fa-download" style={{ marginRight: "8px" }}></i>
                   Download App
                 </button>
@@ -225,6 +246,7 @@ export default function Home() {
                     src="/Logo512.png"
                     alt="Entri Book"
                     className="footer-heading-logo"
+                    onError={handleLogoError}
                   />
                 </div>
                 <div className="footer-meta-text">

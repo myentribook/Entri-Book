@@ -8,28 +8,56 @@ export default function ForgotPassword() {
     const [email, setEmail] = useState("");
     const dispatch = useDispatch();
     
-    const { loading, error, message } = useSelector(state => state.authState);
+    const { loading, error, message } = useSelector(state => state.authState || {});
 
     const submitHandler = (e) => {
         e.preventDefault();
+        if (loading) return;
+
+        const trimmedEmail = email.trim();
+        if (!trimmedEmail) return;
+
         const formData = new FormData();
-        formData.append('email', email);
+        formData.append('email', trimmedEmail);
         
         dispatch(forgotPassword(formData));
     };
 
     useEffect(() => {
+        let isMounted = true;
+
         if (message) {
-            const msgText = (typeof message === 'object' && message.message) ? message.message : message;
-            toast.success(msgText, { position: 'bottom-right' });
-            setEmail("");
+            const msgText =
+                typeof message === 'object' && message !== null
+                    ? (message.message || 'Reset link sent successfully.')
+                    : String(message);
+
+            if (isMounted && msgText) {
+                toast.success(msgText, { id: 'forgot-password-success', position: 'bottom-right' });
+                setEmail("");
+            }
         }
 
         if (error) {
-            const errText = (typeof error === 'object' && error.message) ? error.message : error;
-            toast.error(errText, { position: 'bottom-right' });
-            dispatch(clearAuthError); 
+            const errText =
+                typeof error === 'object' && error !== null
+                    ? (error.message || 'Something went wrong. Please try again.')
+                    : String(error);
+
+            if (isMounted && errText) {
+                toast.error(errText, { id: 'forgot-password-error', position: 'bottom-right' });
+            }
+
+            if (typeof clearAuthError === 'function') {
+                dispatch(clearAuthError());
+            } else {
+                dispatch(clearAuthError);
+            }
         }
+
+        return () => {
+            isMounted = false;
+        };
     }, [message, error, dispatch]);
 
     return (
@@ -53,12 +81,13 @@ export default function ForgotPassword() {
 
                     <form onSubmit={submitHandler}>
                         <div className="auth-v9-group">
-                            <label className="auth-v9-label">EMAIL ID</label>
+                            <label htmlFor="forgot-password-email" className="auth-v9-label">EMAIL ID</label>
                             <div className="auth-v9-input-wrapper">
                                 <span className="auth-v9-input-icon-badge" aria-hidden="true">
                                     <i className="fa-regular fa-envelope"></i>
                                 </span>
                                 <input
+                                    id="forgot-password-email"
                                     type="email"
                                     className="auth-v9-input"
                                     placeholder="name@business.com"

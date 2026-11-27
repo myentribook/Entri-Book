@@ -64,6 +64,14 @@ const reducer = combineReducers({
 
 const store = configureStore({
   reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['auth/registerRequest', 'auth/updateProfileRequest', 'auth/updatePasswordRequest'],
+        ignoredActionPaths: ['payload', 'meta.arg'],
+      },
+    }),
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;

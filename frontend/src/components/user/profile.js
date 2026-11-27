@@ -5,7 +5,7 @@ import Loader from '../layouts/loader';
 import '../styles/profile.css';
 
 export default function Profile() {
-    const { user, loading } = useSelector((state) => state.authState);
+    const { user, loading } = useSelector((state) => state.authState || {});
     const [menuOpen, setMenuOpen] = useState(false);
     const menuContainerRef = useRef(null);
 
@@ -41,18 +41,36 @@ export default function Profile() {
         return <div className="profile-page-wrapper">No profile data available.</div>;
     }
 
-    const joinedDate = user.createdAt
-        ? new Date(user.createdAt).toLocaleDateString('en-IN', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-          })
-        : 'N/A';
+    const parsedDate = user.createdAt ? new Date(user.createdAt) : null;
+    const joinedDate =
+        parsedDate && !Number.isNaN(parsedDate.getTime())
+            ? parsedDate.toLocaleDateString('en-IN', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+              })
+            : 'N/A';
 
     const avatarSrc =
-        user.avatar && user.avatar.trim() !== ''
-            ? user.avatar
+        typeof user.avatar === 'string' && user.avatar.trim() !== ''
+            ? user.avatar.trim()
             : '/images/default_avatar.jpg';
+
+    const displayName =
+        typeof user.name === 'string' && user.name.trim() !== ''
+            ? user.name
+            : 'User';
+
+    const gstinValue =
+        typeof user.gstin === 'string' && user.gstin.trim() !== ''
+            ? user.gstin.trim()
+            : '';
+
+    const handleAvatarError = (event) => {
+        if (event.currentTarget.src !== window.location.origin + '/images/default_avatar.jpg') {
+            event.currentTarget.src = '/images/default_avatar.jpg';
+        }
+    };
 
     return (
         <div className="profile-page-wrapper">
@@ -63,15 +81,16 @@ export default function Profile() {
                         <div className="contact-avatar-ring">
                             <img
                                 src={avatarSrc}
-                                alt={user.name || 'User Avatar'}
+                                alt={displayName || 'User Avatar'}
                                 className="contact-avatar-img"
+                                onError={handleAvatarError}
                             />
                         </div>
 
                         <div className="contact-hero-meta">
-                            <h3 className="contact-user-name">{user.name}</h3>
+                            <h3 className="contact-user-name">{displayName}</h3>
                             <p className="contact-user-role">
-                                {user.gstin ? `GSTIN • ${user.gstin}` : 'Standard Account'}
+                                {gstinValue ? `GSTIN • ${gstinValue}` : 'Standard Account'}
                             </p>
                         </div>
                     </div>
@@ -121,7 +140,7 @@ export default function Profile() {
                             </div>
                             <span className="contact-detail-label">Personal Data</span>
                         </div>
-                        <span className="contact-detail-value">{user.email}</span>
+                        <span className="contact-detail-value">{user.email || 'N/A'}</span>
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </div>
 
@@ -143,7 +162,7 @@ export default function Profile() {
                             <span className="contact-detail-label">GSTIN / Tax Status</span>
                         </div>
                         <span className="contact-detail-value">
-                            {user.gstin ? `${user.gstin} (Active)` : 'Not Added'}
+                            {gstinValue ? `${gstinValue} (Active)` : 'Not Added'}
                         </span>
                         <i className="fa-solid fa-chevron-right contact-row-chevron" aria-hidden="true"></i>
                     </div>
