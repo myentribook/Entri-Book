@@ -5,6 +5,8 @@ const APIFeature = require('../utils/apiFeature');
 const ErrorHandler = require('../utils/ErrorHandler');
 const productModel = require('../models/productModel');
 
+const roundMoney = (val) => Math.round((Number(val) + Number.EPSILON) * 100) / 100;
+
 // GET ALL PURCHASES (Restricted to logged-in user)
 exports.getPurchase = catchAsyncError(async (req, res, next) => {
     const apiFeatures = new APIFeature(
@@ -25,20 +27,7 @@ exports.getPurchase = catchAsyncError(async (req, res, next) => {
 exports.createPurchase = catchAsyncError(async (req, res, next) => {
     const { supplierName, supplierBillNo, items } = req.body;
 
-    // console.log("\n");
-    // console.log("==================================================");
-    // console.log("🟢 CREATE PURCHASE API STARTED");
-    // console.log("==================================================");
-    // console.log("Supplier Name:", supplierName);
-    // console.log("Supplier Bill No:", supplierBillNo);
-    // console.log("Number of Items:", items?.length);
-    // console.log("Request Items:", JSON.stringify(items, null, 2));
-    // console.log("==================================================");
-
-    // --------------------------------------------------
-    // VALIDATE ITEMS
-    // --------------------------------------------------
-    if (!items || items.length === 0) {
+    if (!Array.isArray(items) || items.length === 0) {
         console.log("❌ ERROR: No items provided");
         return next(
             new ErrorHandler("No items provided for purchase", 400)
@@ -49,44 +38,20 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
     const purchaseItems = [];
     const bulkOps = [];
 
-    // --------------------------------------------------
-    // PROCESS EACH PURCHASE ITEM
-    // --------------------------------------------------
     for (const item of items) {
-
-        // console.log("\n");
-        // console.log("--------------------------------------------------");
-        // console.log("📦 PROCESSING PURCHASE ITEM");
-        // console.log("--------------------------------------------------");
-        // console.log("Product ID:", item.product);
-        // console.log("Incoming Quantity:", item.quantity);
-        // console.log("Incoming Purchase Price:", item.purchasePrice);
-        // console.log("Incoming Conversion Factor:", item.conversionFactor);
-
-        // --------------------------------------------------
-        // CHECK PRODUCT ID
-        // --------------------------------------------------
-        if (!mongoose.Types.ObjectId.isValid(item.product)) {
-
-            console.log("❌ INVALID PRODUCT ID:", item.product);
-
+        if (!item || !mongoose.Types.ObjectId.isValid(item.product)) {
+            console.log("❌ INVALID PRODUCT ID:", item && item.product);
             return next(
                 new ErrorHandler(`Invalid Product ID format`, 400)
             );
         }
 
-        // --------------------------------------------------
-        // FIND PRODUCT
-        // --------------------------------------------------
         const product = await productModel.findOne({
             _id: item.product,
             user: req.user.id
         });
 
         if (!product) {
-
-            // console.log("❌ PRODUCT NOT FOUND:", item.product);
-
             return next(
                 new ErrorHandler(
                     `Product not found with ID: ${item.product}`,
@@ -95,43 +60,19 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             );
         }
 
-        // --------------------------------------------------
-        // GET VALUES
-        // --------------------------------------------------
         const qty = Number(item.quantity);
         const price = Number(item.purchasePrice);
 
-        const cf = Number(
-            item.conversionFactor ||
-            product.conversionFactor ||
-            1
+        const rawCf = Number(
+            item.conversionFactor !== undefined && item.conversionFactor !== null && item.conversionFactor !== ""
+                ? item.conversionFactor
+                : (product.conversionFactor || 1)
         );
+        const cf = Number.isFinite(rawCf) && rawCf > 0 ? rawCf : (product.conversionFactor || 1);
 
-        // --------------------------------------------------
-        // 🔥 STOCK DEBUG - BEFORE UPDATE
-        // --------------------------------------------------
-        // console.log("\n");
-        // console.log("🔍 STOCK DEBUG - BEFORE UPDATE");
-        // console.log("--------------------------------------------------");
-        // console.log("Product Name:", product.name);
-        // console.log("Product ID:", product._id.toString());
-        // console.log("OLD STOCK:", product.stock);
-        // console.log("PURCHASE QTY:", qty);
-        // console.log("CONVERSION FACTOR:", cf);
-        // console.log("PURCHASE PRICE:", price);
+        const expectedStock = Number(product.stock || 0) + qty;
 
-        const expectedStock = Number(product.stock) + qty;
-
-        // console.log("EXPECTED NEW STOCK:", expectedStock);
-        // console.log("--------------------------------------------------");
-
-        // --------------------------------------------------
-        // VALIDATE QUANTITY
-        // --------------------------------------------------
-        if (!qty || qty <= 0) {
-
-            // console.log("❌ INVALID QUANTITY:", qty);
-
+        if (!Number.isFinite(qty) || qty <= 0) {
             return next(
                 new ErrorHandler(
                     `Invalid quantity for ${product.name}`,
@@ -140,13 +81,7 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             );
         }
 
-        // --------------------------------------------------
-        // VALIDATE PRICE
-        // --------------------------------------------------
-        if (!price || price <= 0) {
-
-            // console.log("❌ INVALID PURCHASE PRICE:", price);
-
+        if (!Number.isFinite(price) || price <= 0) {
             return next(
                 new ErrorHandler(
                     `Invalid price for ${product.name}`,
@@ -155,19 +90,9 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             );
         }
 
-        // --------------------------------------------------
-        // CALCULATE TOTAL
-        // --------------------------------------------------
-        const totalAmount = qty * price;
+        const totalAmount = roundMoney(qty * price);
+        grandTotal = roundMoney(grandTotal + totalAmount);
 
-        grandTotal += totalAmount;
-
-        // console.log("TOTAL AMOUNT:", totalAmount);
-        // console.log("CURRENT GRAND TOTAL:", grandTotal);
-
-        // --------------------------------------------------
-        // CREATE PURCHASE ITEM
-        // --------------------------------------------------
         purchaseItems.push({
             product: product._id,
             quantity: qty,
@@ -176,9 +101,6 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
             totalAmount
         });
 
-        // --------------------------------------------------
-        // PREPARE STOCK UPDATE
-        // --------------------------------------------------
         bulkOps.push({
             updateOne: {
                 filter: {
@@ -186,99 +108,38 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
                     user: req.user.id
                 },
                 update: {
-                    // 🔥 THIS ADDS PURCHASE QTY TO EXISTING STOCK
                     $inc: {
                         stock: qty
                     },
-
                     $set: {
                         conversionFactor: cf
                     }
                 }
             }
         });
-
-        // console.log("\n");
-        // console.log("🛠️ BULK OPERATION CREATED");
-        // console.log("Product:", product.name);
-        // console.log("Operation: stock += qty");
-        // console.log("Old Stock:", product.stock);
-        // console.log("Quantity Added:", qty);
-        // console.log("Expected Stock After Update:", expectedStock);
-        // console.log("--------------------------------------------------");
     }
-
-    // --------------------------------------------------
-    // BULK STOCK UPDATE
-    // --------------------------------------------------
-    // console.log("\n");
-    // console.log("==================================================");
-    // console.log("🚀 STARTING BULK STOCK UPDATE");
-    // console.log("==================================================");
-    // console.log("Total Bulk Operations:", bulkOps.length);
 
     if (bulkOps.length > 0) {
-
         const bulkResult = await productModel.bulkWrite(bulkOps);
-
-        // console.log("\n");
-        // console.log("✅ BULK WRITE COMPLETED");
-        // console.log("--------------------------------------------------");
-        // console.log("Matched Count:", bulkResult.matchedCount);
-        // console.log("Modified Count:", bulkResult.modifiedCount);
-        // console.log("--------------------------------------------------");
-
     } else {
-
         console.log("⚠️ NO BULK OPERATIONS FOUND");
-
     }
 
-    // --------------------------------------------------
-    // 🔥 VERIFY STOCK AFTER BULK WRITE
-    // --------------------------------------------------
-    // console.log("\n");
-    // console.log("==================================================");
-    // console.log("🔍 VERIFYING STOCK AFTER BULK WRITE");
-    // console.log("==================================================");
-
     for (const item of items) {
-
         const verifyProduct = await productModel.findOne({
             _id: item.product,
             user: req.user.id
         });
 
         if (verifyProduct) {
-
-            // console.log("\n");
-            // console.log("📊 STOCK VERIFICATION");
-            // console.log("--------------------------------------------------");
-            // console.log("Product:", verifyProduct.name);
-            // console.log("Product ID:", verifyProduct._id.toString());
-            // console.log("CURRENT DATABASE STOCK:", verifyProduct.stock);
-            // console.log("Purchase Quantity:", Number(item.quantity));
-            // console.log("--------------------------------------------------");
-
+            // Verified product exists for user
         } else {
-
             console.log(
                 "❌ Could not find product while verifying:",
                 item.product
             );
-
         }
     }
-
-    // --------------------------------------------------
-    // CREATE PURCHASE RECORD
-    // --------------------------------------------------
-    // console.log("\n");
-    // console.log("==================================================");
-    // console.log("💾 CREATING PURCHASE RECORD");
-    // console.log("==================================================");
-    // console.log("Grand Total:", grandTotal);
-    // console.log("Purchase Items:", JSON.stringify(purchaseItems, null, 2));
 
     const purchase = await purchaseModel.create({
         supplierName,
@@ -291,15 +152,6 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
     console.log("✅ PURCHASE RECORD CREATED");
     console.log("Purchase ID:", purchase._id.toString());
 
-    // --------------------------------------------------
-    // FINAL RESPONSE
-    // --------------------------------------------------
-    // console.log("\n");
-    // console.log("==================================================");
-    // console.log("🟢 CREATE PURCHASE API COMPLETED SUCCESSFULLY");
-    // console.log("==================================================");
-    // console.log("\n");
-
     res.status(201).json({
         success: true,
         message: "Purchase created successfully",
@@ -309,6 +161,10 @@ exports.createPurchase = catchAsyncError(async (req, res, next) => {
 
 // GET SINGLE PURCHASE (Restricted to logged-in user)
 exports.getSinglePurchase = catchAsyncError(async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return next(new ErrorHandler("Invalid Purchase ID format", 400));
+    }
+
     const purchase = await purchaseModel.findOne({ _id: req.params.id, user: req.user.id });
     if (!purchase) return next(new ErrorHandler("Purchase not found!", 404));
     res.status(200).json({ success: true, purchase });
@@ -316,12 +172,22 @@ exports.getSinglePurchase = catchAsyncError(async (req, res, next) => {
 
 // UPDATE PURCHASE (Restricted to logged-in user)
 exports.updatePurchase = catchAsyncError(async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return next(new ErrorHandler("Invalid Purchase ID format", 400));
+    }
+
     let purchase = await purchaseModel.findOne({ _id: req.params.id, user: req.user.id });
     if (!purchase) return next(new ErrorHandler("Purchase not found!", 404));
 
+    const updatePayload = {};
+    if (req.body.supplierName !== undefined) updatePayload.supplierName = req.body.supplierName;
+    if (req.body.supplierBillNo !== undefined) updatePayload.supplierBillNo = req.body.supplierBillNo;
+    if (req.body.items !== undefined) updatePayload.items = req.body.items;
+    if (req.body.grandTotal !== undefined) updatePayload.grandTotal = req.body.grandTotal;
+
     purchase = await purchaseModel.findOneAndUpdate(
         { _id: req.params.id, user: req.user.id },
-        req.body,
+        updatePayload,
         {
             new: true,
             runValidators: true
@@ -333,6 +199,10 @@ exports.updatePurchase = catchAsyncError(async (req, res, next) => {
 
 // DELETE PURCHASE (Restricted to logged-in user)
 exports.deletePurchase = catchAsyncError(async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return next(new ErrorHandler("Invalid Purchase ID format", 400));
+    }
+
     const purchase = await purchaseModel.findOne({ _id: req.params.id, user: req.user.id });
     if (!purchase) return next(new ErrorHandler("Purchase not found!", 404));
 
