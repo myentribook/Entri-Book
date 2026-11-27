@@ -7,45 +7,64 @@ const commentSlice = createSlice({
         comments: [],
         error: null,
         isCreated: false,
-        isDeleted: false // Added missing initial state property
+        isDeleted: false 
     },
     reducers: {
         commentRequest(state, action) {
             state.loading = true;
+            state.error = null;
         },
         commentSuccess(state, action) {
             state.loading = false;
-            state.comments = action.payload.comments;
+            state.comments = Array.isArray(action.payload?.comments)
+                ? action.payload.comments
+                : Array.isArray(action.payload)
+                    ? action.payload
+                    : [];
+            state.error = null;
         },
         commentFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload ?? null;
         },
         newCommentRequest(state, action) {
             state.loading = true;
             state.isCreated = false;
+            state.error = null;
         },
         newCommentSuccess(state, action) {
             state.loading = false;
-            state.comments.unshift(action.payload.comment);
+            if (!Array.isArray(state.comments)) {
+                state.comments = [];
+            }
+            if (action.payload?.comment) {
+                state.comments.unshift(action.payload.comment);
+            }
             state.isCreated = true;
+            state.error = null;
         },
         newCommentFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload ?? null;
+            state.isCreated = false;
         },
         deleteCommentRequest(state, action) {
             state.loading = true;
             state.isDeleted = false;
+            state.error = null;
         },
         deleteCommentSuccess(state, action) {
             state.loading = false;
             state.isDeleted = true;
-            state.comments = state.comments.filter((comment) => comment._id !== action.payload);
+            if (Array.isArray(state.comments)) {
+                state.comments = state.comments.filter((comment) => comment?._id !== action.payload);
+            }
+            state.error = null;
         },
         deleteCommentFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload ?? null;
+            state.isDeleted = false;
         },
         clearCommentError(state) {
             state.error = null;

@@ -13,25 +13,27 @@ const searchSlice = createSlice({
 
         searchRequest(state, action) {
             state.loading = true
+            state.error = null
         },
         searchSuccess(state, action) {
             state.loading = false
-            state.products = action.payload.products
+            state.products = action?.payload?.products ?? []
         },
         searchFailure(state, action) {
             state.loading = false
-            state.error = action.payload
+            state.error = action?.payload ?? null
         },
         searchActionRequest(state, action) {
             state.loading = true
+            state.error = null
         },
         searchActionSuccess(state, action) {
             state.loading = false
-            state.message = action.payload.message
+            state.message = action?.payload?.message ?? null
         },
         searchActionFailure(state, action) {
             state.loading = false
-            state.error = action.payload
+            state.error = action?.payload ?? null
         },
         clearSearchState(state, action) {
             state.error = null

@@ -15,11 +15,16 @@ const creditSlice = createSlice({
         },
         creditSuccess(state, action) {
             state.loading = false;
-            state.Credit = action.payload.creditBills || [];
+            state.Credit = Array.isArray(action.payload?.creditBills)
+                ? action.payload.creditBills
+                : Array.isArray(action.payload)
+                    ? action.payload
+                    : [];
+            state.error = null;
         },
         creditFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload ?? null;
         },
         creditActionRequest(state) {
             state.loading = true;
@@ -28,11 +33,12 @@ const creditSlice = createSlice({
         },
         creditActionSuccess(state, action) {
             state.loading = false;
-            state.message = action.payload.message;
+            state.message = action.payload?.message ?? null;
+            state.error = null;
         },
         creditActionFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload ?? null;
         },
         clearCreditState(state) {
             state.error = null;

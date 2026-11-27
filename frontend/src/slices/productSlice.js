@@ -11,25 +11,27 @@ const productSlice = createSlice({
     reducers: {
         productsRequest(state) {
             state.loading = true;
+            state.error = null;
         },
         productsSuccess(state, action) {
             state.loading = false;
-            state.products = action.payload.products;
+            state.products = action?.payload?.products ?? [];
         },
         productsFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action?.payload ?? null;
         },
         productActionRequest(state) {
             state.loading = true;
+            state.error = null;
         },
         productActionSuccess(state, action) {
             state.loading = false;
-            state.message = action.payload.message;
+            state.message = action?.payload?.message ?? null;
         },
         productActionFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action?.payload ?? null;
         },
         // Utility Logic
         clearProductState(state) {

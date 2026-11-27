@@ -10,15 +10,16 @@ const dashboardSlice = createSlice({
     reducers: {
         dashboardRequest(state) {
             state.loading = true;
+            state.error = null;
         },
         dashboardSuccess(state, action) {
             state.loading = false;
-            state.report = action.payload.reports;
+            state.report = action.payload?.reports ?? null;
             state.error = null;
         },
         dashboardFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload ?? null;
             state.report = null;
         },
         resetDashboard(state) {

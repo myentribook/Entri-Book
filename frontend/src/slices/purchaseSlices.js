@@ -12,25 +12,27 @@ const purchaseSlice = createSlice({
     reducers: {
         purchaseRequest(state) {
             state.loading = true;
+            state.error = null;
         },
         purchaseSuccess(state, action) {
             state.loading = false;
-            state.purchase = action.payload.purchase;
+            state.purchase = action?.payload?.purchase ?? [];
         },
         purchaseFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action?.payload ?? null;
         },
         purchaseActionRequest(state) {
             state.loading = true;
+            state.error = null;
         },
         purchaseActionSuccess(state, action) {
             state.loading = false;
-            state.message = action.payload.message || "Success";
+            state.message = action?.payload?.message || "Success";
         },
         purchaseActionFailure(state, action) {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action?.payload ?? null;
         },
         clearPurchaseState(state) {
             state.error = null;

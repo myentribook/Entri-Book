@@ -20,7 +20,7 @@ const statusSlice = createSlice({
             return {
                 ...state,
                 loading: false,
-                users: action.payload,
+                users: action?.payload ?? [],
                 error: null
             }
         },
@@ -28,18 +28,22 @@ const statusSlice = createSlice({
             return {
                 ...state,
                 loading: false,
-                error: action.payload
+                error: action?.payload ?? null
             }
         },
         updateUserLiveStatus(state, action) {
-            const { userId, isOnline, lastSeen } = action.payload
+            const { userId, isOnline, lastSeen } = action?.payload ?? {}
+            if (!userId) {
+                return state
+            }
+            const currentUserStatus = state?.userStatus ?? {}
             return {
                 ...state,
                 userStatus: {
-                    ...state.userStatus,
+                    ...currentUserStatus,
                     [userId]: {
-                        isOnline,
-                        lastSeen: lastSeen || state.userStatus[userId]?.lastSeen
+                        isOnline: Boolean(isOnline),
+                        lastSeen: lastSeen || currentUserStatus[userId]?.lastSeen || null
                     }
                 }
             }
