@@ -1,51 +1,58 @@
 const ErrorHandler = require("../utils/ErrorHandler")
 
 module.exports = (err, req, res, next) => {
-
-    err.statusCode = err.statusCode || 500
-
-    if (process.env.NODE_ENV == 'DEVELOPMENT') {
-        res.status(err.statusCode).json({
-            success: false,
-            message: err.message,
-            stack: err.stack,
-            error: err
-        })
-
+    if (res.headersSent) {
+        return next(err);
     }
 
-    if (process.env.NODE_ENV == 'PRODUCTION') {
+    const safeErr = err && typeof err === "object" ? err : new Error("Internal server Error");
+    safeErr.statusCode = safeErr.statusCode || 500;
 
-        let message = err.message
+    const env = typeof process.env.NODE_ENV === "string" ? process.env.NODE_ENV.trim().toUpperCase() : "";
 
-        let error = new ErrorHandler(message, 400)
+    if (env === "DEVELOPMENT") {
+        res.status(safeErr.statusCode).json({
+            success: false,
+            message: safeErr.message,
+            stack: safeErr.stack,
+            error: safeErr
+        })
+        return;
+    }
 
-        if (err.name == 'ValidationError') {
+    if (env === "PRODUCTION") {
 
-            message = Object.values(err.errors).map((value) => value.message)
+        let message = safeErr.message
+
+        let error = new ErrorHandler(message, safeErr.statusCode)
+
+        if (safeErr.name === "ValidationError") {
+
+            message = safeErr.errors ? Object.values(safeErr.errors).map((value) => value.message) : safeErr.message
 
             error = new ErrorHandler(message, 400)
 
         }
 
 
-        if (err.name == 'CastError') {
+        if (safeErr.name === "CastError") {
 
-            message = `Resource not found ${err.path} : ${err.value}`
+            message = `Resource not found ${safeErr.path} : ${safeErr.value}`
 
             error = new ErrorHandler(message, 400)
 
         }
 
 
-        if (err.code === 11000) {
-            const message = `Duplicate Key: ${Object.keys(err.keyValue).join(", ")} already exists`;
+        if (safeErr.code === 11000) {
+            const keys = safeErr.keyValue ? Object.keys(safeErr.keyValue).join(", ") : "";
+            const message = `Duplicate Key: ${keys} already exists`;
 
             error = new ErrorHandler(message, 400);
         }
 
 
-        if (err.name == 'JSONWebTokenError') {
+        if (safeErr.name === "JSONWebTokenError") {
             
             message = `JSON Web Token is Invalid . Try again `
 
@@ -53,7 +60,7 @@ module.exports = (err, req, res, next) => {
         }
 
 
-        if (err.name == 'TokenExpiredError') {
+        if (safeErr.name === "TokenExpiredError") {
             
             message = `JSON Web Token is Expired . Try again `
 
@@ -68,7 +75,13 @@ module.exports = (err, req, res, next) => {
             success: false,
             message: error.message || "Internal server Error"
         })
+        return;
 
     }
+
+    res.status(safeErr.statusCode).json({
+        success: false,
+        message: safeErr.message || "Internal server Error"
+    });
 
 }
