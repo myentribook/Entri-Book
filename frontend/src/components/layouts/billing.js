@@ -358,7 +358,7 @@ export default function Billing() {
                 value={saleType}
                 onChange={(e) => setSaleType(e.target.value)}
                 options={[
-                  { value: 'bag', label: 'Bag' },
+                  { value: 'bag', label: 'Unit' },
                   { value: 'kg', label: 'Kg' }
                 ]}
               />

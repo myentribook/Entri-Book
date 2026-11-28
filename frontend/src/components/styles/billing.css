@@ -657,12 +657,12 @@
         align-items: center;
         width: 100%;
     }
-
+/* 
     .bill-mgr-table td:nth-child(1)::before { content: "Product / Customer"; }
     .bill-mgr-table td:nth-child(2)::before { content: "Type / Date"; }
     .bill-mgr-table td:nth-child(3)::before { content: "Qty / Items"; }
     .bill-mgr-table td:nth-child(4)::before { content: "Price / Total"; }
-    .bill-mgr-table td:nth-child(5)::before { content: "Actions"; }
+    .bill-mgr-table td:nth-child(5)::before { content: "Actions"; } */
 
     .bill-mgr-table td::before {
         font-weight: 700;
