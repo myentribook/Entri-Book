@@ -316,32 +316,34 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
         );
     }
 
-    // 5. Prepare template values (matches bill details)
+    // 5. Prepare 8 template values matching invoice_receipt
     const customerName = String(bill.customerName || "Customer").trim() || "Customer";
 
     const billDateObj = bill.createdAt ? new Date(bill.createdAt) : new Date();
-    const invoiceDate = (Number.isNaN(billDateObj.getTime()) ? new Date() : billDateObj)
+    const validDate = Number.isNaN(billDateObj.getTime()) ? new Date() : billDateObj;
+    const invoiceDate = validDate
         .toLocaleDateString("en-GB", {
             day: "2-digit",
             month: "2-digit",
             year: "numeric"
-        });
+        })
+        .replace(/\//g, ".");
 
-    const paymentMode = String(bill.paymentType || "CASH").toUpperCase().trim() || "CASH";
-
-    const itemsPurchased = String(
-        Array.isArray(bill.items) ? bill.items.length : 0
-    );
+    const rawPayment = String(bill.paymentType || bill.paymentMode || "Cash").trim();
+    const paymentMode = rawPayment
+        ? rawPayment.charAt(0).toUpperCase() + rawPayment.slice(1).toLowerCase()
+        : "Cash";
 
     const gstin = String(bill.gstin || bill.customerGstin || "N/A").trim() || "N/A";
 
     const rawItemsText = Array.isArray(bill.items) && bill.items.length > 0
         ? bill.items
             .map((item) => {
-                const name = item.product?.name || item.name || "Item";
+                const name = item.product?.name || item.productName || item.name || "Item";
+                const unit = item.saleType || "unit";
                 const qty = item.quantity ?? 1;
                 const amount = Number(item.total ?? item.price * qty ?? 0);
-                return `${name} - Qty: ${qty} | Rs.${amount}`;
+                return `${name} ( ${unit} ) x ${qty} ( ₹${amount} )`;
             })
             .join(", ")
         : "No items";
@@ -352,18 +354,21 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
             : rawItemsText
     ).replace(/[\r\n]+/g, " ");
 
-    const subTotal = `Rs.${Number(bill.subTotal ?? bill.subtotal ?? 0).toFixed(2)}`;
+    const subTotalNum = Number(bill.subTotal ?? bill.subtotal ?? 0);
+    const subTotal = `₹${Number.isInteger(subTotalNum) ? subTotalNum : subTotalNum.toFixed(2)}`;
 
-    const totalTax =
+    const totalTaxNum = Number(
         bill.totalTax ??
         bill.taxAmount ??
         bill.tax ??
-        ((Number(bill.cgst || 0) + Number(bill.sgst || 0)) || 0);
-    const taxFormatted = `Rs.${Number(totalTax).toFixed(2)}`;
+        ((Number(bill.cgst || 0) + Number(bill.sgst || 0)) || 0)
+    );
+    const taxFormatted = `₹${Number.isInteger(totalTaxNum) ? totalTaxNum : totalTaxNum.toFixed(2)}`;
 
-    const grandTotal = `Rs.${Number(bill.grandTotal || 0).toFixed(2)}`;
+    const grandTotalNum = Number(bill.grandTotal || 0);
+    const grandTotal = `₹${Number.isInteger(grandTotalNum) ? grandTotalNum : grandTotalNum.toFixed(2)}`;
 
-    // 6. Send approved WhatsApp template
+    // 6. Send approved WhatsApp template (8 body parameters)
     try {
         const response = await axios.post(
             `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`,
@@ -381,15 +386,14 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
                         {
                             type: "body",
                             parameters: [
-                                { type: "text", text: customerName },   // {{1}}
-                                { type: "text", text: invoiceDate },    // {{2}}
-                                { type: "text", text: paymentMode },    // {{3}}
-                                { type: "text", text: itemsPurchased }, // {{4}}
-                                { type: "text", text: gstin },          // {{5}}
-                                { type: "text", text: itemsSummary },   // {{6}}
-                                { type: "text", text: subTotal },       // {{7}}
-                                { type: "text", text: taxFormatted },   // {{8}}
-                                { type: "text", text: grandTotal }      // {{9}}
+                                { type: "text", text: customerName }, // {{1}}
+                                { type: "text", text: invoiceDate },  // {{2}}
+                                { type: "text", text: paymentMode },  // {{3}}
+                                { type: "text", text: gstin },        // {{4}}
+                                { type: "text", text: itemsSummary }, // {{5}}
+                                { type: "text", text: subTotal },     // {{6}}
+                                { type: "text", text: taxFormatted }, // {{7}}
+                                { type: "text", text: grandTotal }    // {{8}}
                             ]
                         }
                     ]
