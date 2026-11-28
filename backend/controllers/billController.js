@@ -316,7 +316,7 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
         );
     }
 
-    // 5. Prepare 8 template values matching invoice_receipt
+    // 5. Prepare 8 template values in exact {{1}} -> {{8}} order
     const customerName = String(bill.customerName || "Customer").trim() || "Customer";
 
     const billDateObj = bill.createdAt ? new Date(bill.createdAt) : new Date();
@@ -355,7 +355,7 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
     ).replace(/[\r\n]+/g, " ");
 
     const subTotalNum = Number(bill.subTotal ?? bill.subtotal ?? 0);
-    const subTotal = `₹${Number.isInteger(subTotalNum) ? subTotalNum : subTotalNum.toFixed(2)}`;
+    const subTotal = String(Number.isInteger(subTotalNum) ? subTotalNum : Number(subTotalNum.toFixed(2)));
 
     const totalTaxNum = Number(
         bill.totalTax ??
@@ -363,12 +363,12 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
         bill.tax ??
         ((Number(bill.cgst || 0) + Number(bill.sgst || 0)) || 0)
     );
-    const taxFormatted = `₹${Number.isInteger(totalTaxNum) ? totalTaxNum : totalTaxNum.toFixed(2)}`;
+    const taxFormatted = String(Number.isInteger(totalTaxNum) ? totalTaxNum : Number(totalTaxNum.toFixed(2)));
 
     const grandTotalNum = Number(bill.grandTotal || 0);
-    const grandTotal = `₹${Number.isInteger(grandTotalNum) ? grandTotalNum : grandTotalNum.toFixed(2)}`;
+    const grandTotal = String(Number.isInteger(grandTotalNum) ? grandTotalNum : Number(grandTotalNum.toFixed(2)));
 
-    // 6. Send approved WhatsApp template (8 body parameters)
+    // 6. Send approved WhatsApp template
     try {
         const response = await axios.post(
             `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`,
