@@ -388,110 +388,6 @@ export default function Billing() {
               </button>
             </div>
 
-            {/* <div className="bill-mgr-table-wrapper">
-              <table className="bill-mgr-table">
-                <thead>
-                  <tr>
-                    <th className="bill-mgr-th">PRODUCT</th>
-                    <th className="bill-mgr-th">TYPE</th>
-                    <th className="bill-mgr-th">QTY</th>
-                    <th className="bill-mgr-th">PRICE</th>
-                    <th className="bill-mgr-th">TOTAL</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tempItems.length > 0 ? (
-                    tempItems.map((item, idx) => (
-                      <tr key={idx}>
-                        <td className="bill-mgr-td" data-label="Product">{item.productName}</td>
-                        <td className="bill-mgr-td" data-label="Type">{item.saleType}</td>
-                        <td className="bill-mgr-td" data-label="Quantity">{item.quantity}</td>
-                        <td className="bill-mgr-td" data-label="Price">{item.price}</td>
-                        <td className="bill-mgr-td" data-label="Total">{item.total}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td className="bill-mgr-td bill-mgr-empty-cell" colSpan="5">
-                        <div className="bill-mgr-empty-state">
-                          <i className="fa-solid fa-box-open bill-mgr-empty-icon"></i>
-                          <span className="bill-mgr-empty-text">No products added yet</span>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-
-              <div className="bill-mgr-save-wrapper">
-                <div className="bill-mgr-grand-total">
-                  <span className="bill-mgr-grand-total-label">Grand Total</span>
-                  <span className="bill-mgr-grand-total-value">₹{(Number.isFinite(computedGrandTotal) ? computedGrandTotal : 0).toFixed(2)}</span>
-                </div>
-                <button type="button" className="bill-mgr-save-btn" onClick={handleSaveInvoice} disabled={loading}>
-                  <i className="fa-regular fa-floppy-disk"></i> {loading ? "Saving..." : "Save Invoice →"}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="bill-mgr-card bill-mgr-history-card">
-            <div className="bill-mgr-section-header">
-              <h2 className="bill-mgr-subheading">
-                <span className="bill-mgr-history-icon"><i className="fa-solid fa-clock-rotate-left"></i></span>
-                Bill History
-              </h2>
-              <div className="bill-mgr-search-box">
-                <i className="fa-solid fa-magnifying-glass bill-mgr-search-icon"></i>
-                <input
-                  className="bill-mgr-search-input"
-                  type="text"
-                  placeholder="Search Bills ..."
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="bill-mgr-table-wrapper">
-              <table className="bill-mgr-table">
-                <thead>
-                  <tr>
-                    <th className="bill-mgr-th">CUSTOMER</th>
-                    <th className="bill-mgr-th">DATE</th>
-                    <th className="bill-mgr-th">ITEMS</th>
-                    <th className="bill-mgr-th">TOTAL</th>
-                    <th className="bill-mgr-th">ACTIONS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBills.length > 0 ? filteredBills
-                    .map((bill, idx) => (
-                      <tr key={bill?._id || idx}>
-                        <td className="bill-mgr-td" data-label="Customer">{bill?.customerName || 'N/A'} ({bill?.invoiceNo || 'N/A'})</td>
-                        <td className="bill-mgr-td" data-label="Date">{bill?.createdAt ? String(bill.createdAt).split('T')[0] : 'N/A'}</td>
-                        <td className="bill-mgr-td" data-label="Items">{Array.isArray(bill?.items) ? bill.items.length : 0}</td>
-                        <td className="bill-mgr-td" data-label="Total">₹{bill?.grandTotal ?? 0}</td>
-                        <td className="bill-mgr-td" data-label="Actions">
-                          <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>
-                            <i className="fa-brands fa-whatsapp"></i> Share
-                          </button>
-                        </td>
-                      </tr>
-                    )) : (
-                    <tr>
-                      <td className="bill-mgr-td bill-mgr-empty-cell" colSpan="5">
-                        <div className="bill-mgr-empty-state">
-                          <i className="fa-regular fa-file-lines bill-mgr-empty-icon"></i>
-                          <span className="bill-mgr-empty-text">No bills found</span>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div> */}
 
             <div className="bill-mgr-table-wrapper">
               <table className="bill-mgr-table">
@@ -575,7 +471,7 @@ export default function Billing() {
                       <tr key={bill?._id || idx}>
                         <td className="bill-mgr-td" data-label="Customer">{bill?.customerName || 'N/A'} ({bill?.invoiceNo || 'N/A'})</td>
                         <td className="bill-mgr-td" data-label="Date">{bill?.createdAt ? String(bill.createdAt).split('T')[0] : 'N/A'}</td>
-                        <td className="bill-mgr-td" data-label="Quantity">{Array.isArray(bill?.items) ? bill.items.length : 0}</td>
+                        <td className="bill-mgr-td" data-label="Item">{Array.isArray(bill?.items) ? bill.items.length : 0}</td>
                         <td className="bill-mgr-td" data-label="Price">₹{bill?.grandTotal ?? 0}</td>
                         <td className="bill-mgr-td" data-label="Action">
                           <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>

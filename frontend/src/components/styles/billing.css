@@ -541,6 +541,8 @@
     .bill-mgr-wrapper {
         padding: 0 12px;
         margin: 12px auto;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .bill-mgr-header-row {
@@ -558,6 +560,8 @@
         padding: 16px;
         border-radius: 14px;
         margin-bottom: 16px;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .bill-mgr-title {
@@ -621,10 +625,12 @@
         width: 100%;
     }
 
+    .bill-mgr-table-wrapper {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     /* Responsive Card-style View for Tables on Mobile */
-
-
-    /*     
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -633,6 +639,7 @@
     .bill-mgr-table tr {
         display: block;
         width: 100%;
+        max-width: 100%;
         box-sizing: border-box;
     }
 
@@ -653,78 +660,17 @@
 
     .bill-mgr-table td {
         border: none;
-        padding: 6px 0;
-        text-align: right;
+        padding: 7px 0;
         font-size: 13px;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        gap: 12px;
         width: 100%;
-    }
-
-    .bill-mgr-table td:nth-child(1)::before { content: "Product / Customer"; }
-    .bill-mgr-table td:nth-child(2)::before { content: "Type / Date"; }
-    .bill-mgr-table td:nth-child(3)::before { content: "Qty / Items"; }
-    .bill-mgr-table td:nth-child(4)::before { content: "Price / Total"; }
-    .bill-mgr-table td:nth-child(5)::before { content: "Actions"; }
-
-
-    .bill-mgr-table td::before {
-        font-weight: 700;
-        color: var(--text-sub);
-        text-transform: uppercase;
-        font-size: 11px;
-        letter-spacing: 0.03em;
-        text-align: left;
-    }
-
-    .bill-mgr-table td[colspan] {
-        padding: 16px;
-        text-align: center;
-        display: block;
-    }
-
-    .bill-mgr-table td[colspan]::before {
-        content: none;
-    } */
-
-
-    /* Responsive Card-style View for Tables on Mobile */
-    .bill-mgr-table,
-    .bill-mgr-table thead,
-    .bill-mgr-table tbody,
-    .bill-mgr-table th,
-    .bill-mgr-table td,
-    .bill-mgr-table tr {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .bill-mgr-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .bill-mgr-table tr {
-        background: #FFFFFF;
-        border: 1px solid var(--border-light);
-        border-radius: 12px;
-        margin-bottom: 12px;
-        padding: 12px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-    }
-
-    .bill-mgr-table td {
-        border: none;
-        padding: 6px 0;
         text-align: right;
-        font-size: 13px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        min-width: 0;
     }
 
     .bill-mgr-table td::before {
@@ -735,6 +681,11 @@
         font-size: 11px;
         letter-spacing: 0.03em;
         text-align: left;
+        flex: 0 0 105px;
+    }
+
+    .bill-mgr-table td > *:not(i) {
+        min-width: 0;
     }
 
     .bill-mgr-table td[colspan] {
@@ -746,6 +697,4 @@
     .bill-mgr-table td[colspan]::before {
         content: none;
     }
-
-
 }
