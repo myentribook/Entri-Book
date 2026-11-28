@@ -622,6 +622,12 @@
     }
 
     /* Responsive Card-style View for Tables on Mobile */
+    .bill-mgr-table-wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -629,7 +635,9 @@
     .bill-mgr-table td,
     .bill-mgr-table tr {
         display: block;
-        width: 70%;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
         box-sizing: border-box;
     }
 
@@ -658,6 +666,7 @@
         align-items: flex-start;
         gap: 10px;
         width: 100%;
+        max-width: 100%;
         min-width: 0;
         overflow-wrap: anywhere;
         word-break: break-word;
