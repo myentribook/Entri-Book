@@ -474,7 +474,7 @@ export default function Billing() {
                         <td className="bill-mgr-td" data-label="Item">{Array.isArray(bill?.items) ? bill.items.length : 0}</td>
                         <td className="bill-mgr-td" data-label="Price">₹{bill?.grandTotal ?? 0}</td>
                         <td className="bill-mgr-td" data-label="Action">
-                          <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#25D366' }}>
+                          <button type="button" onClick={() => handleOpenShareModal(bill)} className="bill-mgr-btn bill-mgr-btn-view" >
                             <i className="fa-brands fa-whatsapp"></i> Share
                           </button>
                         </td>
