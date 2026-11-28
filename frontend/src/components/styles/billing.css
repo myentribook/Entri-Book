@@ -629,7 +629,7 @@
     .bill-mgr-table td,
     .bill-mgr-table tr {
         display: block;
-        width: 100%;
+        width: 70%;
         box-sizing: border-box;
     }
 
