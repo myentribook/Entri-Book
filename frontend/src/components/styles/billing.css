@@ -173,9 +173,9 @@
     text-overflow: ellipsis;
     transform-origin: left center;
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
-                color 0.2s ease,
-                font-size 0.2s ease,
-                top 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        color 0.2s ease,
+        font-size 0.2s ease,
+        top 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .bill-mgr-entry-box .bill-mgr-floating-label {
@@ -186,8 +186,8 @@
 .bill-mgr-floating-box:focus-within .bill-mgr-floating-label,
 .bill-mgr-floating-box.is-open .bill-mgr-floating-label,
 .bill-mgr-floating-box.has-value .bill-mgr-floating-label,
-.bill-mgr-floating-control:focus ~ .bill-mgr-floating-label,
-.bill-mgr-floating-control:not(:placeholder-shown) ~ .bill-mgr-floating-label {
+.bill-mgr-floating-control:focus~.bill-mgr-floating-label,
+.bill-mgr-floating-control:not(:placeholder-shown)~.bill-mgr-floating-label {
     top: 0;
     transform: translateY(-50%) scale(0.82);
     font-weight: 500;
@@ -205,7 +205,7 @@
 
 .bill-mgr-floating-box:focus-within .bill-mgr-floating-label,
 .bill-mgr-floating-box.is-open .bill-mgr-floating-label,
-.bill-mgr-floating-control:focus ~ .bill-mgr-floating-label {
+.bill-mgr-floating-control:focus~.bill-mgr-floating-label {
     color: var(--primary);
 }
 
@@ -273,6 +273,7 @@
         opacity: 0;
         transform: translateY(-6px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -621,6 +622,9 @@
     }
 
     /* Responsive Card-style View for Tables on Mobile */
+
+
+    /*     
     .bill-mgr-table,
     .bill-mgr-table thead,
     .bill-mgr-table tbody,
@@ -657,12 +661,13 @@
         align-items: center;
         width: 100%;
     }
-/* 
+
     .bill-mgr-table td:nth-child(1)::before { content: "Product / Customer"; }
     .bill-mgr-table td:nth-child(2)::before { content: "Type / Date"; }
     .bill-mgr-table td:nth-child(3)::before { content: "Qty / Items"; }
     .bill-mgr-table td:nth-child(4)::before { content: "Price / Total"; }
-    .bill-mgr-table td:nth-child(5)::before { content: "Actions"; } */
+    .bill-mgr-table td:nth-child(5)::before { content: "Actions"; }
+
 
     .bill-mgr-table td::before {
         font-weight: 700;
@@ -681,5 +686,66 @@
 
     .bill-mgr-table td[colspan]::before {
         content: none;
+    } */
+
+
+    /* Responsive Card-style View for Tables on Mobile */
+    .bill-mgr-table,
+    .bill-mgr-table thead,
+    .bill-mgr-table tbody,
+    .bill-mgr-table th,
+    .bill-mgr-table td,
+    .bill-mgr-table tr {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
     }
+
+    .bill-mgr-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .bill-mgr-table tr {
+        background: #FFFFFF;
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        padding: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .bill-mgr-table td {
+        border: none;
+        padding: 6px 0;
+        text-align: right;
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .bill-mgr-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--text-sub);
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.03em;
+        text-align: left;
+    }
+
+    .bill-mgr-table td[colspan] {
+        padding: 16px;
+        text-align: center;
+        display: block;
+    }
+
+    .bill-mgr-table td[colspan]::before {
+        content: none;
+    }
+
+
 }
