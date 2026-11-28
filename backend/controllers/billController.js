@@ -316,8 +316,8 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
         );
     }
 
-    // 5. Prepare template values
-    const customerName = String(bill.customerName || "Customer");
+    // 5. Prepare template values (matches bill details)
+    const customerName = String(bill.customerName || "Customer").trim() || "Customer";
 
     const billDateObj = bill.createdAt ? new Date(bill.createdAt) : new Date();
     const invoiceDate = (Number.isNaN(billDateObj.getTime()) ? new Date() : billDateObj)
@@ -327,13 +327,41 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
             year: "numeric"
         });
 
-    const paymentMode = String(bill.paymentType || "CASH").toUpperCase();
+    const paymentMode = String(bill.paymentType || "CASH").toUpperCase().trim() || "CASH";
 
     const itemsPurchased = String(
         Array.isArray(bill.items) ? bill.items.length : 0
     );
 
-    const grandTotal = Number(bill.grandTotal || 0).toFixed(2);
+    const gstin = String(bill.gstin || bill.customerGstin || "N/A").trim() || "N/A";
+
+    const rawItemsText = Array.isArray(bill.items) && bill.items.length > 0
+        ? bill.items
+            .map((item) => {
+                const name = item.product?.name || item.name || "Item";
+                const qty = item.quantity ?? 1;
+                const amount = Number(item.total ?? item.price * qty ?? 0);
+                return `${name} - Qty: ${qty} | Rs.${amount}`;
+            })
+            .join(", ")
+        : "No items";
+
+    const itemsSummary = (
+        rawItemsText.length > 250
+            ? `${rawItemsText.slice(0, 247)}...`
+            : rawItemsText
+    ).replace(/[\r\n]+/g, " ");
+
+    const subTotal = `Rs.${Number(bill.subTotal ?? bill.subtotal ?? 0).toFixed(2)}`;
+
+    const totalTax =
+        bill.totalTax ??
+        bill.taxAmount ??
+        bill.tax ??
+        ((Number(bill.cgst || 0) + Number(bill.sgst || 0)) || 0);
+    const taxFormatted = `Rs.${Number(totalTax).toFixed(2)}`;
+
+    const grandTotal = `Rs.${Number(bill.grandTotal || 0).toFixed(2)}`;
 
     // 6. Send approved WhatsApp template
     try {
@@ -353,26 +381,15 @@ exports.shareBillWhatsapp = catchAsyncError(async (req, res, next) => {
                         {
                             type: "body",
                             parameters: [
-                                {
-                                    type: "text",
-                                    text: customerName
-                                },
-                                {
-                                    type: "text",
-                                    text: invoiceDate
-                                },
-                                {
-                                    type: "text",
-                                    text: paymentMode
-                                },
-                                {
-                                    type: "text",
-                                    text: itemsPurchased
-                                },
-                                {
-                                    type: "text",
-                                    text: grandTotal
-                                }
+                                { type: "text", text: customerName },   // {{1}}
+                                { type: "text", text: invoiceDate },    // {{2}}
+                                { type: "text", text: paymentMode },    // {{3}}
+                                { type: "text", text: itemsPurchased }, // {{4}}
+                                { type: "text", text: gstin },          // {{5}}
+                                { type: "text", text: itemsSummary },   // {{6}}
+                                { type: "text", text: subTotal },       // {{7}}
+                                { type: "text", text: taxFormatted },   // {{8}}
+                                { type: "text", text: grandTotal }      // {{9}}
                             ]
                         }
                     ]
